@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { SharedModule } from "../../../shared/shared.module";
-import { CardComponent } from "../../../shared/components/card/card.component";
 import { Router } from '@angular/router';
 
 @Component({

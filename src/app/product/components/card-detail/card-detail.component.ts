@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { addToCart, removeFromCart, updateQuantity } from '../../../state/cart.actions';  // Importamos las acciones
+
 
 @Component({
   selector: 'app-card-detail',
@@ -26,7 +29,11 @@ export class CardDetailComponent implements OnInit {
 
   selectedOptions: { size: string, color: string, quantity: number } | null = null;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -38,16 +45,31 @@ export class CardDetailComponent implements OnInit {
   // Handle the selection change from the app-category component
   handleSelectionChange(selection: { size: string, color: string, quantity: number }): void {
     this.selectedOptions = selection;
-    console.log('Selected Options:', this.selectedOptions);
   }
 
   // Handle "Add to Cart" click
   addToCart(): void {
     if (this.selectedOptions) {
-      console.log('Adding to cart:', this.selectedOptions);
-      // Aquí puedes agregar lógica para agregar al carrito.
+      const item = {
+        id: this.productId ?? '',
+        name: this.product.name,
+        size: this.selectedOptions.size,
+        color: this.selectedOptions.color,
+        quantity: this.selectedOptions.quantity,
+        price: this.product.price
+      };
+      this.store.dispatch(addToCart({ item }));
+      this.router.navigate(['products']);
     } else {
       alert('Please select size, color, and quantity.');
-    }
+    } 
+  }
+
+  removeFromCart(itemId: string, size: string, color: string): void {
+    this.store.dispatch(removeFromCart({ itemId, size, color })); 
+  }
+
+  updateQuantity(itemId: string, size: string, color: string, quantity: number): void {
+    this.store.dispatch(updateQuantity({ itemId, size, color, quantity })); 
   }
 }
