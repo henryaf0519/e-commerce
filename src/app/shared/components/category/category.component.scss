@@ -1,0 +1,9 @@
+/* Puedes agregar más personalización si es necesario */
+select, input {
+    transition: all 0.3s ease;
+  }
+  
+  select:hover, input:hover {
+    border-color: #4F8CFF;
+    box-shadow: 0 0 5px rgba(79, 140, 255, 0.5);
+  }  

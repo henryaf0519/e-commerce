@@ -12,8 +12,8 @@ export class ProductsComponent {
   products = [
     {
       id:1,
-      name: 'Product 1',
-      description: 'Description of Product 1',
+      name: "Men's Ankle Boots",
+      description: 'Vintage Fashion, Minimalist Solid Color, Round Toe Slip-on Short Boots with PU Upper, Fabric Lining, and Rubber Sole for Casual and Business Casual Outfits.',
       price: 100,
       image: 'assets/imgs/gorra.webp',
       isNew:true
@@ -62,9 +62,7 @@ export class ProductsComponent {
   constructor(private router: Router) {}
 
   onProductClicked(id: string) {
-    console.log('Producto clickeado:', id);
     this.router.navigate(['products/detail'], { queryParams: { id } });
-    // Aquí puedes hacer lo que necesites con el nombre del producto
   }
 
 }

@@ -4,6 +4,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { CardComponent } from './components/card/card.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { CategoryComponent } from './components/category/category.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -12,17 +14,20 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     HeaderComponent,
     FooterComponent,
     CardComponent,
-    CarouselComponent
+    CarouselComponent,
+    CategoryComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
     
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     CardComponent,
-    CarouselComponent
+    CarouselComponent,
+    CategoryComponent
   ]
 })
 export class SharedModule { }

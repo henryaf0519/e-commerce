@@ -12,9 +12,8 @@ export class CarouselComponent {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('images', this.images);
     if (this.images.length === 0) {
-      console.warn('No images provided for the carousel');
+
     }
   }
 

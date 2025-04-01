@@ -1,24 +1,44 @@
 <app-header></app-header>
-<div class="max-w-4xl mx-auto p-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
-      <!-- Carousel -->
-      <app-carousel [images]="product.images"></app-carousel> 
-      <div class="space-y-4">
-        <h1 class="text-3xl font-semibold text-gray-800">{{ product.name }}</h1>
-        <p class="text-lg text-gray-600">{{ product.description }}</p>        
-        <div class="text-2xl font-bold text-gray-900">${{ product.price }}</div>
-        <button class="w-full bg-blueMain text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">Add to Cart</button>
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 rounded-lg shadow-lg my-6 p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <!-- Carousel -->
+    <app-carousel [images]="product.images" class="rounded-xl overflow-hidden"></app-carousel>
+
+    <!-- Product Details -->
+    <div class="space-y-6">
+      <h1 class="text-4xl font-bold text-gray-900 tracking-tight">{{ product.name }}</h1>
+      <p class="text-lg text-gray-600 mt-4">{{ product.description }}</p>
+
+      <!-- Product Options (Color, Size, Quantity) -->
+      <app-category 
+        [size]="product.size ? product.size : []"
+        [color]="product.color ? product.color : []"
+        [quantity]="product.quantity"
+        (selectionChanged)="handleSelectionChange($event)">
+      </app-category>
+
+      <div class="flex items-center space-x-4">
+        <div class="text-3xl font-semibold text-gray-900">${{ product.price }}</div>
+        <div class="text-sm text-gray-500 line-through">${{ (product.price * 1.2).toFixed(2) }}</div>
       </div>
-    </div>
-    <div class="mt-8">
-      <h2 class="text-xl font-semibold text-gray-800">Product Details</h2>
-      <ul class="list-disc pl-5 mt-2 text-gray-600">
-        <li>Round Toe Design</li>
-        <li>PU Upper, Fabric Lining</li>
-        <li>Slip-on Style</li>
-        <li>Rubber Sole</li>
-      </ul>
+
+      <button class="w-full py-3 bg-blueMain text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105" (click)="addToCart()">
+        Add to Cart
+      </button>
     </div>
   </div>
+
+  <!-- Product Specifications -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Product Details</h2>
+    <ul class="list-disc pl-6 text-gray-600 space-y-2">
+      <li>Round Toe Design</li>
+      <li>PU Upper, Fabric Lining</li>
+      <li>Slip-on Style</li>
+      <li>Rubber Sole</li>
+    </ul>
+  </div>
+</div>
+
 
 <app-footer></app-footer>
