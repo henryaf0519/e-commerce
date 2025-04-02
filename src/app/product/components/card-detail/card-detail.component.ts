@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity } from '../../../state/cart.actions';  // Importamos las acciones
+import { addToCart, removeFromCart, updateQuantity } from '../../../state/cart.actions';
+import { CartService } from 'src/app/services/cart.service';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class CardDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class CardDetailComponent implements OnInit {
 
   // Handle "Add to Cart" click
   addToCart(): void {
-    if (this.selectedOptions) {
+    if (this.selectedOptions && this.selectedOptions.quantity > 0 && this.productId !== null) {
       const item = {
         id: this.productId ?? '',
         name: this.product.name,
@@ -58,15 +60,16 @@ export class CardDetailComponent implements OnInit {
         quantity: this.selectedOptions.quantity,
         price: this.product.price
       };
-      this.store.dispatch(addToCart({ item }));
+      console.log('Item a agregar al carrito:', item);
+      this.cartService.addToCart(item);
       this.router.navigate(['products']);
     } else {
       alert('Please select size, color, and quantity.');
     } 
   }
 
-  removeFromCart(itemId: string, size: string, color: string): void {
-    this.store.dispatch(removeFromCart({ itemId, size, color })); 
+  removeFromCart(itemId: string): void {
+    this.store.dispatch(removeFromCart({ itemId})); 
   }
 
   updateQuantity(itemId: string, size: string, color: string, quantity: number): void {

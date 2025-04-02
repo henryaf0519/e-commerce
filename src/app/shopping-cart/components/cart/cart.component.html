@@ -1,0 +1,3 @@
+<div *ngFor="let item of ((cart$ | async)?.items || [])">
+    <p>{{ item.name }} - {{ item.quantity }}</p>
+  </div>

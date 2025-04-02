@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { cartReducer } from './state/cart.reducer';
+import { CartEffects } from './state/cart.effects';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { cartReducer } from './state/cart.reducer';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({ cart: cartReducer }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([CartEffects]) 
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
