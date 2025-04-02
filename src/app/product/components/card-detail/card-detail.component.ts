@@ -1,17 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity } from '../../../state/cart.actions';
 import { CartService } from 'src/app/services/cart.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 
 @Component({
   selector: 'app-card-detail',
   templateUrl: './card-detail.component.html',
-  styleUrls: ['./card-detail.component.scss']
+  styleUrls: ['./card-detail.component.scss'],
+  animations: [
+    trigger('modalAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('150ms 0s ease-in', style({ opacity: 1}))
+      ]),
+      transition(':leave', [
+        animate('200ms 0s ease-out', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class CardDetailComponent implements OnInit {
-  
+
+  showModal: boolean = false;
+  message: string = '';
   productId: string | null = null;
   product = {
     id: '1',
@@ -33,7 +46,6 @@ export class CardDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private router: Router,
     private cartService: CartService
   ) { }
 
@@ -44,12 +56,10 @@ export class CardDetailComponent implements OnInit {
     });
   }
 
-  // Handle the selection change from the app-category component
   handleSelectionChange(selection: { size: string, color: string, quantity: number }): void {
     this.selectedOptions = selection;
   }
 
-  // Handle "Add to Cart" click
   addToCart(): void {
     if (this.selectedOptions && this.selectedOptions.quantity > 0 && this.productId !== null) {
       const item = {
@@ -62,17 +72,13 @@ export class CardDetailComponent implements OnInit {
       };
       console.log('Item a agregar al carrito:', item);
       this.cartService.addToCart(item);
-      this.router.navigate(['products']);
+      this.showModal = true;
+      this.message = 'Producto agregado al carrito!';
+      setTimeout(() => {
+        this.showModal = false;
+      }, 3000);
     } else {
       alert('Please select size, color, and quantity.');
     } 
-  }
-
-  removeFromCart(itemId: string): void {
-    this.store.dispatch(removeFromCart({ itemId})); 
-  }
-
-  updateQuantity(itemId: string, size: string, color: string, quantity: number): void {
-    this.store.dispatch(updateQuantity({ itemId, size, color, quantity })); 
   }
 }
