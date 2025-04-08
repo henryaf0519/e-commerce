@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ShoppingCartRoutingModule } from './shopping-cart-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { StoreModule } from '@ngrx/store';
-import { cartReducer } from '..//state/cart.reducer';
+import { cartReducer } from '../../state/cart.reducer';
 import { EffectsModule } from '@ngrx/effects';
 
 
