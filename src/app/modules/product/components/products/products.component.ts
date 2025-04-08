@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { CartService } from 'src/app/services/cart.service';
+import { CartState } from 'src/app/state/cart.reducer';
 
 @Component({
   selector: 'app-products',
@@ -7,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
+  cartItems: any[] = [];
+  cart$: Observable<CartState>;
   products = [
     {
       id:1,
@@ -57,7 +62,27 @@ export class ProductsComponent {
       isNew:false
     },
   ];
-  constructor(private router: Router) {}
+  constructor(
+    private cartService: CartService,
+    private router: Router
+  ) {
+    this.cart$ = this.cartService.getCartState();
+  }
+
+  ngOnInit(): void {
+    this.cart$.subscribe(cart => {
+      this.cartItems = cart.items;
+    });
+  }
+
+  totalCartPrice() {
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+  }
+
+  goToCart() {
+    this.router.navigate(['/cart']);
+  }
+
 
   onProductClicked(id: string) {
     this.router.navigate(['products/detail'], { queryParams: { id } });

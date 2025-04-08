@@ -1,0 +1,45 @@
+/* Para que el carrito esté sobre el contenido */
+.fixed {
+    z-index: 9999;
+  }
+  
+  .bg-white {
+    background-color: #fff;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .w-80 {
+    width: 20rem; /* Ajusta el ancho del carrito */
+  }
+  
+  .h-screen {
+    height: 100vh; /* Altura completa de la pantalla */
+  }
+  
+  .rounded-l-lg {
+    border-radius: 0.5rem 0 0 0.5rem; /* Redondeo solo en la parte izquierda */
+  }
+  
+  .text-gray-800 {
+    color: #2d3748;
+  }
+  
+  .text-blue-500 {
+    color: #3b82f6;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  .transition {
+    transition: all 0.3s ease;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+  

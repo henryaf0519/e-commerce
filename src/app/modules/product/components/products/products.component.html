@@ -4,5 +4,32 @@
         <app-card *ngFor="let product of products" [products]="product" (productClicked)="onProductClicked($event)"></app-card>
     </div>
 </div>
+<div class="fixed top-0 right-0 w-80 h-screen bg-white shadow-lg rounded-l-lg p-4 overflow-auto z-50" *ngIf="cartItems.length > 0">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">Carrito</h3>
+        <button (click)="goToCart()" class="text-blue-500 text-sm">Ir al carrito</button>
+    </div>
+    <div class="space-y-4">
+        <div *ngFor="let item of cartItems" class="flex items-center justify-between">
+            <img [src]="item.img" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded-md">
+            <div class="flex flex-col items-end">
+                <span class="text-sm font-medium">{{ item.name }}</span>
+                <span class="text-xs text-gray-500">Cantidad: {{ item.quantity }}</span>
+                <span class="text-sm text-gray-600">${{ item.price * item.quantity | number: '1.2-2' }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <div class="flex justify-between">
+            <span class="font-medium text-lg">Subtotal:</span>
+            <span class="font-medium text-lg">${{ totalCartPrice() }}</span>
+        </div>
+        <button (click)="goToCart()" class="mt-4 w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+            Ver carrito
+        </button>
+    </div>
+</div>
+  
+
 <button routerLink="/cart">Carrito</button>
 <app-footer></app-footer>
