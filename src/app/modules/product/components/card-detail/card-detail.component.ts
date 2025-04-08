@@ -70,7 +70,6 @@ export class CardDetailComponent implements OnInit {
         quantity: this.selectedOptions.quantity,
         price: this.product.price
       };
-      console.log('Item a agregar al carrito:', item);
       this.cartService.addToCart(item);
       this.showModal = true;
       this.message = 'Producto agregado al carrito!';
