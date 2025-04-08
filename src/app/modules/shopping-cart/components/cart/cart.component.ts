@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CartState } from 'src/app/state/cart.reducer';
 
@@ -9,27 +10,60 @@ import { CartState } from 'src/app/state/cart.reducer';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent {
-  cart$: Observable<CartState>;  // Variable para el carrito
+  cart$: Observable<CartState>;
+  showCart: boolean = true;
 
-  constructor(private cartService: CartService) {
-    this.cart$ = this.cartService.getCartState();  // Usamos el servicio para acceder al estado global
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+  ) {
+    this.cart$ = this.cartService.getCartState();
   }
 
   ngOnInit(): void {
-    // Verifica que los datos están cargados correctamente
     this.cart$.subscribe(cart => {
-      console.log('Estado del carrito en CartComponent:', cart);  // Muestra el estado del carrito
+      console.log('Estado del carrito en CartComponent:', cart);
+      if(cart.items.length === 0) {
+        this.showCart = false;
+      }
+      else{
+        this.showCart = true;
+      }
     });
   }
 
-  // Método para eliminar un producto
   removeFromCart(itemId: string, size: string, color: string): void {
-    this.cartService.removeFromCart(itemId);  // Usamos el servicio para despachar la acción
+    this.cartService.removeFromCart(itemId);  
   }
 
-  // Método para actualizar la cantidad de un producto
-  updateQuantity(itemId: string, size: string, color: string, quantity: number): void {
-    this.cartService.updateQuantity(itemId, size, color, quantity);  // Usamos el servicio para despachar la acción
+
+
+  totalPrice(): Observable<number> {
+    return this.cart$.pipe(
+      map(cartState => {
+        const total = cartState.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        return parseFloat(total.toFixed(2));
+      })
+    );
   }
 
+  getQuantityOptions(item: any): number[] {
+    // Generar un array con las opciones de cantidad del 1 al quantityStock
+    return Array.from({ length: item.quantityStock }, (_, index) => index + 1);
+  }
+  
+  updateQuantity(item: any, newQuantity: number): void {
+    if (newQuantity < 1) {
+      newQuantity = 1;
+    } else if (newQuantity > item.quantityStock) {
+      newQuantity = item.quantityStock;
+    }
+    console.log('newQuantity', newQuantity);
+    this.cartService.updateQuantity(item.id, item.size, item.color, newQuantity);
+  }
+
+  removeItem(item: any): void {
+    // Llamamos al método del servicio para eliminar el ítem
+    this.cartService.removeFromCart(item.id);
+  }
 }

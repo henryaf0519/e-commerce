@@ -68,7 +68,10 @@ export class CardDetailComponent implements OnInit {
         size: this.selectedOptions.size,
         color: this.selectedOptions.color,
         quantity: this.selectedOptions.quantity,
-        price: this.product.price
+        quantityStock: this.product.quantity,
+        price: this.product.price,
+        img:this.product.images[0]
+
       };
       this.cartService.addToCart(item);
       this.showModal = true;

@@ -5,7 +5,8 @@ import { ShoppingCartRoutingModule } from './shopping-cart-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from '../../state/cart.reducer';
-import { EffectsModule } from '@ngrx/effects';
+import { SharedModule } from "../../shared/shared.module";
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { EffectsModule } from '@ngrx/effects';
     CommonModule,
     ShoppingCartRoutingModule,
     StoreModule.forFeature('cart', cartReducer),
-
-  ]
+    SharedModule,
+    FormsModule
+]
 })
 export class ShoppingCartModule { }
