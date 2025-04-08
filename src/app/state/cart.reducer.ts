@@ -11,10 +11,27 @@ export const initialState: CartState = {
 
 export const cartReducer = createReducer(
   initialState,
-  on(addToCart, (state, { item }) => ({
-    ...state,
-    items: [...state.items, item]
-  })),
+  on(addToCart, (state, { item }) => {
+    const existingItemIndex = state.items.findIndex(i => i.id === item.id);
+  
+    if (existingItemIndex !== -1) {
+      // Si el item ya existe, actualizamos la cantidad
+      const updatedItems = [...state.items];
+      updatedItems[existingItemIndex] = { ...updatedItems[existingItemIndex], quantity: item.quantity };
+      
+      return {
+        ...state,
+        items: updatedItems
+      };
+    } else {
+      // Si el item no existe, lo agregamos al carrito
+      return {
+        ...state,
+        items: [...state.items, item]
+      };
+    }
+  }),
+  
 
   on(removeFromCart, (state, { itemId }) => ({
     ...state,
