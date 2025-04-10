@@ -12,7 +12,6 @@
     <div class="cont2 w-80 min-h-screen bg-white shadow-lg rounded-l-lg p-4 overflow-auto z-50" *ngIf="cartItems.length > 0">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-xl font-semibold text-gray-800">Carrito</h3>
-        <button (click)="goToCart()" class="text-blue-500 text-sm">Ir al carrito</button>
       </div>
       <div class="space-y-4">
         <div *ngFor="let item of cartItems" class="flex items-center justify-between">
