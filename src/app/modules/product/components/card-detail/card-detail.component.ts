@@ -45,6 +45,7 @@ export class CardDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private store: Store,
     private cartService: CartService
   ) { }
@@ -76,11 +77,15 @@ export class CardDetailComponent implements OnInit {
       this.cartService.addToCart(item);
       this.showModal = true;
       this.message = 'Producto agregado al carrito!';
-      setTimeout(() => {
-        this.showModal = false;
-      }, 3000);
     } else {
       alert('Please select size, color, and quantity.');
     } 
+  }
+
+  continueShopping(): void {
+    this.router.navigate(['/products']);
+  }
+  goToCart(): void {
+    this.router.navigate(['/cart']);
   }
 }

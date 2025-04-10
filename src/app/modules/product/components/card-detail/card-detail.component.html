@@ -42,16 +42,22 @@
 </div>
 <div *ngIf="showModal"
      @modalAnimation
-     class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-opacity-50 flex justify-center items-center z-50 rounded-lg p-2 max-w-xs">
-  <div class="bg-gray-50 rounded-lg shadow-lg p-2 flex items-center space-x-3"> <!-- Cambié shadow-lg a shadow-xl para más sombra -->
+     class="fixed top-0 left-0 w-full h-full bg-opacity-50 bg-gray-900 flex justify-center items-center z-50">
+  <div class="bg-gray-50 rounded-lg shadow-xl p-4 flex flex-col items-center space-y-4 max-w-sm w-full">
     <!-- Icono de Check -->
-    <div class="text-green-500 text-sm">
-      <i class="fas fa-check-circle"></i> <!-- Usa FontAwesome o cualquier ícono -->
+    <div class="text-green-500 text-3xl">
+      <i class="fas fa-check-circle"></i>
     </div>
     <!-- Mensaje -->
-    <p class="text-sm font-semibold text-gray-900">{{ message }}</p>
+    <p class="text-sm font-semibold text-gray-900">{{message}}</p>
+    <!-- Botones de acción con menor altura -->
+    <div class="flex space-x-4 mt-4">
+      <button class="py-1 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm" (click)="continueShopping()">Seguir comprando</button>
+      <button class="py-1 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition duration-300 text-sm" (click)="goToCart()">Ir al Carrito</button>
+    </div>
   </div>
 </div>
+
 
 
 
