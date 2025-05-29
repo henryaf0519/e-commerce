@@ -1,0 +1,25 @@
+<h2>{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <div>
+    <label>Nombre</label>
+    <input formControlName="name" placeholder="Nombre" />
+    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" style="color:red;">
+      El nombre es requerido.
+    </div>
+  </div>
+  <div>
+    <label>Cantidad</label>
+    <input formControlName="quantity" type="number" placeholder="Cantidad" />
+    <div *ngIf="form.get('quantity')?.invalid && form.get('quantity')?.touched" style="color:red;">
+      La cantidad debe ser mayor o igual a 0.
+    </div>
+  </div>
+  <div>
+    <label>Precio</label>
+    <input formControlName="price" type="number" placeholder="Precio" />
+    <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched" style="color:red;">
+      El precio debe ser mayor o igual a 0.
+    </div>
+  </div>
+  <button type="submit" [disabled]="form.invalid">Guardar</button>
+</form>

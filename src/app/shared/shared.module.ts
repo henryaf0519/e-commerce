@@ -6,6 +6,8 @@ import { CardComponent } from './components/card/card.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { CategoryComponent } from './components/category/category.component';
 import { FormsModule } from '@angular/forms';
+import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
+
 
 
 
@@ -15,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     CardComponent,
     CarouselComponent,
-    CategoryComponent
+    CategoryComponent,
+    AdminHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     CardComponent,
     CarouselComponent,
-    CategoryComponent
+    CategoryComponent,
+    AdminHeaderComponent
   ]
 })
 export class SharedModule { }
