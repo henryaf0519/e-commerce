@@ -1,17 +1,26 @@
-# The Docker image that will be used to build your app
-image: node:18
-create-pages:
-  pages:
-    # The folder that contains the files to be exposed at the Page URL
-    publish: public
-  rules:
-    # This ensures that only pushes to the default branch will trigger
-    # a pages deploy
-    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
-  # Functions that should be executed before the build script is run
-  before_script:
-    - npm install
-    - npm run build
+image: node:16
+
+stages:
+  - build
+  - deploy
+
+before_script:
+  - npm install -g @angular/cli
+
+build:
+  stage: build
   script:
-    - npm install -g @angular/cli@16.2.16
-    - npm run build
+    - npm install
+    - ng build 
+  artifacts:
+    paths:
+      - dist/e-commerce
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  script:
+    - mv dist/e-commerce public  # Mueve los archivos generados a la carpeta 'public'
+  only:
+    - main
