@@ -1,0 +1,50 @@
+<div class="space-y-4">
+  
+  <!-- Size Option -->
+  <div *ngIf="size.length > 0">
+    <p class="text-sm font-medium text-gray-700">Size</p>
+    <div class="flex space-x-4">
+      <div *ngFor="let s of size">
+        <button
+          class="px-4 py-2 rounded-md transition duration-200"
+          [ngClass]="{
+            'bg-blue-600 text-white': selectedSize === s,
+            'bg-gray-200 text-gray-900 hover:bg-blue-600 hover:text-white': selectedSize !== s
+          }"
+          (click)="selectSize(s)">
+          {{ s }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Option -->
+  <div *ngIf="color.length > 0">
+    <p class="text-sm font-medium text-gray-700">Color</p>
+    <div class="flex space-x-4">
+      <div *ngFor="let c of color">
+        <button
+          class="px-4 py-2 rounded-md transition duration-200"
+          [ngClass]="{
+            'bg-blue-600 text-white': selectedColor === c,
+            'bg-gray-200 text-gray-900 hover:bg-blue-600 hover:text-white': selectedColor !== c
+          }"
+          (click)="selectColor(c)">
+          {{ c }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quantity Option (Select) -->
+  <div *ngIf="quantity !== null">
+    <p class="text-sm font-medium text-gray-700">Quantity</p>
+    <select
+      class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      [ngModel]="selectedQuantity"
+      (ngModelChange)="selectQuantity($event)">
+      <option *ngFor="let q of quantityOptions" [value]="q">{{ q }}</option>
+    </select>
+  </div>
+
+</div>

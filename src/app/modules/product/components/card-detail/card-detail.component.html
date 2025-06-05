@@ -1,0 +1,67 @@
+<app-header></app-header>
+<div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 rounded-lg shadow-lg my-6 p-6 min-h-[61.9vh]">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <!-- Carousel -->
+    <app-carousel [images]="product.images" class="rounded-xl overflow-hidden"></app-carousel>
+
+    <!-- Product Details -->
+    <div class="space-y-6">
+      <h1 class="text-4xl font-bold text-gray-900 tracking-tight">{{ product.name }}</h1>
+      <p class="text-lg text-gray-600 mt-4">{{ product.description }}</p>
+
+      <!-- Product Options (Color, Size, Quantity) -->
+      <app-category 
+        [size]="product.size ? product.size : []"
+        [color]="product.color ? product.color : []"
+        [quantity]="product.quantity"
+        (selectionChanged)="handleSelectionChange($event)">
+      </app-category>
+
+      <div class="flex items-center space-x-4">
+        <div class="text-3xl font-semibold text-gray-900">${{ product.price }}</div>
+        <div class="text-sm text-gray-500 line-through">${{ (product.price * 1.2).toFixed(2) }}</div>
+      </div>
+
+      <button class="w-full py-3 bg-blueMain text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105" (click)="addToCart()">
+        Add to Cart
+      </button>
+      
+    </div>
+  </div>
+
+  <!-- Product Specifications -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Product Details</h2>
+    <ul class="list-disc pl-6 text-gray-600 space-y-2">
+      <li>Round Toe Design</li>
+      <li>PU Upper, Fabric Lining</li>
+      <li>Slip-on Style</li>
+      <li>Rubber Sole</li>
+    </ul>
+  </div>
+</div>
+<div *ngIf="showModal"
+     @modalAnimation
+     class="fixed top-0 left-0 w-full h-full bg-opacity-50 bg-gray-900 flex justify-center items-center z-50">
+  <div class="bg-gray-50 rounded-lg shadow-xl p-4 flex flex-col items-center space-y-4 max-w-sm w-full">
+    <!-- Icono de Check -->
+    <div class="text-green-500 text-3xl">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <!-- Mensaje -->
+    <p class="text-sm font-semibold text-gray-900">{{message}}</p>
+    <!-- Botones de acción con menor altura -->
+    <div class="flex space-x-4 mt-4">
+      <button class="py-1 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 text-sm" (click)="continueShopping()">Seguir comprando</button>
+      <button class="py-1 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition duration-300 text-sm" (click)="goToCart()">Ir al Carrito</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<app-footer></app-footer>

@@ -1,0 +1,61 @@
+<app-header></app-header>
+<div class="max-w-4xl mx-auto py-8 px-6 min-h-[61.9vh]" *ngIf="(cart$ | async)?.items?.length">
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-6 border-b border-gray-200">
+      <h1 class="text-3xl font-semibold text-gray-800">Carrito de Compras</h1>
+      <p class="text-lg text-gray-600">Revisa los productos que has seleccionado.</p>
+    </div>
+
+    <div class="space-y-6">
+      <div *ngFor="let item of (cart$ | async)?.items" class="flex items-center justify-between p-6 border-b border-gray-200">
+        <div class="flex items-center space-x-4">
+          <img [src]="item.img" alt="{{ item.name }}" class="w-20 h-20 object-cover rounded-md">
+          <div>
+            <h3 class="text-lg font-medium text-gray-800">{{ item.name }}</h3>
+            <p *ngIf="item.size" class="text-gray-500">Talla: {{ item.size }}</p>
+            <p *ngIf="item.color" class="text-gray-500">Color: {{ item.color }}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end">
+          <span class="text-xl font-semibold text-gray-900">${{ item.price }}</span>
+          <div class="flex items-center space-x-2 mt-2">
+            <span class="text-gray-600">Cantidad:</span>
+            <select 
+              [ngModel]="item.quantity"
+              (ngModelChange)="updateQuantity(item, $event)"
+              [ngModelOptions]="{standalone: true}"
+              class="w-16 text-center border-2 border-gray-300 rounded-md">
+              <option *ngFor="let qty of getQuantityOptions(item)" [value]="qty">
+                {{ qty }}
+              </option>
+            </select>
+            <button (click)="removeItem(item)" class="ml-2 text-gray-600 hover:text-red-700 focus:outline-none">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-6 border-t border-gray-200">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-semibold text-gray-800">Total</h2>
+        <span class="text-xl font-semibold text-gray-900">${{ totalPrice() | async }}</span>
+      </div>
+      <button class="w-full mt-4 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 glow-effectT">
+        Pagar
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="(cart$ | async)?.items?.length === 0" class="flex flex-col items-center justify-center py-8 h-[61.9vh] bg-gray-100">
+  <div class="text-gray-400">
+    <i class="fas fa-shopping-cart text-6xl"></i>
+  </div>
+  <p class="mt-4 text-lg text-gray-600">Tu carrito está vacío</p>
+  <a routerLink="products" class="mt-4 py-3 px-6 bg-blueMain text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 glow-effect">
+    Explorar artículos
+  </a>
+</div>
+<app-footer></app-footer>

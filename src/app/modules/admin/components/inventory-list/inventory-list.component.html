@@ -1,0 +1,11 @@
+<app-admin-header></app-admin-header>
+<app-admin-sidebar></app-admin-sidebar>
+<h2>Inventory</h2>
+    <button (click)="create()">Add Item</button>
+    <ul>
+      <li *ngFor="let item of items">
+        {{item.name}} ({{item.quantity}}) - ${{item.price}}
+        <button (click)="edit(item.id)">Edit</button>
+        <button (click)="remove(item.id)">Remove</button>
+      </li>
+</ul>

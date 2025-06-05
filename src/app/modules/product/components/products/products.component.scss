@@ -1,0 +1,80 @@
+/* Para que el carrito esté sobre el contenido */
+.fixed {
+    z-index: 9999;
+  }
+  
+  .bg-white {
+    background-color: #fff;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .w-80 {
+    width: 20rem; /* Ajusta el ancho del carrito */
+  }
+  
+  .h-screen {
+    height: 100vh; /* Altura completa de la pantalla */
+  }
+  
+  .rounded-l-lg {
+    border-radius: 0.5rem 0 0 0.5rem; /* Redondeo solo en la parte izquierda */
+  }
+  
+  .text-gray-800 {
+    color: #2d3748;
+  }
+  
+  .text-blue-500 {
+    color: #3b82f6;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  .transition {
+    transition: all 0.3s ease;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 1), 0 0 10px rgba(59, 130, 246, 1), 0 0 15px rgba(59, 130, 246, 1);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 1), 0 0 30px rgba(59, 130, 246, 1), 0 0 40px rgba(59, 130, 246, 1);
+    }
+    100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 1), 0 0 10px rgba(59, 130, 246, 1), 0 0 15px rgba(59, 130, 246, 1);
+    }
+  }
+  
+  .glow-effect {
+    animation: glow 1.5s ease-in-out infinite;
+  }
+  
+  .glow-effect:hover {
+    animation: glow 1.5s ease-in-out infinite, pulse 1s infinite;
+  }
+  
+  /* Extra pulse effect on hover */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  
