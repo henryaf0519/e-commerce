@@ -11,7 +11,7 @@ build:
   stage: build
   script:
     - npm install
-    - ng build --prod
+    - ng build
   artifacts:
     paths:
       - dist/e-commerce
