@@ -1,24 +1,26 @@
+image: node:16
+
 stages:
   - build
   - deploy
 
+before_script:
+  - npm install -g @angular/cli
+
 build:
   stage: build
-  image: node:18
   script:
     - npm install
-    - npm run build
+    - ng build 
   artifacts:
     paths:
       - dist/e-commerce
+  only:
+    - main
 
 deploy:
   stage: deploy
-  image: node:18
   script:
-    - echo "Desplegando aplicación..."
-    - npm install -g @angular/cli@16.2.16
-    - npm run build
-    # - npm run deploy
+    - mv dist/e-commerce public  # Mueve los archivos generados a la carpeta 'public'
   only:
     - main
