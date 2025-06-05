@@ -10,15 +10,15 @@ build:
     - npm run build
   artifacts:
     paths:
-      - dist/
+      - dist/e-commerce
 
 deploy:
   stage: deploy
   image: node:18
   script:
     - echo "Desplegando aplicación..."
-    - npm install
-    - ng build
+    - npm install -g @angular/cli@16.2.16
+    - npm run build
     # - npm run deploy
   only:
     - main
