@@ -21,6 +21,6 @@ build:
 deploy:
   stage: deploy
   script:
-    - mv dist/e-commerce dist
+    - mv dist/e-commerce dist  # Mueve los archivos generados a la carpeta 'dist'
   only:
     - main
