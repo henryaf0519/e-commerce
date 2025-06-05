@@ -11,7 +11,7 @@ create-pages:
   # Functions that should be executed before the build script is run
   before_script:
     - npm install
-    - npm build
+    - npm run build
   script:
     - npm install -g @angular/cli@16.2.16
-    - ng build
+    - npm run build
