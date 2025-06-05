@@ -22,4 +22,7 @@ export class InventoryListComponent {
     remove(id: string) { this.inventoryService.removeItem(id); }
 
 
+    
+
+
 }
