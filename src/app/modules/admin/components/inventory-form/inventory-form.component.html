@@ -1,26 +1,56 @@
+<h2 class="text-2xl font-semibold mb-4">{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
+<form [formGroup]="form" (ngSubmit)="save()" class="max-w-2xl mx-auto bg-white p-6 rounded shadow-md">
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Nombre<span class="text-red-500">*</span></label>
+    <input formControlName="name" type="text" placeholder="Nombre" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('name')?.invalid && (submitted || form.get('name')?.touched)">El nombre es requerido.</p>
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Descripción<span class="text-red-500">*</span></label>
+    <textarea formControlName="description" placeholder="Descripción" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('description')?.invalid && (submitted || form.get('description')?.touched)">La descripción es requerida.</p>
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Cantidad<span class="text-red-500">*</span></label>
+    <input formControlName="quantity" type="number" min="0" placeholder="Cantidad" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('quantity')?.invalid && (submitted || form.get('quantity')?.touched)">La cantidad debe ser mayor o igual a 0.</p>
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Precio<span class="text-red-500">*</span></label>
+    <input formControlName="price" type="number" min="0" placeholder="Precio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('price')?.invalid && (submitted || form.get('price')?.touched)">El precio debe ser mayor o igual a 0.</p>
+  </div>
+  <div class="mb-4" formArrayName="size">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Tallas</label>
+    <div *ngFor="let ctrl of sizeControls.controls; let i = index" class="flex mb-2">
+      <input [formControlName]="i" type="text" placeholder="Ej: S" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <button type="button" (click)="removeSize(i)" class="ml-2 text-red-500" *ngIf="sizeControls.length > 1">Eliminar</button>
+    </div>
+    <button type="button" (click)="addSize()" class="text-blue-500">Agregar talla</button>
+  </div>
 
-<h2>{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
-<form [formGroup]="form" (ngSubmit)="save()">
-  <div>
-    <label>Nombre</label>
-    <input formControlName="name" placeholder="Nombre" />
-    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" style="color:red;">
-      El nombre es requerido.
+  <div class="mb-4" formArrayName="color">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Colores</label>
+    <div *ngFor="let ctrl of colorControls.controls; let i = index" class="flex mb-2">
+      <input [formControlName]="i" type="text" placeholder="Ej: Rojo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <button type="button" (click)="removeColor(i)" class="ml-2 text-red-500" *ngIf="colorControls.length > 1">Eliminar</button>
     </div>
+    <button type="button" (click)="addColor()" class="text-blue-500">Agregar color</button>
   </div>
-  <div>
-    <label>Cantidad</label>
-    <input formControlName="quantity" type="number" placeholder="Cantidad" />
-    <div *ngIf="form.get('quantity')?.invalid && form.get('quantity')?.touched" style="color:red;">
-      La cantidad debe ser mayor o igual a 0.
-    </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
+    <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.hasError('required') && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.hasError('maxFileSize') && (submitted || form.get('images')?.touched)">Cada imagen debe pesar menos de 2MB.</p>
   </div>
-  <div>
-    <label>Precio</label>
-    <input formControlName="price" type="number" placeholder="Precio" />
-    <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched" style="color:red;">
-      El precio debe ser mayor o igual a 0.
-    </div>
+  <div class="mb-4 flex items-center">
+    <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" />
+    <label for="isNew" class="text-gray-700 text-sm font-bold">Es nuevo</label>
+    <p class="text-red-500 text-xs italic mt-1 ml-2" *ngIf="form.get('isNew')?.invalid && (submitted || form.get('isNew')?.touched)">Debe indicar si el producto es nuevo.</p>
   </div>
-  <button type="submit" [disabled]="form.invalid">Guardar</button>
+  <div class="flex items-center justify-between">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" [disabled]="form.invalid">
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
 </form>
