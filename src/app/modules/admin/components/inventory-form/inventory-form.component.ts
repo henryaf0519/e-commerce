@@ -35,6 +35,7 @@ export class InventoryFormComponent implements OnInit {
   submitted = false;
   selectedFiles: File[] = [];
   previewUrls: string[] = [];
+  showImageLimitModal:boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -107,14 +108,10 @@ export class InventoryFormComponent implements OnInit {
 
 onFileChange(event: any): void {
     const files: FileList = event.target.files;
-
-    // Si se intenta agregar más de 5 imágenes en total se muestra un mensaje
-    if (files.length + this.selectedFiles.length > 5) {
-      alert('Puedes seleccionar un máximo de 5 imágenes.');
+    if (files.length + this.selectedFiles.length > 1) {
+      this.showImageLimitModal = true;
       return;
     }
-
-    // Añadir las nuevas imágenes seleccionadas y generar sus vistas previas
     Array.from(files).forEach(file => {
       this.selectedFiles.push(file);
       const reader = new FileReader();
@@ -123,19 +120,11 @@ onFileChange(event: any): void {
       };
       reader.readAsDataURL(file);
     });
-
-    // Actualizar el formulario sin intentar modificar el valor del input file
     this.form.get('images')?.setValue(this.selectedFiles, { emitModelToViewChange: false });
     this.form.get('images')?.updateValueAndValidity();
   }
 
-  // Función que convierte una imagen a Base64
-
-
-
   save() {
-    console.log('Form submitted:', this.form.value);
-    console.log('Form invalid:', this.form.invalid);
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -148,5 +137,9 @@ onFileChange(event: any): void {
       this.inventoryService.addItem({ id: generateDate(), ...formValue });
     }
     this.router.navigate(['admin']);
+  }
+
+  closeImageLimitModal(): void {
+    this.showImageLimitModal = false;
   }
 }
