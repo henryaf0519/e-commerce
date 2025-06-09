@@ -20,28 +20,20 @@
     <input formControlName="price" type="number" min="0" placeholder="Precio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('price')?.invalid && (submitted || form.get('price')?.touched)">El precio debe ser mayor o igual a 0.</p>
   </div>
-  <div class="mb-4" formArrayName="size">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Tallas</label>
-    <div *ngFor="let ctrl of sizeControls.controls; let i = index" class="flex mb-2">
-      <input [formControlName]="i" type="text" placeholder="Ej: S" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-      <button type="button" (click)="removeSize(i)" class="ml-2 text-red-500" *ngIf="sizeControls.length > 1">Eliminar</button>
-    </div>
-    <button type="button" (click)="addSize()" class="text-blue-500">Agregar talla</button>
-  </div>
 
-  <div class="mb-4" formArrayName="color">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Colores</label>
-    <div *ngFor="let ctrl of colorControls.controls; let i = index" class="flex mb-2">
-      <input [formControlName]="i" type="text" placeholder="Ej: Rojo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-      <button type="button" (click)="removeColor(i)" class="ml-2 text-red-500" *ngIf="colorControls.length > 1">Eliminar</button>
-    </div>
-    <button type="button" (click)="addColor()" class="text-blue-500">Agregar color</button>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Talla</label>
+    <input formControlName="size" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Color</label>
+    <input formControlName="color" type="text" placeholder="Ej: Rojo, Azul" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
   </div>
   <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
-    <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.hasError('required') && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
-    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.hasError('maxFileSize') && (submitted || form.get('images')?.touched)">Cada imagen debe pesar menos de 2MB.</p>
+    <input formControlName="images" type="file" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
+
   </div>
   <div class="mb-4 flex items-center">
     <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" />
