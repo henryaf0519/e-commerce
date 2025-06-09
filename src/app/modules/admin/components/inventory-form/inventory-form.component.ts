@@ -7,10 +7,12 @@ import {generateDate} from 'src/app/utils/utils';
 export function maxFileSizeValidator(maxMb: number): ValidatorFn {
   const max = maxMb * 1024 * 1024;
   return (control: AbstractControl) => {
-    const files: FileList = control.value;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        if (files.item(i) && files.item(i)!.size > max) {
+    const files = control.value as FileList | string[];
+    if (files && (files as FileList).item) {
+      const fileList = files as FileList;
+      for (let i = 0; i < fileList.length; i++) {
+        const f = fileList.item(i);
+        if (f && f.size > max) {
           return { maxFileSize: true };
         }
       }
@@ -103,8 +105,21 @@ export class InventoryFormComponent implements OnInit {
 
   onFileChange(event: any): void {
     const files: FileList = event.target.files;
-    this.form.get('images')?.setValue(files);
-    this.form.get('images')?.updateValueAndValidity();
+    if (files && files.length > 0) {
+      const toBase64 = (file: File) => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject();
+        reader.readAsDataURL(file);
+      });
+
+      Promise.all(Array.from(files).map(f => toBase64(f))).then(base64Files => {
+        this.form.get('images')?.setValue(base64Files);
+        this.form.get('images')?.updateValueAndValidity();
+      });
+    } else {
+      this.form.get('images')?.setValue(null);
+    }
   }
 
 save() {
