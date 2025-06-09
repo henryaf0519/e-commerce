@@ -46,6 +46,10 @@
   <p class="text-gray-500 text-xs mt-2" *ngIf="selectedFiles.length > 0">
     Imágenes seleccionadas: {{ selectedFiles.length }} de 5
   </p>
+  <div class="flex flex-wrap mt-2" *ngIf="previewUrls.length > 0">
+    <img *ngFor="let url of previewUrls" [src]="url" alt="preview"
+         class="w-24 h-24 object-cover mr-2 mb-2 rounded border" />
+  </div>
 </div>
 
 
