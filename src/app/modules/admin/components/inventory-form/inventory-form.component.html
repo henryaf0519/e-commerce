@@ -1,44 +1,58 @@
-<h2 class="text-2xl font-semibold mb-4">{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
-<form [formGroup]="form" (ngSubmit)="save()" class="max-w-2xl mx-auto bg-white p-6 rounded shadow-md">
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Nombre<span class="text-red-500">*</span></label>
-    <input formControlName="name" type="text" placeholder="Nombre" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+<h2 class="text-3xl font-semibold mb-6 text-blueMain">{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
+<form [formGroup]="form" (ngSubmit)="save()" class="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="mb-4 md:col-span-1">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Nombre<span class="text-red-500">*</span></label>
+    <input formControlName="name" type="text" placeholder="Nombre"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      [ngClass]="{'border-red-500': form.get('name')?.invalid && (submitted || form.get('name')?.touched)}" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('name')?.invalid && (submitted || form.get('name')?.touched)">El nombre es requerido.</p>
   </div>
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Descripción<span class="text-red-500">*</span></label>
-    <textarea formControlName="description" placeholder="Descripción" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+  <div class="mb-4 md:col-span-2">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Descripción<span class="text-red-500">*</span></label>
+    <textarea formControlName="description" placeholder="Descripción"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      [ngClass]="{'border-red-500': form.get('description')?.invalid && (submitted || form.get('description')?.touched)}"></textarea>
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('description')?.invalid && (submitted || form.get('description')?.touched)">La descripción es requerida.</p>
   </div>
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Cantidad<span class="text-red-500">*</span></label>
-    <input formControlName="quantity" type="number" min="0" placeholder="Cantidad" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+  <div class="mb-4 md:col-span-1">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Cantidad<span class="text-red-500">*</span></label>
+    <input formControlName="quantity" type="number" min="0" placeholder="Cantidad"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      [ngClass]="{'border-red-500': form.get('quantity')?.invalid && (submitted || form.get('quantity')?.touched)}" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('quantity')?.invalid && (submitted || form.get('quantity')?.touched)">La cantidad debe ser mayor o igual a 0.</p>
   </div>
-  <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Precio<span class="text-red-500">*</span></label>
-    <input formControlName="price" type="number" min="0" placeholder="Precio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+  <div class="mb-4 md:col-span-1">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Precio<span class="text-red-500">*</span></label>
+    <input formControlName="price" type="number" min="0" placeholder="Precio"
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      [ngClass]="{'border-red-500': form.get('price')?.invalid && (submitted || form.get('price')?.touched)}" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('price')?.invalid && (submitted || form.get('price')?.touched)">El precio debe ser mayor o igual a 0.</p>
   </div>
 
-  <div class="mb-4" formArrayName="size">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Talla</label>
+  <div class="mb-4 md:col-span-1" formArrayName="size">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Talla</label>
     <div *ngFor="let size of sizeControls.controls; let i = index" class="flex items-center mb-2">
       <input [formControlName]="i" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       <button type="button" (click)="removeSize(i)" class="ml-2 text-red-500 hover:text-red-700">Eliminar</button>
     </div>
-    <button type="button" (click)="addSize()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Talla</button>
+    <button type="button" (click)="addSize()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 flex items-center">
+      <i class="fas fa-plus mr-1"></i>
+      Añadir Talla
+    </button>
   </div>
-    <div class="mb-4" formArrayName="color">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Color</label>
+  <div class="mb-4 md:col-span-1" formArrayName="color">
+    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Color</label>
     <div *ngFor="let color of colorControls.controls; let i = index" class="flex items-center mb-2">
       <input [formControlName]="i" type="text" placeholder="Ej: Rojo, Azul" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       <button type="button" (click)="removeColor(i)" class="ml-2 text-red-500 hover:text-red-700">Eliminar</button>
     </div>
-    <button type="button" (click)="addColor()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Color</button>
+    <button type="button" (click)="addColor()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700 flex items-center">
+      <i class="fas fa-plus mr-1"></i>
+      Añadir Color
+    </button>
   </div>
-  <div class="mb-4">
-  <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
+  <div class="mb-4 md:col-span-2">
+  <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" title="Puede seleccionar hasta 5 imágenes">Imágenes<span class="text-red-500">*</span></label>
   <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
   <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">
     Debe seleccionar al menos una imagen.
@@ -51,12 +65,12 @@
          class="w-24 h-24 object-cover mr-2 mb-2 rounded border" />
   </div>
   </div>
-  <div class="mb-4 flex items-center">
-    <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" />
-    <label for="isNew" class="text-gray-700 text-sm font-bold">Es nuevo</label>
+  <div class="mb-4 flex items-center md:col-span-2">
+    <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" title="Marca si es un producto nuevo" />
+    <label for="isNew" class="text-gray-700 dark:text-gray-200 text-sm font-bold">Es nuevo</label>
     <p class="text-red-500 text-xs italic mt-1 ml-2" *ngIf="form.get('isNew')?.invalid && (submitted || form.get('isNew')?.touched)">Debe indicar si el producto es nuevo.</p>
   </div>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between md:col-span-2">
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >
       {{ isEdit ? 'Actualizar' : 'Guardar' }}
     </button>
@@ -64,8 +78,11 @@
 </form>
 
 <!-- Modal para límite de imágenes -->
-<div *ngIf="showImageLimitModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 border-t-4 border-blue-600">
+<div *ngIf="showImageLimitModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 transition-opacity">
+  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 border-t-4 border-blue-600 relative">
+    <button (click)="closeImageLimitModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+      <i class="fas fa-times"></i>
+    </button>
     <div class="flex items-center justify-center mb-4">
       <svg class="w-8 h-8 text-blue-600 mr-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
