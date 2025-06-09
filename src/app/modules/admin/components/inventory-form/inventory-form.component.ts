@@ -104,25 +104,22 @@ export class InventoryFormComponent implements OnInit {
     this.colorControls.removeAt(index);
   }
 
- onFileChange(event: any): void {
+onFileChange(event: any): void {
     const files: FileList = event.target.files;
 
-    // Verificar que no se seleccionen más de 5 imágenes
-    if (files.length > 5) {
+    // Si se intenta agregar más de 5 imágenes en total se muestra un mensaje
+    if (files.length + this.selectedFiles.length > 5) {
       alert('Puedes seleccionar un máximo de 5 imágenes.');
       return;
     }
 
-    // Limpiar los archivos seleccionados previamente
-    this.selectedFiles = [];
-
-    // Guardar los archivos seleccionados
+    // Añadir las nuevas imágenes seleccionadas
     Array.from(files).forEach(file => {
       this.selectedFiles.push(file);
     });
 
-    // Actualizar el formulario con los archivos seleccionados
-    this.form.get('images')?.setValue(this.selectedFiles);
+    // Actualizar el formulario sin intentar modificar el valor del input file
+    this.form.get('images')?.setValue(this.selectedFiles, { emitModelToViewChange: false });
     this.form.get('images')?.updateValueAndValidity();
   }
 
