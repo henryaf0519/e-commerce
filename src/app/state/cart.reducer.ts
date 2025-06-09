@@ -1,8 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { addToCart, removeFromCart, updateQuantity, loadCartState } from './cart.actions';
+import { CartItem } from '../models/cart-item.model';
 
 export interface CartState {
-  items: any[];
+  items: CartItem[];
 }
 
 export const initialState: CartState = {

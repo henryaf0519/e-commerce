@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CartState } from 'src/app/state/cart.reducer';
+import { CartItem } from 'src/app/models/cart-item.model';
 
 @Component({
   selector: 'app-cart',
@@ -47,12 +48,12 @@ export class CartComponent implements OnInit {
     );
   }
 
-  getQuantityOptions(item: any): number[] {
+  getQuantityOptions(item: CartItem): number[] {
     // Generar un array con las opciones de cantidad del 1 al quantityStock
     return Array.from({ length: item.quantityStock }, (_, index) => index + 1);
   }
   
-  updateQuantity(item: any, newQuantity: number): void {
+  updateQuantity(item: CartItem, newQuantity: number): void {
     if (newQuantity < 1) {
       newQuantity = 1;
     } else if (newQuantity > item.quantityStock) {
@@ -62,7 +63,7 @@ export class CartComponent implements OnInit {
     this.cartService.updateQuantity(item.id, item.size, item.color, newQuantity);
   }
 
-  removeItem(item: any): void {
+  removeItem(item: CartItem): void {
     // Llamamos al método del servicio para eliminar el ítem
     this.cartService.removeFromCart(item.id);
   }
