@@ -24,8 +24,13 @@ export class InventoryFormComponent {
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
+      description: ['', Validators.required],
+      price: [0, [Validators.required, Validators.min(0)]],
+      size: [[], []], // optional array
+      color: [[], []], // optional array
       quantity: [0, [Validators.required, Validators.min(0)]],
-      price: [0, [Validators.required, Validators.min(0)]]
+      images: [[], Validators.required], // array, required
+      isNew: [false, Validators.required]
     });
   }
 
