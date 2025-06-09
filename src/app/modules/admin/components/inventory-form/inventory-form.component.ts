@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryServiceService, InventoryItem } from 'src/app/services/inventory-service.service';
@@ -9,7 +9,7 @@ import {generateDate} from 'src/app/utils/utils';
   templateUrl: './inventory-form.component.html',
   styleUrls: ['./inventory-form.component.scss']
 })
-export class InventoryFormComponent {
+export class InventoryFormComponent implements OnInit {
 
 
   form: FormGroup;
