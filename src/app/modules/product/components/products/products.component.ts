@@ -11,10 +11,9 @@ import { CartItem } from 'src/app/models/cart-item.model';
   styleUrls: ['./products.component.scss'],
 })
 
+
 export class ProductsComponent implements OnInit {
   cartItems: CartItem[] = [];
-
-
   cart$: Observable<CartState>;
   products = [
     {
