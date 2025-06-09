@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CartState } from 'src/app/state/cart.reducer';
+import { CartItem } from 'src/app/models/cart-item.model';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,7 @@ import { CartState } from 'src/app/state/cart.reducer';
 })
 export class HeaderComponent {
   cart$: Observable<CartState>;
-  cartItems: any[] = [];
+  cartItems: CartItem[] = [];
   
   constructor(
       private router: Router,

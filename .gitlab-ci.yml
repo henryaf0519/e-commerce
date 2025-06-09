@@ -1,4 +1,4 @@
-image: node:16
+image: node:20
 
 stages:
   - build
@@ -11,7 +11,7 @@ build:
   stage: build
   script:
     - npm install
-    - ng build --prod
+    - ng build
   artifacts:
     paths:
       - dist/e-commerce
@@ -21,6 +21,6 @@ build:
 deploy:
   stage: deploy
   script:
-    - mv dist/e-commerce dist  # Mueve los archivos generados a la carpeta 'public'
+    - mv dist/e-commerce public  # Mueve los archivos generados a la carpeta 'public'
   only:
     - main
