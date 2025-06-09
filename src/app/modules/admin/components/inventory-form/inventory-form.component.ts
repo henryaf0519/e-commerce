@@ -15,6 +15,7 @@ export class InventoryFormComponent implements OnInit {
   form: FormGroup;
   isEdit = false;
   itemId: string | null = null;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +47,11 @@ export class InventoryFormComponent implements OnInit {
   }
 
 save() {
-    if (this.form.invalid) return;
+    this.submitted = true;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const formValue = this.form.value;
     if (this.isEdit && this.itemId) {
       this.inventoryService.updateItem({ id: this.itemId, ...formValue });
