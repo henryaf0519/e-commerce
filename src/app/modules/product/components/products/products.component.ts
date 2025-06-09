@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
@@ -9,7 +9,7 @@ import { CartState } from 'src/app/state/cart.reducer';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   cartItems: any[] = [];
   cart$: Observable<CartState>;
   products = [

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
@@ -9,7 +9,7 @@ import { CartState } from 'src/app/state/cart.reducer';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   cart$: Observable<CartState>;
   showCart: boolean = true;
 
