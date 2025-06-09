@@ -38,18 +38,24 @@
     <button type="button" (click)="addColor()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Color</button>
   </div>
   <div class="mb-4">
-    <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
-    <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-    <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
+  <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
+  <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+  <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">
+    Debe seleccionar al menos una imagen.
+  </p>
+  <p class="text-gray-500 text-xs mt-2" *ngIf="selectedFiles.length > 0">
+    Imágenes seleccionadas: {{ selectedFiles.length }} de 5
+  </p>
+</div>
 
-  </div>
+
   <div class="mb-4 flex items-center">
     <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" />
     <label for="isNew" class="text-gray-700 text-sm font-bold">Es nuevo</label>
     <p class="text-red-500 text-xs italic mt-1 ml-2" *ngIf="form.get('isNew')?.invalid && (submitted || form.get('isNew')?.touched)">Debe indicar si el producto es nuevo.</p>
   </div>
   <div class="flex items-center justify-between">
-    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" [disabled]="form.invalid">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >
       {{ isEdit ? 'Actualizar' : 'Guardar' }}
     </button>
   </div>

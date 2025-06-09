@@ -33,6 +33,7 @@ export class InventoryFormComponent implements OnInit {
   isEdit = false;
   itemId: string | null = null;
   submitted = false;
+  selectedFiles: File[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +48,7 @@ export class InventoryFormComponent implements OnInit {
       size: this.fb.array([this.fb.control('')]),
       color: this.fb.array([this.fb.control('')]),
       quantity: [0, [Validators.required, Validators.min(0)]],
-      images: [null, [Validators.required, maxFileSizeValidator(2)]],
+      images: [null, [Validators.required]],
       isNew: [false, Validators.required]
     });
   }
@@ -103,27 +104,35 @@ export class InventoryFormComponent implements OnInit {
     this.colorControls.removeAt(index);
   }
 
-  onFileChange(event: any): void {
+ onFileChange(event: any): void {
     const files: FileList = event.target.files;
-    if (files && files.length > 0) {
-      const toBase64 = (file: File) => new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = () => reject();
-        reader.readAsDataURL(file);
-      });
 
-      Promise.all(Array.from(files).map(f => toBase64(f))).then(base64Files => {
-        this.form.get('images')?.setValue(base64Files);
-        this.form.get('images')?.updateValueAndValidity();
-      });
-    } else {
-      this.form.get('images')?.setValue(null);
+    // Verificar que no se seleccionen más de 5 imágenes
+    if (files.length > 5) {
+      alert('Puedes seleccionar un máximo de 5 imágenes.');
+      return;
     }
+
+    // Limpiar los archivos seleccionados previamente
+    this.selectedFiles = [];
+
+    // Guardar los archivos seleccionados
+    Array.from(files).forEach(file => {
+      this.selectedFiles.push(file);
+    });
+
+    // Actualizar el formulario con los archivos seleccionados
+    this.form.get('images')?.setValue(this.selectedFiles);
+    this.form.get('images')?.updateValueAndValidity();
   }
 
-save() {
-   console.log('Form submitted:', this.form.value);
+  // Función que convierte una imagen a Base64
+
+
+
+  save() {
+    console.log('Form submitted:', this.form.value);
+    console.log('Form invalid:', this.form.invalid);
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
