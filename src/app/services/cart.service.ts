@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartState } from '../state/cart.reducer';
 import { Store } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity } from '../state/cart.actions'; 
+import { addToCart, removeFromCart, updateQuantity } from '../state/cart.actions';
+import { CartItem } from '../models/cart-item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,9 @@ export class CartService {
  }
 
  // Método para agregar un producto al carrito
- addToCart(item: any) {
-   this.store.dispatch(addToCart({ item }));  // Despacha la acción para agregar al carrito
- }
+  addToCart(item: CartItem) {
+    this.store.dispatch(addToCart({ item }));  // Despacha la acción para agregar al carrito
+  }
 
  // Método para eliminar un producto del carrito
  removeFromCart(itemId: string) {
