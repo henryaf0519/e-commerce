@@ -18,7 +18,7 @@ export class InventoryListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.items = this.inventoryService.getItems();
+   // this.items = this.inventoryService.getItems();
   }
 
   create() { this.router.navigate(['admin/create']); }
