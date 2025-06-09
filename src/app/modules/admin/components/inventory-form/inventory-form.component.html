@@ -20,6 +20,7 @@
     <input formControlName="price" type="number" min="0" placeholder="Precio" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('price')?.invalid && (submitted || form.get('price')?.touched)">El precio debe ser mayor o igual a 0.</p>
   </div>
+
   <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Talla</label>
     <input formControlName="size" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -32,6 +33,7 @@
     <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
     <input formControlName="images" type="file" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
+
   </div>
   <div class="mb-4 flex items-center">
     <input id="isNew" formControlName="isNew" type="checkbox" class="mr-2" />

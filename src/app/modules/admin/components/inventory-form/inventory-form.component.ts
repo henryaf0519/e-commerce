@@ -1,8 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
 import { InventoryServiceService, InventoryItem } from 'src/app/services/inventory-service.service';
 import {generateDate} from 'src/app/utils/utils';
+
+export function maxFileSizeValidator(maxMb: number): ValidatorFn {
+  const max = maxMb * 1024 * 1024;
+  return (control: AbstractControl) => {
+    const files: FileList = control.value;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files.item(i) && files.item(i)!.size > max) {
+          return { maxFileSize: true };
+        }
+      }
+    }
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-inventory-form',
@@ -27,10 +42,10 @@ export class InventoryFormComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       price: [0, [Validators.required, Validators.min(0)]],
-      size: [[], []], // optional array
-      color: [[], []], // optional array
+      size: this.fb.array([this.fb.control('')]),
+      color: this.fb.array([this.fb.control('')]),
       quantity: [0, [Validators.required, Validators.min(0)]],
-      images: [[], Validators.required], // array, required
+      images: [null, [Validators.required, maxFileSizeValidator(2)]],
       isNew: [false, Validators.required]
     });
   }
@@ -40,10 +55,56 @@ export class InventoryFormComponent implements OnInit {
     if (this.itemId) {
       const found = this.inventoryService.getItemById(this.itemId);
       if (found) {
-        this.form.patchValue(found);
+        this.form.patchValue({
+          name: found.name,
+          description: (found as any).description,
+          price: found.price,
+          quantity: found.quantity,
+          isNew: (found as any).isNew
+        });
+        if ((found as any).size) {
+          const sizeArray = this.form.get('size') as FormArray;
+          sizeArray.clear();
+          (found as any).size.forEach((s: string) => sizeArray.push(this.fb.control(s)));
+        }
+        if ((found as any).color) {
+          const colorArray = this.form.get('color') as FormArray;
+          colorArray.clear();
+          (found as any).color.forEach((c: string) => colorArray.push(this.fb.control(c)));
+        }
         this.isEdit = true;
       }
     }
+  }
+
+  get sizeControls(): FormArray {
+    return this.form.get('size') as FormArray;
+  }
+
+  get colorControls(): FormArray {
+    return this.form.get('color') as FormArray;
+  }
+
+  addSize(): void {
+    this.sizeControls.push(this.fb.control(''));
+  }
+
+  removeSize(index: number): void {
+    this.sizeControls.removeAt(index);
+  }
+
+  addColor(): void {
+    this.colorControls.push(this.fb.control(''));
+  }
+
+  removeColor(index: number): void {
+    this.colorControls.removeAt(index);
+  }
+
+  onFileChange(event: any): void {
+    const files: FileList = event.target.files;
+    this.form.get('images')?.setValue(files);
+    this.form.get('images')?.updateValueAndValidity();
   }
 
 save() {
