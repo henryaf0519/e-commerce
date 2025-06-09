@@ -23,11 +23,19 @@
 
   <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Talla</label>
-    <input formControlName="size" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <div *ngFor="let size of sizeControls.controls; let i = index" class="flex items-center mb-2">
+      <input [formControlName]="i" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <button type="button" (click)="removeSize(i)" class="ml-2 text-red-500 hover:text-red-700">Eliminar</button>
+    </div>
+    <button type="button" (click)="addSize()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Talla</button>
   </div>
-  <div class="mb-4">
+    <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Color</label>
-    <input formControlName="color" type="text" placeholder="Ej: Rojo, Azul" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <div *ngFor="let color of colorControls.controls; let i = index" class="flex items-center mb-2">
+      <input [formControlName]="i" type="text" placeholder="Ej: Rojo, Azul" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <button type="button" (click)="removeColor(i)" class="ml-2 text-red-500 hover:text-red-700">Eliminar</button>
+    </div>
+    <button type="button" (click)="addColor()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Color</button>
   </div>
   <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>

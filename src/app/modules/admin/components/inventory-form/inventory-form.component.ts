@@ -108,6 +108,7 @@ export class InventoryFormComponent implements OnInit {
   }
 
 save() {
+   console.log('Form submitted:', this.form.value);
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
