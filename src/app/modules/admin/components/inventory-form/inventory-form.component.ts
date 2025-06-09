@@ -34,6 +34,7 @@ export class InventoryFormComponent implements OnInit {
   itemId: string | null = null;
   submitted = false;
   selectedFiles: File[] = [];
+  previewUrls: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -113,9 +114,14 @@ onFileChange(event: any): void {
       return;
     }
 
-    // Añadir las nuevas imágenes seleccionadas
+    // Añadir las nuevas imágenes seleccionadas y generar sus vistas previas
     Array.from(files).forEach(file => {
       this.selectedFiles.push(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewUrls.push(e.target.result as string);
+      };
+      reader.readAsDataURL(file);
     });
 
     // Actualizar el formulario sin intentar modificar el valor del input file
