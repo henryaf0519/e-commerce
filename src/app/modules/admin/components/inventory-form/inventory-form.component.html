@@ -21,7 +21,7 @@
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('price')?.invalid && (submitted || form.get('price')?.touched)">El precio debe ser mayor o igual a 0.</p>
   </div>
 
-  <div class="mb-4">
+  <div class="mb-4" formArrayName="size">
     <label class="block text-gray-700 text-sm font-bold mb-2">Talla</label>
     <div *ngFor="let size of sizeControls.controls; let i = index" class="flex items-center mb-2">
       <input [formControlName]="i" type="text" placeholder="Ej: S,M,L" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -29,7 +29,7 @@
     </div>
     <button type="button" (click)="addSize()" class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700">Añadir Talla</button>
   </div>
-    <div class="mb-4">
+    <div class="mb-4" formArrayName="color">
     <label class="block text-gray-700 text-sm font-bold mb-2">Color</label>
     <div *ngFor="let color of colorControls.controls; let i = index" class="flex items-center mb-2">
       <input [formControlName]="i" type="text" placeholder="Ej: Rojo, Azul" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -39,7 +39,7 @@
   </div>
   <div class="mb-4">
     <label class="block text-gray-700 text-sm font-bold mb-2">Imágenes<span class="text-red-500">*</span></label>
-    <input formControlName="images" type="file" multiple class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+    <input formControlName="images" type="file" multiple (change)="onFileChange($event)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
     <p class="text-red-500 text-xs italic mt-1" *ngIf="form.get('images')?.invalid && (submitted || form.get('images')?.touched)">Debe seleccionar al menos una imagen.</p>
 
   </div>
