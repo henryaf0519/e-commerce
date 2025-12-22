@@ -1,7 +1,7 @@
 <div class="h-[450px] border rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer" (click)="onCardClick()">
     <div class="relative">
       <!-- Imagen del producto con bordes redondeados -->
-      <img [src]="products.image" alt="Producto" class="w-full h-56 object-contain rounded-lg">
+      <img [src]="products.images[0]" alt="Producto" class="w-full h-56 object-contain rounded-lg">
   
       <!-- Sombra y borde de la imagen para un efecto de elevación -->
       <div *ngIf="products.isNew" class="absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-blue-800 text-white px-3 py-1 rounded-full text-xs font-semibold">Nuevo</div>

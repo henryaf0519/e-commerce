@@ -15,13 +15,12 @@ export class ProductsComponent implements OnInit {
   cartItems: CartItem[] = [];
   cart$: Observable<CartState>;
   
-  // Inicializamos vacío para esperar los datos del Backend
   products: CartItem[] = []; 
   loading: boolean = true;
 
   constructor(
     private cartService: CartService,
-    private inventoryService: InventoryService, // Inyectamos el servicio
+    private inventoryService: InventoryService,
     private router: Router
   ) {
     this.cart$ = this.cartService.getCartState();
@@ -62,7 +61,10 @@ export class ProductsComponent implements OnInit {
     this.router.navigate(['/cart']);
   }
 
-  onProductClicked(id: string) {
-    this.router.navigate(['products/detail'], { queryParams: { id } });
+  onProductClicked(product: CartItem) {
+    this.router.navigate(['products/detail'], { 
+      queryParams: { id: product.id }, 
+      state: { productData: product } 
+    });
   }
 }
