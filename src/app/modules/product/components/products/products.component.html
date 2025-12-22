@@ -15,7 +15,7 @@
       </div>
       <div class="space-y-4">
         <div *ngFor="let item of cartItems" class="flex items-center justify-between">
-          <img [src]="item.img" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded-md">
+          <img [src]="item.images" alt="{{ item.name }}" class="w-16 h-16 object-cover rounded-md">
           <div class="flex flex-col items-end">
             <span class="text-sm font-medium">{{ item.name }}</span>
             <span class="text-xs text-gray-500">Cantidad: {{ item.quantity }}</span>

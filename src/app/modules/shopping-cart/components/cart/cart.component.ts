@@ -21,23 +21,17 @@ export class CartComponent implements OnInit {
     this.cart$ = this.cartService.getCartState();
   }
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     this.cart$.subscribe(cart => {
-      console.log('Estado del carrito en CartComponent:', cart);
-      if(cart.items.length === 0) {
-        this.showCart = false;
-      }
-      else{
-        this.showCart = true;
-      }
+      // Validamos si hay items para mostrar u ocultar la vista del carrito
+      this.showCart = cart.items.length > 0;
     });
   }
 
-  removeFromCart(itemId: string, size: string, color: string): void {
+  // Actualizado para usar solo el ID según la lógica de tu reducer actual
+  removeFromCart(itemId: string): void {
     this.cartService.removeFromCart(itemId);  
   }
-
-
 
   totalPrice(): Observable<number> {
     return this.cart$.pipe(
@@ -48,23 +42,35 @@ export class CartComponent implements OnInit {
     );
   }
 
+  /**
+   * Genera las opciones de cantidad basadas en el stock real del backend.
+   * Si el stock es 10, el select mostrará del 1 al 10.
+   */
   getQuantityOptions(item: CartItem): number[] {
-    // Generar un array con las opciones de cantidad del 1 al quantityStock
-    return Array.from({ length: item.quantityStock }, (_, index) => index + 1);
+    const maxStock = item.stock || 0;
+    return Array.from({ length: maxStock }, (_, index) => index + 1);
   }
   
-  updateQuantity(item: CartItem, newQuantity: number): void {
+  /**
+   * Actualiza la cantidad validando contra el stock disponible.
+   */
+  updateQuantity(item: CartItem, event: any): void {
+    const newQuantity = parseInt(event.target.value, 10);
+    
     if (newQuantity < 1) {
-      newQuantity = 1;
-    } else if (newQuantity > item.quantityStock) {
-      newQuantity = item.quantityStock;
+      return;
+    } 
+    
+    if (newQuantity > item.stock) {
+      alert(`Lo sentimos, solo quedan ${item.stock} unidades disponibles.`);
+      return;
     }
-    console.log('newQuantity', newQuantity);
-    this.cartService.updateQuantity(item.id, item.size, item.color, newQuantity);
+
+    // Nota: Asegúrate de que el servicio acepte estos parámetros en este orden
+    this.cartService.updateQuantity(item.id, item.size || '', item.color || '', newQuantity);
   }
 
   removeItem(item: CartItem): void {
-    // Llamamos al método del servicio para eliminar el ítem
     this.cartService.removeFromCart(item.id);
   }
 }

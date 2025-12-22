@@ -6,6 +6,6 @@
       <li *ngFor="let item of items">
         {{item.name}} ({{item.quantity}}) - ${{item.price}}
         <button (click)="edit(item.id)">Edit</button>
-        <button (click)="remove(item.id)">Remove</button>
+       <!-- <button (click)="remove(item.id)">Remove</button>-->
       </li>
 </ul>

@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { CartItem } from '../models/cart-item.model';
+import { Observable } from 'rxjs';
+
 export interface InventoryItem {
   id: string;
   name: string;
@@ -9,33 +14,25 @@ export interface InventoryItem {
 @Injectable({
   providedIn: 'root'
 })
-export class InventoryServiceService {
+export class InventoryService {
+  private apiUrl = `${environment.apiUrl}/products`;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getItems() {
-   
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders().set('x-business-id', environment.businessId);
   }
 
-  addItem(item: InventoryItem) {
-   
+  getVisibleProducts(): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
- updateItem(updated: InventoryItem) {
 
-}
-
-  removeItem(id: string) {
- 
+  getAdminProducts(): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>(`${this.apiUrl}/admin/all`, { headers: this.getHeaders() });
   }
 
-  getItemById(id: string) {
-    return {
-      id: '1',
-      name: 'Producto de ejemplo',
-      quantity: 10,
-      price: 100
-    };
-   
+  getProductById(id: string): Observable<CartItem> {
+    return this.http.get<CartItem>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 }

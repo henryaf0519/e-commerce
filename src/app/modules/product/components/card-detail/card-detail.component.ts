@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CartService } from 'src/app/services/cart.service';
+import { InventoryService } from 'src/app/services/inventory-service.service';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { CartItem } from 'src/app/models/cart-item.model';
 
 @Component({
   selector: 'app-card-detail',
@@ -13,79 +14,129 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('modalAnimation', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('150ms 0s ease-in', style({ opacity: 1}))
+        animate('150ms 0s ease-in', style({ opacity: 1 })),
       ]),
       transition(':leave', [
-        animate('200ms 0s ease-out', style({ opacity: 0 }))
-      ])
-    ])
-  ]
+        animate('200ms 0s ease-out', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class CardDetailComponent implements OnInit {
-
   showModal: boolean = false;
   message: string = '';
   productId: string | null = null;
-  product = {
-    id: '1',
-    name: "Men's Ankle Boots",
-    description: "Vintage Fashion, Minimalist Solid Color, Round Toe Slip-on Short Boots with PU Upper, Fabric Lining, and Rubber Sole for Casual and Business Casual Outfits.",
-    price: 79.99,
-    size: ["S", "M", "L"],
-    color: ["Red", "Blue", "Green"],
-    quantity: 5,
-    images: [
-      "https://img.kwcdn.com/product/fancy/d783740f-696f-4243-a574-bf3c783e7ca7.jpg",
-      "https://img.kwcdn.com/product/fancy/d783740f-696f-4243-a574-bf3c783e7ca7.jpg",
-      "https://img.kwcdn.com/product/fancy/d783740f-696f-4243-a574-bf3c783e7ca7.jpg"
-    ]
-  };
+  product: CartItem | null = null;
+  loading: boolean = true;
 
-  selectedOptions: { size: string, color: string, quantity: number } | null = null;
+  // Inicializamos con valores por defecto para evitar nulos
+  selectedOptions: { size: string; color: string; quantity: number } = {
+    size: '',
+    color: '',
+    quantity: 1, // Por defecto 1 para facilitar la compra rápida
+  };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private cartService: CartService
-  ) { }
+    private cartService: CartService,
+    private inventoryService: InventoryService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state?.['productData']) {
+      this.product = navigation.extras.state['productData'] as CartItem;
+      this.productId = this.product.id;
+      this.loading = false;
+    }
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.productId = params['id'];
-      console.log('ID del producto:', this.productId);
+    this.route.queryParams.subscribe((params) => {
+      if (params['id']) {
+        this.productId = params['id'];
+      }
+      if (!this.product && this.productId) {
+        this.loadProduct(this.productId);
+      } else if (!this.product && !this.productId) {
+        this.loading = false;
+        this.router.navigate(['/products']);
+      }
     });
   }
 
-  handleSelectionChange(selection: { size: string, color: string, quantity: number }): void {
+  loadProduct(id: string): void {
+    this.loading = true;
+    this.inventoryService.getProductById(id).subscribe({
+      next: (data) => {
+        this.product = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando el producto:', err);
+        this.loading = false;
+      },
+    });
+  }
+
+  // Actualizamos las opciones cuando el usuario interactúa con el componente hijo
+  handleSelectionChange(selection: {
+    size: string;
+    color: string;
+    quantity: number;
+  }): void {
     this.selectedOptions = selection;
   }
 
   addToCart(): void {
-    if (this.selectedOptions && this.selectedOptions.quantity > 0 && this.productId !== null) {
-      const item = {
-        id: this.productId ?? '',
+    // CAMBIO PRINCIPAL: Solo validamos que exista el producto y la cantidad sea > 0
+    // Ya NO validamos si size o color tienen valor.
+    if (this.product && this.selectedOptions.quantity > 0) {
+      const item: CartItem = {
+        id: this.product.id,
         name: this.product.name,
-        size: this.selectedOptions.size,
-        color: this.selectedOptions.color,
-        quantity: this.selectedOptions.quantity,
-        quantityStock: this.product.quantity,
-        price: this.product.price,
-        img:this.product.images[0]
+        description: this.product.description,
 
+        // Usamos lo que venga. Si está vacío, se va vacío (perfecto para productos sin variantes)
+        size: this.selectedOptions.size || '',
+        color: this.selectedOptions.color || '',
+
+        quantity: this.selectedOptions.quantity,
+
+        stock: this.product.stock,
+        price: this.product.price,
+        images: this.product.images,
+        show: this.product.show,
       };
+
       this.cartService.addToCart(item);
       this.showModal = true;
       this.message = 'Producto agregado al carrito!';
     } else {
-      alert('Please select size, color, and quantity.');
-    } 
+      // Mensaje de error simplificado
+      alert('Por favor selecciona una cantidad válida.');
+    }
   }
 
   continueShopping(): void {
     this.router.navigate(['/products']);
   }
+
   goToCart(): void {
     this.router.navigate(['/cart']);
+  }
+
+  getStockArray(): number[] {
+    if (!this.product || this.product.stock <= 0) {
+      return [];
+    }
+    // Crea un array de largo 'stock', llenándolo con el índice + 1
+    return Array.from({ length: this.product.stock }, (_, i) => i + 1);
+  }
+
+  // Actualizamos el método para que sea más simple, ya que el select nos da valores seguros
+  updateQuantitySelect(event: any): void {
+    const val = parseInt(event.target.value, 10);
+    this.selectedOptions.quantity = val;
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { InventoryServiceService, InventoryItem } from 'src/app/services/inventory-service.service';
+import { InventoryService, InventoryItem } from 'src/app/services/inventory-service.service';
 
 
 @Component({
@@ -13,7 +13,7 @@ export class InventoryListComponent implements OnInit {
   items: InventoryItem[] = [];
   
   constructor(
-    private inventoryService: InventoryServiceService,
+    private inventoryService: InventoryService,
     private router: Router
   ) {}
 
@@ -23,5 +23,5 @@ export class InventoryListComponent implements OnInit {
 
   create() { this.router.navigate(['admin/create']); }
   edit(id: string) { this.router.navigate(['admin/edit', id]); }
-  remove(id: string) { this.inventoryService.removeItem(id); }
+  //remove(id: string) { this.inventoryService.removeItem(id); }
 }
