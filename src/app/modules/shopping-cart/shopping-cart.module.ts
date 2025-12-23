@@ -17,7 +17,6 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ShoppingCartRoutingModule,
-    StoreModule.forFeature('cart', cartReducer),
     SharedModule,
     FormsModule
 ]

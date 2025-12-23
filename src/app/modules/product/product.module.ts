@@ -16,8 +16,7 @@ import { cartReducer } from '../../state/cart.reducer';
   imports: [
     CommonModule,
     ProductRoutingModule,
-    SharedModule,
-    StoreModule.forFeature('cart', cartReducer)
+    SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
