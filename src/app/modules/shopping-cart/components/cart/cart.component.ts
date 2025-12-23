@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
@@ -10,29 +10,19 @@ import { CartItem } from 'src/app/models/cart-item.model';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit {
+export class CartComponent {
   cart$: Observable<CartState>;
-  showCart: boolean = true;
+  totalPrice$: Observable<number>; // Convertimos la función en un stream reactivo
 
   constructor(
     private cartService: CartService,
     private router: Router,
   ) {
     this.cart$ = this.cartService.getCartState();
-  }
-
-  ngOnInit(): void {
-    this.cart$.subscribe(cart => {
-      this.showCart = cart.items.length > 0;
-    });
-  }
-
-  removeFromCart(itemId: string): void {
-    this.cartService.removeFromCart(itemId);  
-  }
-
-  totalPrice(): Observable<number> {
-    return this.cart$.pipe(
+    
+    // Inicializamos el cálculo del total de forma reactiva
+    // Esto es mucho más eficiente que llamar a una función totalPrice() desde el template
+    this.totalPrice$ = this.cart$.pipe(
       map(cartState => {
         const total = cartState.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         return parseFloat(total.toFixed(2));
@@ -40,18 +30,27 @@ export class CartComponent implements OnInit {
     );
   }
 
+  // Eliminamos ngOnInit y showCart:
+  // 1. 'showCart' no se usaba en el HTML (usabas cart$ | async).
+  // 2. La suscripción manual causaba un memory leak.
+
+  removeFromCart(itemId: string): void {
+    this.cartService.removeFromCart(itemId);  
+  }
+
   getQuantityOptions(item: CartItem): number[] {
-    // Protección contra nulos (si stock no viene, asume 0)
     const maxStock = item.stock || 0;
     return Array.from({ length: maxStock }, (_, index) => index + 1);
   }
   
-  // --- CORRECCIÓN AQUÍ ---
-  // Cambiamos 'event: any' por 'quantity: any' ya que ngModelChange envía el valor
-  updateQuantity(item: CartItem, quantity: any): void {
-    const newQuantity = Number(quantity); // Aseguramos que sea número
+  // --- SOLUCIÓN PUNTO D: Tipado Estricto ---
+  // Cambiamos 'any' por 'number | string'. Aunque el select envía strings, 
+  // permitimos number por si se bindea directamente.
+  updateQuantity(item: CartItem, quantity: number | string): void {
+    const newQuantity = Number(quantity); // Conversión explícita y segura
     
-    if (newQuantity < 1) {
+    // Validación adicional de seguridad
+    if (isNaN(newQuantity) || newQuantity < 1) {
       return;
     } 
     
@@ -60,7 +59,6 @@ export class CartComponent implements OnInit {
       return;
     }
 
-    // Enviamos la actualización al servicio
     this.cartService.updateQuantity(item.id, item.size || '', item.color || '', newQuantity);
   }
 
