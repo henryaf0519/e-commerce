@@ -35,4 +35,8 @@ export class InventoryService {
   getProductById(id: string): Observable<CartItem> {
     return this.http.get<CartItem>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
+
+  createProduct(product: FormData): Observable<CartItem> {
+    return this.http.post<CartItem>(this.apiUrl, product, { headers: this.getHeaders() });
+  }
 }

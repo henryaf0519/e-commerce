@@ -1,26 +1,153 @@
+<div class="min-h-screen bg-gray-50/50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight text-gray-900">Nuevo Producto</h2>
+        <p class="mt-2 text-sm text-gray-600">Completa la información para añadir un item al inventario.</p>
+      </div>
+      <button routerLink="/admin/inventory" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+        ← Volver a la lista
+      </button>
+    </div>
 
-<h2>{{ isEdit ? 'Editar' : 'Crear' }} Producto</h2>
-<form [formGroup]="form" (ngSubmit)="save()">
-  <div>
-    <label>Nombre</label>
-    <input formControlName="name" placeholder="Nombre" />
-    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" style="color:red;">
-      El nombre es requerido.
+    <div *ngIf="successMessage" class="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center text-green-700 animate-fade-in-down">
+      <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+      {{ successMessage }}
     </div>
-  </div>
-  <div>
-    <label>Cantidad</label>
-    <input formControlName="quantity" type="number" placeholder="Cantidad" />
-    <div *ngIf="form.get('quantity')?.invalid && form.get('quantity')?.touched" style="color:red;">
-      La cantidad debe ser mayor o igual a 0.
+
+    <div *ngIf="errorMessage" class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 flex items-center text-red-700 animate-fade-in-down">
+      <svg class="w-5 h-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {{ errorMessage }}
     </div>
-  </div>
-  <div>
-    <label>Precio</label>
-    <input formControlName="price" type="number" placeholder="Precio" />
-    <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched" style="color:red;">
-      El precio debe ser mayor o igual a 0.
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="p-6 md:p-8 space-y-6">
+          <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Detalles Generales</h3>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Producto</label>
+            <input type="text" formControlName="name" 
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none"
+              [class.border-red-300]="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+              placeholder="Ej. Zapatillas Running Pro">
+            <p *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" class="mt-1 text-xs text-red-500">El nombre es obligatorio (min 3 letras).</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+            <textarea formControlName="description" rows="4" 
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none resize-none"
+              placeholder="Describe las características principales..."></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Precio ($)</label>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-gray-500">$</span>
+                <input type="number" formControlName="price" 
+                  class="w-full pl-8 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Stock Disponible</label>
+              <input type="number" formControlName="stock" 
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all outline-none">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="p-6 md:p-8 space-y-6">
+    <h3 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Multimedia y Variantes</h3>
+
+    <div>
+      <div class="flex justify-between items-center mb-2">
+        <label class="block text-sm font-medium text-gray-700">Imágenes del Producto</label>
+        <span class="text-xs font-medium px-2 py-1 rounded-full" 
+              [ngClass]="selectedFiles.length === 4 ? 'bg-red-100 text-red-700' : 'bg-blue-50 text-blue-700'">
+          {{ selectedFiles.length }} / 4
+        </span>
+      </div>
+      
+      <div *ngIf="selectedFiles.length < 4" 
+           class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer relative">
+        
+        <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" multiple accept="image/*" (change)="onFileSelect($event)">
+        
+        <div class="space-y-1 text-center">
+          <svg class="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <div class="flex text-sm text-gray-600 justify-center">
+            <span class="font-medium text-blue-600 hover:text-blue-500">Sube archivos</span>
+            <p class="pl-1">o arrastra aquí</p>
+          </div>
+          <p class="text-xs text-gray-500">Máximo 4 imágenes (1MB c/u)</p>
+        </div>
+      </div>
+
+      <div *ngIf="selectedFiles.length === 4" class="mt-2 p-3 bg-gray-50 border border-gray-200 rounded-lg text-center text-sm text-gray-500">
+        <i class="fas fa-check-circle text-green-500 mr-2"></i> Has alcanzado el límite de imágenes.
+      </div>
+
+      <div *ngIf="selectedFiles.length > 0" class="mt-4 grid grid-cols-1 gap-2">
+        <div *ngFor="let file of selectedFiles; let i = index" class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div class="flex items-center gap-3 overflow-hidden">
+            <div class="bg-blue-50 p-2 rounded text-blue-600">
+              <i class="fas fa-image"></i>
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span class="text-sm font-medium text-gray-700 truncate">{{ file.name }}</span>
+              <span class="text-xs text-gray-500">{{ (file.size / 1024).toFixed(1) }} KB</span>
+            </div>
+          </div>
+          <button type="button" (click)="removeFile(i)" class="ml-4 text-gray-400 hover:text-red-500 transition-colors p-1" title="Quitar">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       </div>
   </div>
-  <button type="submit" [disabled]="form.invalid">Guardar</button>
-</form>
+</div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <label class="flex items-center cursor-pointer gap-2">
+            <input type="checkbox" formControlName="show" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
+            <span class="text-sm font-medium text-gray-700">Visible en Tienda</span>
+          </label>
+          <label class="flex items-center cursor-pointer gap-2">
+            <input type="checkbox" formControlName="isNew" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
+            <span class="text-sm font-medium text-gray-700">Etiqueta "Nuevo"</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-4 pt-4 pb-8">
+        <button type="button" routerLink="/admin/inventory" 
+          class="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="loading || productForm.invalid || selectedFiles.length === 0"
+          class="px-8 py-2.5 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-100 transition-all shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+          <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ loading ? 'Guardando...' : 'Crear Producto' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
