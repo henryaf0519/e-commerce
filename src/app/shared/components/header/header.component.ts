@@ -1,41 +1,30 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CartService } from 'src/app/services/cart.service';
+import { CartService } from 'src/app/services/cart.service'; // Asegúrate de la ruta correcta
 import { CartState } from 'src/app/state/cart.reducer';
-import { CartItem } from 'src/app/models/cart-item.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'] // Si usas scss
 })
 export class HeaderComponent {
-  cart$: Observable<CartState>;
-  cartItems: CartItem[] = [];
   
+  cart$: Observable<CartState>;
+
   constructor(
-      private router: Router,
-     private cartService: CartService,
+    private router: Router,
+    private cartService: CartService
   ) {
     this.cart$ = this.cartService.getCartState();
   }
 
-  ngOnInit(): void {
-    this.cart$.subscribe(cart => {
-      this.cartItems = cart.items;
-    });
-  }
-  isUserMenuOpen = false;
-
-  // Método para alternar la visibilidad del menú
-  toggleUserMenu() {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
-  goToHome(){
-    this.router.navigate(['/products']);
-  }
-  goToCart(){
+  goToCart() {
     this.router.navigate(['/cart']);
+  }
+  
+  goToHome() {
+    this.router.navigate(['/products']);
   }
 }
