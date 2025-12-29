@@ -8,6 +8,7 @@ import { CategoryComponent } from './components/category/category.component';
 import { FormsModule } from '@angular/forms';
 import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
 import { HeroComponent } from './components/hero/hero.component';
+import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 
 
 
@@ -20,7 +21,8 @@ import { HeroComponent } from './components/hero/hero.component';
     CarouselComponent,
     CategoryComponent,
     AdminHeaderComponent,
-    HeroComponent
+    HeroComponent,
+    WhatsappComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { HeroComponent } from './components/hero/hero.component';
     CarouselComponent,
     CategoryComponent,
     AdminHeaderComponent,
-    HeroComponent
+    HeroComponent,
+    WhatsappComponent
   ]
 })
 export class SharedModule { }
