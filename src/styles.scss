@@ -4,31 +4,38 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('assets/fonts/Poppins-Medium.ttf') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
+  font-family: "Poppins";
+  src: url("assets/fonts/Poppins-Medium.ttf") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 
-  body {
-    font-family: 'Poppins', sans-serif;
-  }
+body {
+  font-family: "Poppins", sans-serif;
+}
 
 :root {
-  --color-brand: 236 64 122; 
-  --color-accent: 38 198 218; 
-  
-  --bg-page: 255 252 250;    /* #fffefa */
-  --bg-surface: 255 255 255; /* Blanco puro para tarjetas */
-  
-  /* Textos: En lugar de negro, usamos un "Uva Profundo" */
-  --text-main: 74 20 140;    /* #4a148c - Da un toque premium */
-  --text-muted: 156 39 176;  /* #9c27b0 - Un lila grisáceo para textos secundarios */
+  --color-brand: 110 160 140;
+  --color-accent: 170 160 190; /* #aaa0be - Dusty Lavender */
+
+  /* FONDOS: Blanco Humo (muy neutro) */
+  --bg-page: 248 250 250; /* #f8fafa - Mint White */
+  --bg-surface: 255 255 255;
+
+  /* TEXTOS: Gris Pizarra (Slate) profesional */
+  --text-main: 55 65 81; /* #374151 - Slate 700 */
+  --text-muted: 156 163 175; /* #9ca3af - Gray 400 */
   --text-inverted: 255 255 255;
 }
 
+/* IMPORTANTE: Corrige el scrollbar también */
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-brand));
+  border-radius: 4px;
+}
+
 .glow-effect {
-  box-shadow: 0 0 15px rgba(var(--color-brand), 0.5); 
+  box-shadow: 0 0 15px rgba(var(--color-brand), 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -41,7 +48,6 @@
   width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-secondary)); 
+  background: rgb(var(--color-secondary));
   border-radius: 4px;
 }
-
