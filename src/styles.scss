@@ -14,18 +14,17 @@
     font-family: 'Poppins', sans-serif;
   }
 
- :root {
-  --color-brand: 37 99 235;     
-  --color-accent: 220 38 38; 
+:root {
+  --color-brand: 236 64 122; 
+  --color-accent: 38 198 218; 
   
-  /* Fondos */
-  --bg-page: 249 250 251;         /* Color de fondo de la web  */
-  --bg-surface: 255 255 255;      /* Color de tarjetas y menús  */
+  --bg-page: 255 252 250;    /* #fffefa */
+  --bg-surface: 255 255 255; /* Blanco puro para tarjetas */
   
-  /* Textos */
-  --text-main: 31 41 55;          /* Texto principal  */
-  --text-muted: 75 85 99;         /* Texto secundario */
-  --text-inverted: 255 255 255;   /* Texto sobre fondos oscuros/marca */
+  /* Textos: En lugar de negro, usamos un "Uva Profundo" */
+  --text-main: 74 20 140;    /* #4a148c - Da un toque premium */
+  --text-muted: 156 39 176;  /* #9c27b0 - Un lila grisáceo para textos secundarios */
+  --text-inverted: 255 255 255;
 }
 
 .glow-effect {

@@ -1,19 +1,69 @@
-<div class="h-[450px] border border-muted/20 bg-surface rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer" (click)="onCardClick()">
-    <div class="relative">
-      <img [src]="products.images[0]" alt="Producto" class="w-full h-56 object-contain rounded-lg">
+<div class="group relative w-full h-[450px] bg-surface rounded-3xl shadow-lg hover:shadow-2xl hover:shadow-brand/20 transition-all duration-500 ease-out cursor-pointer overflow-hidden" 
+     (click)="onCardClick()">
+    
+    <div class="absolute inset-0 w-full h-full bg-white">
+        
+        <img [src]="products.images[0]" 
+             [alt]="products.name" 
+             class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110">
+
+        <img *ngIf="products.images.length > 1"
+             [src]="products.images[1]" 
+             [alt]="products.name" 
+             class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 opacity-0 group-hover:opacity-100 group-hover:scale-110">
+             
+    </div>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
   
-      <div *ngIf="products.isNew" class="absolute top-4 right-4 bg-brand text-inverted px-3 py-1 rounded-full text-xs font-semibold">Nuevo</div>
+    <div *ngIf="products.isNew" class="absolute top-4 right-4 z-20">
+        <span class="bg-brand text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+            ¡NUEVO!
+        </span>
     </div>
   
-    <div class="mt-4">
-      <h3 class="h-[60px] text-xl md:text-2xl font-semibold text-main hover:text-brand transition-colors duration-200">{{products.name}}</h3>
-      <p class="h-[40px] mt-2 text-sm text-muted line-clamp-2">{{products.description}}</p>
+    <div class="absolute bottom-0 left-0 right-0 p-6 transform translate-y-48 group-hover:translate-y-0 transition-transform duration-500 ease-out z-20">
       
-      <div class="flex justify-between items-center mt-4">
-        <span class="text-lg md:text-xl font-bold text-main">$ {{products.price}}</span>
-        <button class="bg-brand text-inverted py-2 px-4 rounded-full text-sm font-medium hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-brand transition-all duration-300">
-          Ver más
+      <div class="flex flex-col mb-2">
+        <h3 class="text-2xl font-bold text-white leading-tight drop-shadow-md truncate">
+            {{products.name}}
+        </h3>
+        <span class="text-xl font-extrabold text-accent mt-1 drop-shadow-sm">
+            $ {{products.price}}
+        </span>
+      </div>
+  
+      <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-75 flex flex-col gap-3">
+        
+        <p class="text-sm text-gray-200 line-clamp-2 font-medium">
+            {{products.description}}
+        </p>
+
+        <div class="flex items-center justify-between bg-white/10 backdrop-blur-sm rounded-full p-1 border border-white/20"
+             (click)="$event.stopPropagation()">
+            
+            <button (click)="decreaseQuantity($event)" 
+                    [disabled]="quantity <= 1"
+                    class="w-8 h-8 rounded-full bg-white text-brand font-bold flex items-center justify-center hover:bg-brand hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                -
+            </button>
+
+            <span class="text-white font-bold text-lg px-4 cursor-default select-none">{{ quantity }}</span>
+
+            <button (click)="increaseQuantity($event)" 
+                    [disabled]="quantity >= products.stock"
+                    class="w-8 h-8 rounded-full bg-white text-brand font-bold flex items-center justify-center hover:bg-brand hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                +
+            </button>
+        </div>
+        
+        <button (click)="onAddToCart($event)"
+                [disabled]="products.stock === 0"
+                class="w-full py-3 bg-brand text-white font-bold rounded-xl shadow-lg hover:bg-white hover:text-brand transition-colors duration-300 flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-500 disabled:cursor-not-allowed">
+            <i class="fas" [ngClass]="products.stock === 0 ? 'fa-ban' : 'fa-cart-plus'"></i>
+            {{ products.stock === 0 ? 'Agotado' : 'Agregar' }}
         </button>
+
       </div>
     </div>
 </div>

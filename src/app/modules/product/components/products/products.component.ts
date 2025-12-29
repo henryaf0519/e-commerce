@@ -62,4 +62,19 @@ export class ProductsComponent implements OnInit {
       state: { productData: product } 
     });
   }
+
+  addToCartFromCard(productWithQuantity: any) {
+    const item: CartItem = {
+      id: productWithQuantity.id,
+      name: productWithQuantity.name,
+      description: productWithQuantity.description,
+      price: productWithQuantity.price,
+      images: productWithQuantity.images,
+      quantity: productWithQuantity.quantity,
+      stock: productWithQuantity.stock,
+      show: true,
+    };
+
+    this.cartService.addToCart(item); 
+}
 }
