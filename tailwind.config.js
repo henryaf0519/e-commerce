@@ -5,11 +5,18 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: 'rgb(var(--color-primary) / <alpha-value>)',
-        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+     colors: {
+        
+        brand: 'rgb(var(--color-brand) / <alpha-value>)',
         accent: 'rgb(var(--color-accent) / <alpha-value>)',
-        blueMain: 'rgb(var(--color-primary) / <alpha-value>)',
+        
+       
+        page: 'rgb(var(--bg-page) / <alpha-value>)',      
+        surface: 'rgb(var(--bg-surface) / <alpha-value>)', 
+        
+        main: 'rgb(var(--text-main) / <alpha-value>)',     
+        muted: 'rgb(var(--text-muted) / <alpha-value>)',  
+        inverted: 'rgb(var(--text-inverted) / <alpha-value>)',
       },
     },
   },
