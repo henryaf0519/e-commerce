@@ -1,0 +1,20 @@
+<div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+    
+    <div *ngIf="showTooltip" class="bg-white text-main text-sm font-medium py-2 px-4 rounded-xl shadow-lg shadow-black/5 border border-black/5 transform transition-all duration-300 origin-bottom-right mb-2 animate-bounce-in"
+         [ngClass]="showTooltip ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'">
+        👋 ¡Hola! ¿Necesitas ayuda con tu pedido?
+    </div>
+
+    <a [href]="whatsappLink" 
+       target="_blank"
+       rel="noopener noreferrer"
+       (mouseenter)="showTooltip = true"
+       (mouseleave)="showTooltip = false"
+       class="group relative flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-xl hover:shadow-2xl hover:shadow-[#25D366]/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-110">
+       
+       <span class="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-20 animate-ping-slow"></span>
+       
+       <i class="fab fa-whatsapp text-3xl relative z-10"></i>
+    </a>
+
+</div>
