@@ -39,7 +39,8 @@ import { SideCartComponent } from './components/side-cart/side-cart.component';
     CategoryComponent,
     AdminHeaderComponent,
     HeroComponent,
-    WhatsappComponent
+    WhatsappComponent,
+    SideCartComponent
   ]
 })
 export class SharedModule { }
