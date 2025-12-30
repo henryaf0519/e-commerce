@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { AdminHeaderComponent } from './components/admin-header/admin-header.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
+import { SideCartComponent } from './components/side-cart/side-cart.component';
 
 
 
@@ -22,7 +23,8 @@ import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
     CategoryComponent,
     AdminHeaderComponent,
     HeroComponent,
-    WhatsappComponent
+    WhatsappComponent,
+    SideCartComponent
   ],
   imports: [
     CommonModule,

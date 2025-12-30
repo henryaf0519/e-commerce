@@ -7,19 +7,21 @@ export const addToCart = createAction(
   props<{ item: CartItem }>()
 );
 
-// Acción para eliminar un producto del carrito
 export const removeFromCart = createAction(
   '[Cart] Remove from Cart',
-  props<{ itemId: string}>()
+  props<{ itemId: string }>()
 );
 
 // Acción para actualizar la cantidad de un producto en el carrito
 export const updateQuantity = createAction(
   '[Cart] Update Quantity',
-  props<{ itemId: string, size: string, color: string, quantity: number }>()
+  props<{ itemId: string; size: string; color: string; quantity: number }>()
 );
 
 export const loadCartState = createAction(
   '[Cart] Load Cart State',
   props<{ items: CartItem[] }>()
 );
+
+export const openCartSidebar = createAction('[UI] Open Cart Sidebar');
+export const closeCartSidebar = createAction('[UI] Close Cart Sidebar');

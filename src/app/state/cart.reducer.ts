@@ -1,13 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity, loadCartState } from './cart.actions';
+import { addToCart, removeFromCart, updateQuantity, loadCartState, openCartSidebar, closeCartSidebar } from './cart.actions';
 import { CartItem } from '../models/cart-item.model';
 
 export interface CartState {
   items: CartItem[];
+  showSidebar: boolean;
 }
 
 export const initialState: CartState = {
-  items: []  // Estado inicial vacío
+  items: [],
+  showSidebar: false,
 };
 
 export const cartReducer = createReducer(
@@ -53,5 +55,14 @@ export const cartReducer = createReducer(
   on(loadCartState, (state, { items }) => ({
     ...state,
     items: items  
+  })),
+  on(openCartSidebar, (state) => ({
+    ...state,
+    showSidebar: true
+  })),
+  
+  on(closeCartSidebar, (state) => ({
+    ...state,
+    showSidebar: false
   }))
 );

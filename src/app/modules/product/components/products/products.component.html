@@ -1,5 +1,5 @@
 <div class="flex min-h-screen flex-col">
-  <app-header></app-header>
+
   <app-hero title="Dulcilandia"></app-hero>
 
   <div id="catalogo" class="flex-1 bg-page scroll-mt-20">
@@ -17,57 +17,6 @@
       </div>
     </div>
   </div>
-
-  <ng-container *ngIf="cart$ | async as cartState">
-    <div
-      class="cont2 w-80 fixed right-0 top-0 h-full bg-surface shadow-2xl p-4 overflow-auto z-50 transform transition-transform duration-300"
-      *ngIf="cartState.items.length > 0"
-    >
-      <div
-        class="flex justify-between items-center mb-6 border-b pb-2 border-main/10"
-      >
-        <h3 class="text-xl font-bold text-main">Tu Carrito</h3>
-      </div>
-
-      <div class="space-y-4">
-        <div
-          *ngFor="let item of cartState.items"
-          class="flex items-center justify-between"
-        >
-          <img
-            [src]="item.images"
-            alt="{{ item.name }}"
-            class="w-16 h-16 object-cover rounded-md border border-muted/20"
-          />
-          <div class="flex flex-col items-end">
-            <span class="text-sm font-medium text-main">{{ item.name }}</span>
-            <span class="text-xs text-brand font-bold"
-              >Cant: {{ item.quantity }}</span
-            >
-            <span class="text-sm text-muted"
-              >${{ item.price * item.quantity | number : "1.2-2" }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-6 pt-4 border-t border-muted/10">
-        <div class="flex justify-between mb-4">
-          <span class="font-bold text-lg text-main">Total:</span>
-          <span class="font-bold text-lg text-brand"
-            >${{ totalPrice$ | async }}</span
-          >
-        </div>
-
-        <button
-          (click)="goToCart()"
-          class="w-full py-3 bg-brand text-accent font-semibold rounded-lg hover:brightness-110 transition duration-300 shadow-lg glow-effect"
-        >
-          Ir a Pagar
-        </button>
-      </div>
-    </div>
-  </ng-container>
 
   <app-footer></app-footer>
 </div>

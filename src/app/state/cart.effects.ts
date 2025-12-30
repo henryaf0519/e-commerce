@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { debounceTime, tap, withLatestFrom } from 'rxjs/operators';
-import { addToCart, removeFromCart, updateQuantity } from './cart.actions';  // Importar las acciones
-import { CartState } from './cart.reducer';  // Importar el estado del carrito
+import { addToCart, removeFromCart, updateQuantity } from './cart.actions';  
+import { CartState } from './cart.reducer';
 
 @Injectable()
 export class CartEffects {
