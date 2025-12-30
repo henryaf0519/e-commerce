@@ -1,0 +1,81 @@
+<ng-container *ngIf="{ show: showSidebar$ | async, items: cartItems$ | async, total: totalPrice$ | async } as state">
+
+  <div
+    class="fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 ease-in-out"
+    [ngClass]="state.show ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+    (click)="closeCart()"
+  ></div>
+
+  <div
+    class="fixed right-0 top-0 h-full w-full max-w-md bg-surface shadow-2xl p-6 overflow-auto z-50 transform transition-transform duration-300 ease-in-out flex flex-col"
+    [ngClass]="state.show ? 'translate-x-0' : 'translate-x-full'"
+  >
+
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-muted/20">
+      <h3 class="text-2xl font-bold text-main font-heading">Tu Carrito</h3>
+      <button (click)="closeCart()" class="text-muted hover:text-brand transition-colors p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+
+    <div *ngIf="state.items?.length === 0" class="flex-1 flex flex-col items-center justify-center text-muted space-y-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      <p>Tu carrito está vacío</p>
+        <button (click)="closeCart()" class="text-brand font-semibold hover:underline">
+            Volver a la tienda
+        </button>
+    </div>
+
+
+    <div class="space-y-6 flex-1 overflow-y-auto" *ngIf="(state.items?.length ?? 0) > 0">
+      <div *ngFor="let item of state.items" class="flex items-start space-x-4">
+        <img
+          [src]="item.images"
+          alt="{{ item.name }}"
+          class="w-20 h-20 object-cover rounded-lg border border-muted/20"
+        />
+        <div class="flex-1 flex flex-col">
+          <div class="flex justify-between">
+             <span class="font-semibold text-main text-lg line-clamp-2">{{ item.name }}</span>
+             <span class="font-bold text-main ml-4">
+                ${{ item.price * item.quantity | number : "1.2-2" }}
+             </span>
+          </div>
+
+          <div class="flex justify-between items-center mt-2">
+               <span class="text-sm text-muted bg-muted/10 px-2 py-1 rounded-md">
+                 Cant: <span class="text-brand font-bold">{{ item.quantity }}</span>
+               </span>
+               </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mt-auto pt-6 border-t border-muted/20" *ngIf="(state.items?.length ?? 0) > 0">
+      <div class="flex justify-between mb-6 items-center">
+        <span class="font-medium text-xl text-main">Total Estimado:</span>
+        <span class="font-bold text-2xl text-brand tracking-tight">
+            ${{ state.total | number : "1.2-2" }}
+        </span>
+      </div>
+
+      <button
+        (click)="goToCart()"
+        class="w-full py-4 bg-brand text-accent text-lg font-bold rounded-xl hover:brightness-110 transition duration-300 shadow-lg glow-effect flex items-center justify-center space-x-2"
+      >
+        <span>Finalizar Compra</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 010-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+       <p class="text-center text-xs text-muted mt-3">Impuestos y envío calculados al finalizar.</p>
+    </div>
+
+  </div>
+</ng-container>
