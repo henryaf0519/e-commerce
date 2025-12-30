@@ -3,19 +3,24 @@ import { CommonModule } from '@angular/common';
 
 import { CheckoutRoutingModule } from './checkout-routing.module';
 import { CheckoutInfoComponent } from './components/checkout-info/checkout-info.component';
-import { CheckoutShippingComponent } from './modules/checkout/components/checkout-shipping/checkout-shipping.component';
-import { CheckoutPaymentComponent } from './modules/checkout/components/checkout-payment/checkout-payment.component';
+
+import { CheckoutShippingComponent } from './components/checkout-shipping/checkout-shipping.component';
+import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
 
 
 @NgModule({
   declarations: [
     CheckoutInfoComponent,
     CheckoutShippingComponent,
-    CheckoutPaymentComponent
+    CheckoutPaymentComponent,
+    CheckoutSuccessComponent
   ],
   imports: [
     CommonModule,
-    CheckoutRoutingModule
+    CheckoutRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class CheckoutModule { }

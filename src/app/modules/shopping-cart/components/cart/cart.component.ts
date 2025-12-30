@@ -65,4 +65,9 @@ export class CartComponent {
   removeItem(item: CartItem): void {
     this.cartService.removeFromCart(item.id);
   }
+
+  goToCart() {
+  //this.closeCart(); // Cerramos el sidebar
+  this.router.navigate(['/checkout/info']); // Navegamos al inicio del checkout
+}
 }

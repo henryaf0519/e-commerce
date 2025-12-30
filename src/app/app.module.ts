@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,7 @@ import { cartReducer } from './state/cart.reducer';
 import { CartEffects } from './state/cart.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from "./shared/shared.module";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -23,7 +24,14 @@ import { SharedModule } from "./shared/shared.module";
     StoreModule.forRoot({ cart: cartReducer }),
     EffectsModule.forRoot([CartEffects]),
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true, 
+      trace: false,
+      traceLimit: 75,
+    }),
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

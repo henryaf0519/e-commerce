@@ -1,1 +1,218 @@
-<p>checkout-payment works!</p>
+<div class="min-h-screen bg-page flex flex-col lg:flex-row">
+  <div class="flex-1 px-4 py-12 lg:px-20 lg:py-16 overflow-y-auto">
+    <div class="mb-8">
+      <h1 class="text-brand font-bold text-2xl tracking-tighter">
+        Dulcilandia
+      </h1>
+    </div>
+
+    <div class="flex items-center space-x-2 text-sm mb-8">
+      <a routerLink="/checkout/info" class="text-muted hover:text-brand"
+        >Información</a
+      >
+      <span class="text-muted">/</span>
+      <a routerLink="/checkout/shipping" class="text-muted hover:text-brand"
+        >Envíos</a
+      >
+      <span class="text-muted">/</span>
+      <span class="font-bold text-brand">Pago</span>
+    </div>
+
+    <div
+      class="border border-muted/20 rounded-lg bg-surface p-4 mb-8 text-sm text-main shadow-sm"
+    >
+      <div
+        class="flex justify-between items-start border-b border-muted/10 pb-3 mb-3"
+      >
+        <div class="flex flex-col">
+          <span class="text-muted text-xs uppercase tracking-wide"
+            >Contacto</span
+          >
+          <span class="font-medium">{{ address?.email }}</span>
+        </div>
+        <a
+          routerLink="/checkout/info"
+          class="text-brand text-xs font-bold hover:underline cursor-pointer"
+          >Editar</a
+        >
+      </div>
+
+      <div
+        class="flex justify-between items-start border-b border-muted/10 pb-3 mb-3"
+      >
+        <div class="flex flex-col">
+          <span class="text-muted text-xs uppercase tracking-wide"
+            >Enviar a</span
+          >
+          <span class="font-medium"
+            >{{ address?.address }}, {{ address?.city }}</span
+          >
+        </div>
+        <a
+          routerLink="/checkout/info"
+          class="text-brand text-xs font-bold hover:underline cursor-pointer"
+          >Editar</a
+        >
+      </div>
+
+      <div class="flex justify-between items-start">
+        <div class="flex flex-col">
+          <span class="text-muted text-xs uppercase tracking-wide">Método</span>
+          <span class="font-medium"
+            >{{ shippingRate?.provider }} -
+            {{ shippingRate?.serviceName }}</span
+          >
+          <span class="text-xs text-muted">{{ shippingRate?.days }}</span>
+        </div>
+        <a
+          routerLink="/checkout/shipping"
+          class="text-brand text-xs font-bold hover:underline cursor-pointer"
+          >Editar</a
+        >
+      </div>
+    </div>
+
+    <h2 class="text-lg font-semibold text-main mb-4">Pago Seguro</h2>
+    <p class="text-sm text-muted mb-4">
+      Todas las transacciones son seguras y encriptadas.
+    </p>
+
+    <div class="bg-surface border border-brand rounded-xl p-6 mb-8 shadow-sm">
+      <div class="mb-4 flex justify-between items-center">
+        <span class="font-bold text-main">Tarjeta de Crédito o Débito</span>
+        <div class="flex gap-2">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png"
+            class="h-4 object-contain"
+          />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png"
+            class="h-4 object-contain"
+          />
+        </div>
+      </div>
+
+      <div
+        class="w-full h-12 bg-page border border-muted/30 rounded-lg flex items-center px-4 text-muted select-none"
+      >
+        •••• •••• •••• 4242
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center mt-8">
+      <a
+        routerLink="/checkout/shipping"
+        class="text-brand font-medium hover:text-brand/80 transition-colors flex items-center gap-1"
+      >
+        <span class="text-xl">‹</span> Volver
+      </a>
+      <button
+        (click)="onPay()"
+        [disabled]="isProcessing"
+        class="bg-brand text-inverted px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg glow-effect flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        <svg
+          *ngIf="isProcessing"
+          class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+
+        <span *ngIf="!isProcessing"
+          >Pagar ${{ grandTotal$ | async | number : "1.0-0" }}</span
+        >
+        <span *ngIf="isProcessing">Procesando...</span>
+
+        <svg
+          *ngIf="!isProcessing"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="hidden lg:block w-[40%] bg-surface border-l border-muted/10 p-12 overflow-y-auto"
+  >
+    <div class="sticky top-12">
+      <h3 class="text-xl font-bold text-main mb-6">Resumen del Pedido</h3>
+
+      <div
+        class="space-y-4 mb-6 max-h-[400px] overflow-auto pr-2 custom-scrollbar"
+      >
+        <div
+          *ngFor="let item of cartItems$ | async"
+          class="flex items-center gap-4"
+        >
+          <div class="relative">
+            <img
+              [src]="item.images[0]"
+              class="w-16 h-16 rounded-md object-cover border border-muted/20"
+            />
+            <span
+              class="absolute -top-2 -right-2 bg-muted text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"
+            >
+              {{ item.quantity }}
+            </span>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-main">{{ item.name }}</p>
+            <p class="text-xs text-muted">{{ item.size || "Estándar" }}</p>
+          </div>
+          <p class="text-sm font-bold text-main">
+            ${{ item.price * item.quantity | number : "1.0-0" }}
+          </p>
+        </div>
+      </div>
+
+      <div class="border-t border-muted/10 pt-4 space-y-2">
+        <div class="flex justify-between text-sm text-muted">
+          <span>Subtotal</span>
+          <span>${{ productTotal$ | async | number : "1.0-0" }}</span>
+        </div>
+        <div class="flex justify-between text-sm text-muted">
+          <span>Envío ({{ shippingRate?.provider }})</span>
+          <span>${{ shippingRate?.price | number : "1.0-0" }}</span>
+        </div>
+      </div>
+
+      <div
+        class="border-t border-muted/10 mt-4 pt-4 flex justify-between items-center"
+      >
+        <span class="text-xl font-bold text-main">Total Final</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-xs text-muted">COP</span>
+          <span class="text-3xl font-bold text-brand"
+            >${{ grandTotal$ | async | number : "1.0-0" }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

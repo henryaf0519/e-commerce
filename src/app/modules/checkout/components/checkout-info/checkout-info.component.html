@@ -1,1 +1,131 @@
-<p>checkout-info works!</p>
+<div class="min-h-screen bg-page flex flex-col lg:flex-row">
+  
+  <div class="flex-1 px-4 py-12 lg:px-20 lg:py-16 overflow-y-auto">
+    <div class="mb-8">
+      <a routerLink="/" class="text-brand font-bold text-2xl tracking-tighter flex items-center gap-2 cursor-pointer">
+        <span class="text-sm text-muted">← Volver a la tienda</span>
+      </a>
+    </div>
+
+    <div class="flex items-center space-x-2 text-sm mb-8">
+      <span class="font-bold text-brand">Información</span>
+      <span class="text-muted">/</span>
+      <span class="text-muted">Envíos</span>
+      <span class="text-muted">/</span>
+      <span class="text-muted">Pago</span>
+    </div>
+
+    <form [formGroup]="infoForm" (ngSubmit)="onSubmit()" class="max-w-xl">
+      
+      <div class="mb-8">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-main">Contacto</h2>
+          <span class="text-sm text-muted">¿Ya tienes cuenta? <a href="#" class="text-brand underline">Iniciar sesión</a></span>
+        </div>
+        <div class="relative">
+          <input 
+            type="email" 
+            formControlName="email"
+            placeholder="Correo electrónico"
+            class="w-full p-3 bg-surface border rounded-lg outline-none focus:ring-2 focus:ring-brand/50 transition-all"
+            [ngClass]="infoForm.get('email')?.invalid && infoForm.get('email')?.touched ? 'border-red-500' : 'border-muted/30'"
+          >
+          <p *ngIf="infoForm.get('email')?.invalid && infoForm.get('email')?.touched" class="text-red-500 text-xs mt-1">
+            Correo válido requerido
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-lg font-semibold text-main mb-4">Dirección de Envío</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input type="text" formControlName="firstName" placeholder="Nombre" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+          <input type="text" formControlName="lastName" placeholder="Apellidos" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+        </div>
+
+        <input type="text" formControlName="address" placeholder="Dirección (Calle, Carrera, #)" class="w-full p-3 mb-4 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+        
+        <input type="text" formControlName="apartment" placeholder="Apartamento, local, unidad (Opcional)" class="w-full p-3 mb-4 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input type="text" formControlName="city" placeholder="Ciudad" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+          <input type="text" formControlName="department" placeholder="Departamento" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+          <input type="text" formControlName="postalCode" placeholder="C. Postal" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+        </div>
+
+        <input type="tel" formControlName="phone" placeholder="Teléfono / Celular" class="w-full p-3 bg-surface border border-muted/30 rounded-lg focus:border-brand outline-none">
+      </div>
+
+      <div class="flex justify-end mt-8">
+        <button 
+          type="submit" 
+          class="bg-brand text-inverted px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg glow-effect flex items-center gap-2"
+        >
+          Continuar a Envíos
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+
+  <div class="hidden lg:block w-[40%] bg-surface border-l border-muted/10 p-12 overflow-y-auto">
+    <div class="sticky top-12">
+      <h3 class="text-xl font-bold text-main mb-6">Resumen del Pedido</h3>
+      
+      <div class="space-y-4 mb-6 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
+        <div *ngFor="let item of cartItems$ | async" class="flex items-center gap-4">
+          <div class="relative">
+            <img [src]="item.images[0]" [alt]="item.name" class="w-16 h-16 rounded-md object-cover border border-muted/20">
+            <span class="absolute -top-2 -right-2 bg-muted text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              {{ item.quantity }}
+            </span>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-main">{{ item.name }}</p>
+            <p class="text-xs text-muted">{{ item.size || 'Estándar' }}</p>
+          </div>
+          <p class="text-sm font-bold text-main">${{ item.price * item.quantity | number:'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="border-t border-muted/10 pt-4 space-y-2">
+        <div class="flex justify-between text-sm text-muted">
+          <span>Subtotal</span>
+          <span>${{ totalPrice$ | async | number:'1.0-0' }}</span>
+        </div>
+        <div class="flex justify-between text-sm text-muted">
+          <span>Envío</span>
+          <span class="text-xs italic">Calculado en el siguiente paso</span>
+        </div>
+      </div>
+
+      <div class="border-t border-muted/10 mt-4 pt-4 flex justify-between items-center">
+        <span class="text-xl font-bold text-main">Total</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-xs text-muted">COP</span>
+          <span class="text-2xl font-bold text-brand">${{ totalPrice$ | async | number:'1.0-0' }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="lg:hidden bg-surface border-b border-muted/10 p-4 order-first">
+    <details class="group">
+      <summary class="flex justify-between items-center font-bold text-brand cursor-pointer list-none">
+        <span class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          Ver resumen del pedido
+        </span>
+        <span>${{ totalPrice$ | async | number:'1.0-0' }}</span>
+      </summary>
+      <div class="mt-4 pt-4 border-t border-muted/10">
+         <p class="text-sm text-muted">Items en tu carrito...</p>
+      </div>
+    </details>
+  </div>
+
+</div>
