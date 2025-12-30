@@ -1,9 +1,9 @@
-<app-header></app-header>
+<app-header *ngIf="!isCheckoutRoute"></app-header>
 
 <main class="min-h-screen bg-page">
   <router-outlet></router-outlet>
 </main>
 
-<app-footer></app-footer>
+<app-footer *ngIf="!isCheckoutRoute"></app-footer>
 
-<app-side-cart></app-side-cart>
+<app-side-cart *ngIf="!isCheckoutRoute"></app-side-cart>
