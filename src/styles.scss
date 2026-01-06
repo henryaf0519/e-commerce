@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@ng-select/ng-select/themes/default.theme.css";
 
 @font-face {
   font-family: "Poppins";
@@ -26,6 +27,14 @@ body {
   --text-main: 97 71 53; /* #374151 - Slate 700 */
   --text-muted: 156 163 175; /* #9ca3af - Gray 400 */
   --text-inverted: 255 255 255;
+}
+
+.ng-select .ng-select-container {
+    background-color: var(--bg-surface, #fff) !important; /* Ajusta según tu variable CSS */
+    border-color: rgba(0,0,0,0.1); /* Ajusta a tu border-muted */
+    border-radius: 0.5rem; /* rounded-lg */
+    min-height: 50px; /* Para que coincida con la altura de tus inputs p-3 */
+    align-items: center;
 }
 
 /* IMPORTANTE: Corrige el scrollbar también */

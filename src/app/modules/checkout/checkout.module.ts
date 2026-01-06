@@ -8,6 +8,7 @@ import { CheckoutShippingComponent } from './components/checkout-shipping/checko
 import { CheckoutPaymentComponent } from './components/checkout-payment/checkout-payment.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CheckoutSuccessComponent } from './components/checkout-success/checkout
   imports: [
     CommonModule,
     CheckoutRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class CheckoutModule { }

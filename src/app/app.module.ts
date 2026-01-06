@@ -32,6 +32,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
       trace: false,
       traceLimit: 75,
     }),
+    
 ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

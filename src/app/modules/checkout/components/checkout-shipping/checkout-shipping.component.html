@@ -25,7 +25,7 @@
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
           <span class="text-muted text-xs">Enviar a</span>
-          <span class="font-medium">{{ address?.address }}, {{ address?.city }}</span>
+          <span class="font-medium">{{ address?.street1 }}, {{ address?.city }}, {{ address?.state }}</span>
         </div>
         <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Cambiar</a>
       </div>
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div *ngIf="!loading" class="space-y-4">
+    <div *ngIf="!loading && rates.length > 0" class="space-y-4">
       <div 
         *ngFor="let rate of rates" 
         (click)="selectRate(rate)"
@@ -60,17 +60,21 @@
           </div>
           
           <div class="hidden sm:block w-12 h-12 rounded-md bg-white p-1 object-contain border border-muted/10 overflow-hidden">
-             <img [src]="rate.image" alt="{{rate.provider}}" class="w-full h-full object-contain">
+             <img [src]="rate.image" [alt]="rate.provider" class="w-full h-full object-contain">
           </div>
 
           <div class="flex flex-col">
-            <span class="font-bold text-main">{{ rate.provider }} - {{ rate.serviceName }}</span>
-            <span class="text-xs text-muted">{{ rate.days }}</span>
+            <span class="font-bold text-main">{{ rate.provider }} - {{ rate.name }}</span>
+            <span class="text-xs text-muted">Estimated: {{ rate.days }}</span>
           </div>
         </div>
 
-        <span class="font-bold text-main">${{ rate.price | number:'1.0-0' }}</span>
+        <span class="font-bold text-main">{{ rate.price | currency:rate.currency }}</span>
       </div>
+    </div>
+
+    <div *ngIf="!loading && rates.length === 0" class="p-4 border border-red-200 bg-red-50 text-red-600 rounded-lg">
+      No se encontraron tarifas de envío para esta dirección. Por favor verifica tus datos.
     </div>
 
     <div class="flex justify-between items-center mt-8">
@@ -118,7 +122,7 @@
           <span class="text-muted">Envío</span>
           <div *ngIf="loading" class="h-4 w-16 bg-muted/20 rounded animate-pulse"></div>
           <span *ngIf="!loading && selectedRate" class="text-main font-medium">
-            ${{ selectedRate.price | number:'1.0-0' }}
+            {{ selectedRate.price | currency:selectedRate.currency }}
           </span>
           <span *ngIf="!loading && !selectedRate" class="text-xs text-muted italic">Selecciona un método</span>
         </div>
@@ -127,10 +131,10 @@
       <div class="border-t border-muted/10 mt-4 pt-4 flex justify-between items-center">
         <span class="text-xl font-bold text-main">Total a Pagar</span>
         <div class="flex items-baseline gap-1">
-          <span class="text-xs text-muted">COP</span>
+          <span class="text-xs text-muted">USD</span>
           
           <span class="text-2xl font-bold text-brand">
-             ${{ totalWithShipping$ | async | number:'1.0-0' }}
+             {{ totalWithShipping$ | async | number:'1.2-2' }}
           </span>
         </div>
       </div>

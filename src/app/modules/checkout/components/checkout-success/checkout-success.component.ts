@@ -33,7 +33,7 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
     
     if (data) {
       this.userEmail = data.email;
-      this.userName = data.firstName;
+    //  this.userName = data.firstName;
       this.showRegister = true;
     } else {
 
