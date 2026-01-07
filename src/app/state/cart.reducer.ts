@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity, loadCartState, openCartSidebar, closeCartSidebar } from './cart.actions';
+import { addToCart, removeFromCart, updateQuantity, loadCartState, openCartSidebar, closeCartSidebar, clearCart } from './cart.actions';
 import { CartItem } from '../models/cart-item.model';
 
 export interface CartState {
@@ -64,5 +64,9 @@ export const cartReducer = createReducer(
   on(closeCartSidebar, (state) => ({
     ...state,
     showSidebar: false
+  })),
+  on(clearCart, (state) => ({
+    ...state,
+    items: [] // ¡Aquí es donde se borra todo!
   }))
 );

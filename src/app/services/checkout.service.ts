@@ -96,4 +96,8 @@ export class CheckoutService {
   getSelectedRate() {
     return this.selectedRateSubject.value;
   }
+
+  createOrder(orderPayload: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/orders`, orderPayload);
+  }
 }

@@ -1,29 +1,89 @@
-<div class="min-h-screen bg-page flex items-center justify-center px-4 py-12">
-  <div class="max-w-md w-full space-y-6">
+<div class="min-h-screen bg-page py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto space-y-8">
     
-    <div class="bg-surface p-8 rounded-2xl shadow-xl text-center border border-muted/10 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand to-accent"></div>
-
-      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="bg-surface p-8 rounded-2xl shadow-sm border border-muted/20 text-center animate-in zoom-in-95 duration-500 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand to-green-400"></div>
+      
+      <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6 shadow-sm">
+        <svg class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
       </div>
-
-      <h1 class="text-3xl font-bold text-main mb-2 font-heading">¡Gracias, {{ userName || 'Comprador' }}!</h1>
-      <p class="text-muted mb-6">
-        Tu pedido ha sido confirmado. Hemos enviado los detalles a <span class="font-bold text-main">{{ userEmail }}</span>.
+      
+      <h1 class="text-3xl font-extrabold text-main mb-2">Thank you for your order!</h1>
+      <p class="text-muted text-lg">
+        Your order <span class="font-mono font-bold text-brand">#{{ orderData?.invoice?.invoiceId || 'CONFIRMED' }}</span> has been successfully processed.
       </p>
-
-      <button 
-        routerLink="/" 
-        class="text-brand font-bold hover:underline text-sm"
-      >
-        Volver a la tienda
-      </button>
+      <p class="text-sm text-muted mt-2">We have sent a confirmation email to <span class="font-bold text-main">{{ userEmail }}</span>.</p>
     </div>
 
-    <div *ngIf="showRegister && !isRegistered" class="bg-surface p-8 rounded-2xl shadow-lg border-2 border-brand/10 transform transition-all hover:border-brand/30">
+    <div *ngIf="orderData?.shipping?.trackingUrl" class="bg-white rounded-2xl shadow-lg border border-brand/20 overflow-hidden relative">
+      <div class="bg-brand/5 p-4 border-b border-brand/10 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+          </svg>
+          <span class="font-bold text-brand text-sm uppercase tracking-wider">Shipment Ready</span>
+        </div>
+        <span class="text-xs font-mono text-muted">{{ orderData?.shipping?.trackingNumber }}</span>
+      </div>
+
+      <div class="p-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between gap-6">
+        <div>
+          <h3 class="text-xl font-bold text-main mb-1">Your package is ready to go</h3>
+          <p class="text-muted text-sm mb-4">We've generated your shipping label. Tracking updates will be available shortly.</p>
+        </div>
+        
+        <a [href]="orderData?.shipping?.trackingUrl" target="_blank" 
+           class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-brand hover:brightness-110 transition-all shadow-lg glow-effect whitespace-nowrap">
+           Track Package &rarr;
+        </a>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <div class="bg-surface rounded-2xl p-6 border border-muted/20 shadow-sm flex flex-col justify-between">
+        <div>
+          <h3 class="font-bold text-main mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Payment Receipt
+          </h3>
+          <div class="flex justify-between text-sm mb-2">
+            <span class="text-muted">Status</span>
+            <span class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded text-xs">{{ orderData?.invoice?.status || 'PAID' }}</span>
+          </div>
+          <div class="flex justify-between text-sm mb-2">
+            <span class="text-muted">Total Paid</span>
+            <span class="text-main font-bold">{{ (orderData?.invoice?.total || 0) | currency: 'USD' }}</span>
+          </div>
+        </div>
+        
+        <a *ngIf="orderData?.invoice?.stripeReceiptUrl" [href]="orderData?.invoice?.stripeReceiptUrl" target="_blank" class="mt-6 w-full block text-center py-2.5 rounded-lg border border-muted/30 text-main text-sm font-semibold hover:bg-gray-50 transition-colors">
+          View Official Receipt
+        </a>
+      </div>
+
+      <div class="bg-surface rounded-2xl p-6 border border-muted/20 shadow-sm">
+        <h3 class="font-bold text-main mb-4">Order Summary</h3>
+        <ul class="divide-y divide-muted/10 max-h-40 overflow-y-auto custom-scrollbar">
+          <li *ngFor="let item of orderData?.invoice?.items" class="py-3 flex justify-between items-center text-sm">
+            <div class="flex items-center gap-3">
+              <div class="bg-gray-100 w-10 h-10 rounded-md flex items-center justify-center text-xs font-bold text-gray-500">
+                 {{ item.quantity }}x
+              </div>
+              <span class="text-main font-medium truncate max-w-[120px]">{{ item.title }}</span>
+            </div>
+            <span class="text-muted">{{ item.price | currency }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div *ngIf="showRegister && !isRegistered" class="bg-surface p-8 rounded-2xl shadow-lg border-2 border-brand/10 transform transition-all hover:border-brand/30 mt-8">
       <div class="flex items-start space-x-4">
         <div class="bg-brand/10 p-3 rounded-full shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,16 +91,16 @@
           </svg>
         </div>
         <div class="flex-1">
-          <h3 class="text-lg font-bold text-main">Guarda tus datos para la próxima</h3>
+          <h3 class="text-lg font-bold text-main">Save your information for next time</h3>
           <p class="text-sm text-muted mb-4">
-            Crea una contraseña para <strong>{{ userEmail }}</strong> y guarda tu dirección y pedidos.
+            Create a password for <strong>{{ userEmail }}</strong> to securely save your address, order history, and invoices.
           </p>
 
           <form [formGroup]="registerForm" (ngSubmit)="onCreateAccount()" class="space-y-3">
             <input 
               type="password" 
               formControlName="password"
-              placeholder="Crea una contraseña" 
+              placeholder="Create a secure password" 
               class="w-full p-3 bg-page border border-muted/20 rounded-lg focus:border-brand outline-none text-sm transition-colors"
             >
             
@@ -49,7 +109,7 @@
               [disabled]="registerForm.invalid"
               class="w-full py-3 bg-main text-inverted font-bold rounded-lg hover:bg-brand transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
-              Crear mi cuenta ahora
+              Create Account
             </button>
           </form>
         </div>
@@ -57,8 +117,17 @@
     </div>
 
     <div *ngIf="isRegistered" class="bg-brand text-inverted p-6 rounded-2xl shadow-lg text-center animate-pulse">
-      <h3 class="text-xl font-bold mb-1">¡Cuenta Creada!</h3>
-      <p class="text-sm opacity-90">Ahora puedes ver el historial de tus pedidos.</p>
+      <h3 class="text-xl font-bold mb-1">Account Created!</h3>
+      <p class="text-sm opacity-90">You can now view your order history.</p>
+    </div>
+
+    <div class="text-center pt-4">
+        <button 
+        routerLink="/" 
+        class="text-brand font-bold hover:underline text-sm flex items-center justify-center gap-2 mx-auto"
+      >
+        <span>&larr;</span> Return to Shop
+      </button>
     </div>
 
   </div>

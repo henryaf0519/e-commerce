@@ -23,5 +23,9 @@ export const loadCartState = createAction(
   props<{ items: CartItem[] }>()
 );
 
+export const clearCart = createAction(
+  '[Cart] Clear Cart'
+);
+
 export const openCartSidebar = createAction('[UI] Open Cart Sidebar');
 export const closeCartSidebar = createAction('[UI] Close Cart Sidebar');

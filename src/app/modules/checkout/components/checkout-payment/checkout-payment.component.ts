@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { finalize, first, map, Observable } from 'rxjs';
+import { finalize, first, firstValueFrom, map, Observable } from 'rxjs';
 import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js';
 import {
   CheckoutService,
@@ -9,6 +9,7 @@ import {
 } from 'src/app/services/checkout.service';
 import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
 import { environment } from 'src/environments/environment';
+import { clearCart } from 'src/app/state/cart.actions';
 
 @Component({
   selector: 'app-checkout-payment',
@@ -16,14 +17,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./checkout-payment.component.scss'],
 })
 export class CheckoutPaymentComponent implements OnInit {
-  
   cartItems$ = this.store.select(selectCartItems);
   productTotal$ = this.store.select(selectTotalPrice);
 
-  
   shippingRate: ShippingRate | null = null;
   address: any = null;
-
 
   stripe: Stripe | null = null;
   elements: StripeElements | null = null;
@@ -112,6 +110,8 @@ export class CheckoutPaymentComponent implements OnInit {
     if (!this.stripe || !this.elements) return;
 
     this.isProcessing = true;
+
+    // 1. Confirmar pago con Stripe (Sin redirección automática)
     const result = await this.stripe.confirmPayment({
       elements: this.elements,
       redirect: 'if_required',
@@ -133,21 +133,64 @@ export class CheckoutPaymentComponent implements OnInit {
       },
     });
 
-    console.log('📦 Respuesta cruda de Stripe:', result);
-
     if (result.error) {
+      // Caso Error de Stripe
       this.isProcessing = false;
-      console.error('Error:', result.error.message);
-      this.errorMessage = result.error.message || 'Ocurrió un error desconocido';
+      this.errorMessage = result.error.message || 'Error en el pago';
       this.showErrorModal = true;
-    } else if (result.paymentIntent) {
-      // Caso: Éxito (El pago pasó correctamente sin redirección)
-      console.log('Éxito! PaymentIntent:', result.paymentIntent);
+    } else if (
+      result.paymentIntent &&
+      result.paymentIntent.status === 'succeeded'
+    ) {
+      console.log('Pago Stripe exitoso :', result);
+      try {
+        const cartItems = await firstValueFrom(this.cartItems$);
 
-      if (result.paymentIntent.status === 'succeeded') {
-        this.router.navigate(['/checkout/success']);
-      } else {
-        console.log('⚠️ Estado del pago:', result.paymentIntent.status);
+        const orderPayload = {
+          businessId: environment.businessId,
+          email: this.address.email,
+          shippoRateId: this.shippingRate?.id,
+          paymentIntentId: result.paymentIntent.id, 
+          items: cartItems.map((item: any) => ({
+            productId: item.id,
+            title: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          shippingAddress: {
+            name: this.address.name,
+            street1: this.address.street1,
+            city: this.address.city,
+            state: this.address.state,
+            zip: this.address.zip,
+            country: this.address.country,
+            phone: this.address.phone || '0000000000',
+          },
+        };
+
+        console.log('Enviando orden al backend:', orderPayload);
+        this.checkoutService.createOrder(orderPayload).subscribe({
+          next: (response) => {
+            console.log('Orden creada en Backend:', response);
+            this.isProcessing = false; 
+            this.store.dispatch(clearCart());        
+            this.router.navigate(['/checkout/success'], {
+              state: { orderResponse: response },
+            });
+          },
+          error: (err) => {
+            console.error('Error creando orden en backend:', err);
+            this.isProcessing = false;
+            this.errorMessage =
+              'El pago fue exitoso, pero hubo un error registrando tu pedido. Por favor contáctanos.';
+            this.showErrorModal = true;
+          },
+        });
+      } catch (error) {
+        console.error('Error procesando orden:', error);
+        this.isProcessing = false;
+        this.errorMessage = 'Error inesperado procesando el pedido.';
+        this.showErrorModal = true;
       }
     }
   }
