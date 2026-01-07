@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { loadStripe } from '@stripe/stripe-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
 
 export interface ShippingAddress {
   name: string;
@@ -19,11 +19,11 @@ export interface ShippingAddress {
 export interface ShippingRate {
   id: string;
   provider: string;
-  name: string;     
+  name: string;
   image: string;
   price: number;
-  currency: string; 
-  days: number;   
+  currency: string;
+  days: number | string;
   duration: string;
 }
 
@@ -34,13 +34,15 @@ export interface ShippingResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CheckoutService {
-  
   private apiUrl = `${environment.apiUrl}`;
+  private stripePromise = loadStripe(environment.strippeKey);
 
-  private shippingAddressSubject = new BehaviorSubject<ShippingAddress | null>(null);
+  private shippingAddressSubject = new BehaviorSubject<ShippingAddress | null>(
+    null
+  );
   shippingAddress$ = this.shippingAddressSubject.asObservable();
 
   // Cambiamos el tipo a ShippingRate[]
@@ -52,6 +54,10 @@ export class CheckoutService {
 
   constructor(private http: HttpClient) {}
 
+  async getStripe() {
+    return await this.stripePromise;
+  }
+
   setShippingAddress(address: ShippingAddress) {
     this.shippingAddressSubject.next(address);
   }
@@ -59,17 +65,28 @@ export class CheckoutService {
   getShippingAddress() {
     return this.shippingAddressSubject.value;
   }
-  getShippingRates(addressTo: ShippingAddress, items: any[]): Observable<ShippingResponse> {
-    return this.http.post<ShippingResponse>(`${this.apiUrl}/shippo/shipment`, { addressTo });
+  getShippingRates(
+    addressTo: ShippingAddress,
+    items: any[]
+  ): Observable<ShippingResponse> {
+    return this.http.post<ShippingResponse>(`${this.apiUrl}/shippo/shipment`, {
+      addressTo,
+    });
   }
 
 
-
-  createPaymentIntent(amount: number, currency: string = 'usd'): Observable<{ clientSecret: string }> {
-    return this.http.post<{ clientSecret: string }>(`${this.apiUrl}/create-payment-intent`, {
-      amount,
-      currency
-    });
+  createPaymentIntent(
+    amount: number,
+    customerEmail: string = 'usd'
+  ): Observable<{ clientSecret: string }> {
+    return this.http.post<{ clientSecret: string }>(
+      `${this.apiUrl}/stripe/create-payment-intent`,
+      {
+        amount,
+        customerEmail,
+        businessId: environment.businessId,
+      }
+    );
   }
 
   setSelectedRate(rate: ShippingRate) {

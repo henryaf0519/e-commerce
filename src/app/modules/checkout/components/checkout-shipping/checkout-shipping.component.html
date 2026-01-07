@@ -7,31 +7,31 @@
     </div>
 
     <div class="flex items-center space-x-2 text-sm mb-8">
-      <a routerLink="/checkout/info" class="text-muted hover:text-brand">Información</a>
+      <a routerLink="/checkout/info" class="text-muted hover:text-brand">Information</a>
       <span class="text-muted">/</span>
-      <span class="font-bold text-brand">Envíos</span>
+      <span class="font-bold text-brand">Shipping</span>
       <span class="text-muted">/</span>
-      <span class="text-muted">Pago</span>
+      <span class="text-muted">Payment</span>
     </div>
 
-    <div class="border border-muted/20 rounded-lg bg-surface p-4 mb-8 text-sm text-main">
+    <div class="border border-muted/20 rounded-lg bg-surface p-4 mb-8 text-sm text-main shadow-sm">
       <div class="flex justify-between items-center border-b border-muted/10 pb-3 mb-3">
         <div class="flex flex-col">
-          <span class="text-muted text-xs">Contacto</span>
+          <span class="text-muted text-xs uppercase tracking-wide">Contact</span>
           <span class="font-medium">{{ address?.email }}</span>
         </div>
-        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Cambiar</a>
+        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Change</a>
       </div>
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
-          <span class="text-muted text-xs">Enviar a</span>
+          <span class="text-muted text-xs uppercase tracking-wide">Ship to</span>
           <span class="font-medium">{{ address?.street1 }}, {{ address?.city }}, {{ address?.state }}</span>
         </div>
-        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Cambiar</a>
+        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Change</a>
       </div>
     </div>
 
-    <h2 class="text-lg font-semibold text-main mb-4">Método de Envío</h2>
+    <h2 class="text-lg font-semibold text-main mb-4">Shipping Method</h2>
 
     <div *ngIf="loading" class="space-y-4">
       <div *ngFor="let i of [1,2,3]" class="flex items-center justify-between p-4 border border-muted/10 rounded-lg bg-surface animate-pulse">
@@ -65,7 +65,7 @@
 
           <div class="flex flex-col">
             <span class="font-bold text-main">{{ rate.provider }} - {{ rate.name }}</span>
-            <span class="text-xs text-muted">Estimated: {{ rate.days }}</span>
+            <span class="text-xs text-muted">Estimated: {{ rate.days }} business days</span>
           </div>
         </div>
 
@@ -74,19 +74,19 @@
     </div>
 
     <div *ngIf="!loading && rates.length === 0" class="p-4 border border-red-200 bg-red-50 text-red-600 rounded-lg">
-      No se encontraron tarifas de envío para esta dirección. Por favor verifica tus datos.
+      No shipping rates were found for this address. Please verify your details.
     </div>
 
     <div class="flex justify-between items-center mt-8">
       <a routerLink="/checkout/info" class="text-brand font-medium hover:text-brand/80 transition-colors flex items-center gap-1">
-        <span class="text-xl">‹</span> Volver
+        <span class="text-xl">‹</span> Back
       </a>
       <button 
         (click)="goToPayment()"
         [disabled]="loading || !selectedRate"
         class="bg-brand text-inverted px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Continuar al Pago
+        Continue to Payment
       </button>
     </div>
 
@@ -94,7 +94,7 @@
 
   <div class="hidden lg:block w-[40%] bg-surface border-l border-muted/10 p-12 overflow-y-auto">
     <div class="sticky top-12">
-      <h3 class="text-xl font-bold text-main mb-6">Resumen del Pedido</h3>
+      <h3 class="text-xl font-bold text-main mb-6">Order Summary</h3>
       
       <div class="space-y-4 mb-6 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
         <div *ngFor="let item of cartItems$ | async" class="flex items-center gap-4">
@@ -106,7 +106,7 @@
           </div>
           <div class="flex-1">
             <p class="text-sm font-medium text-main">{{ item.name }}</p>
-            <p class="text-xs text-muted">{{ item.size || 'Estándar' }}</p>
+            <p class="text-xs text-muted">{{ item.size || 'Standard' }}</p>
           </div>
           <p class="text-sm font-bold text-main">${{ item.price * item.quantity | number:'1.0-0' }}</p>
         </div>
@@ -119,22 +119,21 @@
         </div>
         
         <div class="flex justify-between text-sm items-center">
-          <span class="text-muted">Envío</span>
+          <span class="text-muted">Shipping</span>
           <div *ngIf="loading" class="h-4 w-16 bg-muted/20 rounded animate-pulse"></div>
           <span *ngIf="!loading && selectedRate" class="text-main font-medium">
             {{ selectedRate.price | currency:selectedRate.currency }}
           </span>
-          <span *ngIf="!loading && !selectedRate" class="text-xs text-muted italic">Selecciona un método</span>
+          <span *ngIf="!loading && !selectedRate" class="text-xs text-muted italic">Select a method</span>
         </div>
       </div>
 
       <div class="border-t border-muted/10 mt-4 pt-4 flex justify-between items-center">
-        <span class="text-xl font-bold text-main">Total a Pagar</span>
+        <span class="text-xl font-bold text-main">Total to Pay</span>
         <div class="flex items-baseline gap-1">
           <span class="text-xs text-muted">USD</span>
-          
           <span class="text-2xl font-bold text-brand">
-             {{ totalWithShipping$ | async | number:'1.2-2' }}
+             ${{ totalWithShipping$ | async | number:'1.2-2' }}
           </span>
         </div>
       </div>

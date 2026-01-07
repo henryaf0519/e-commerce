@@ -21,6 +21,7 @@
     "@ng-select/ng-select": "^11.2.0",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/store": "^16.3.0",
+    "@stripe/stripe-js": "^8.6.1",
     "country-state-city": "^3.2.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
