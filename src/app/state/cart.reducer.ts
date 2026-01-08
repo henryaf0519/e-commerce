@@ -67,6 +67,6 @@ export const cartReducer = createReducer(
   })),
   on(clearCart, (state) => ({
     ...state,
-    items: [] // ¡Aquí es donde se borra todo!
+    items: []
   }))
 );

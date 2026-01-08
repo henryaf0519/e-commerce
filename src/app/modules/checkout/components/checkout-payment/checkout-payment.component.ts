@@ -173,6 +173,7 @@ export class CheckoutPaymentComponent implements OnInit {
           next: (response) => {
             console.log('Orden creada en Backend:', response);
             this.isProcessing = false; 
+            localStorage.removeItem('cart-state');
             this.store.dispatch(clearCart());        
             this.router.navigate(['/checkout/success'], {
               state: { orderResponse: response },
