@@ -21,6 +21,7 @@ export class CheckoutShippingComponent {
   loading: boolean = true;
   rates: ShippingRate[] = [];
   selectedRate: ShippingRate | null = null;
+  messageError: string | null = null;
 
   constructor(
     private checkoutService: CheckoutService,
@@ -56,6 +57,7 @@ export class CheckoutShippingComponent {
         },
         error: (err) => {
           console.error('Error fetching rates', err);
+          this.messageError = err.error?.message || 'Failed to fetch shipping rates.';
           this.loading = false;
         }
       });

@@ -74,7 +74,7 @@
     </div>
 
     <div *ngIf="!loading && rates.length === 0" class="p-4 border border-red-200 bg-red-50 text-red-600 rounded-lg">
-      No shipping rates were found for this address. Please verify your details.
+      {{ messageError }}
     </div>
 
     <div class="flex justify-between items-center mt-8">
