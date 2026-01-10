@@ -6,6 +6,8 @@ import { CustomerLayoutComponent } from './components/customer-layout/customer-l
 import { MyOrdersComponent } from './components/my-orders/my-orders.component';
 import { MyProfileComponent } from './components/my-profile/my-profile.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     CustomerRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class CustomerModule { }

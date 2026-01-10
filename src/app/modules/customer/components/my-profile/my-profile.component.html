@@ -1,1 +1,194 @@
-<p>my-profile works!</p>
+<div class="space-y-8 animate-fade-in-up">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-main font-poppins">Account Settings</h2>
+      <p class="text-sm text-muted mt-1">Manage your profile details and security</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <div class="lg:col-span-2 space-y-6">
+      <div class="bg-surface rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
+        <h3 class="text-lg font-semibold text-main mb-6 border-b border-gray-100 pb-4">
+          Personal Information & Shipping Address
+        </h3>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Full Name</label>
+              <input type="text" formControlName="name" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all" 
+                     placeholder="John Doe">
+              <div *ngIf="profileForm.get('name')?.touched && profileForm.get('name')?.invalid" class="text-red-500 text-xs mt-1">Name is required</div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Email Address</label>
+              <input type="email" formControlName="email" 
+                     class="w-full p-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed" 
+                     readonly>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Phone Number</label>
+              <input type="tel" formControlName="phone" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all" 
+                     placeholder="+1 555 000 0000">
+            </div>
+
+            <div class="sm:col-span-2 pt-4 border-t border-dashed border-gray-200 mt-2">
+              <p class="text-sm font-medium text-brand flex items-center">
+                <i class="fas fa-truck mr-2"></i> Shipping Address
+              </p>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Street Address</label>
+              <input type="text" formControlName="street1" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all" 
+                     placeholder="123 Main St">
+              <div *ngIf="profileForm.get('street1')?.touched && profileForm.get('street1')?.invalid" class="text-red-500 text-xs mt-1">Street address is required</div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">State / Province</label>
+              <div class="relative">
+                <ng-select 
+                    [items]="states" 
+                    bindLabel="name" 
+                    bindValue="isoCode"
+                    formControlName="state"
+                    placeholder="Select State"
+                    [searchable]="true"
+                    (change)="onStateChange()"
+                    class="custom-select"
+                    [ngClass]="profileForm.get('state')?.invalid && profileForm.get('state')?.touched ? 'border-red-500' : ''">
+                </ng-select>
+              </div>
+              <div *ngIf="profileForm.get('state')?.touched && profileForm.get('state')?.invalid" class="text-red-500 text-xs mt-1">State is required</div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">City</label>
+              <div class="relative">
+                <ng-select 
+                    [items]="cities" 
+                    bindLabel="name" 
+                    bindValue="name"
+                    formControlName="city"
+                    placeholder="Select City"
+                    [searchable]="true"
+                    [clearable]="true"
+                    class="custom-select"
+                    [ngClass]="profileForm.get('city')?.invalid && profileForm.get('city')?.touched ? 'border-red-500' : ''">
+                </ng-select>
+              </div>
+              <div *ngIf="profileForm.get('city')?.touched && profileForm.get('city')?.invalid" class="text-red-500 text-xs mt-1">City is required</div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Zip / Postal Code</label>
+              <input type="text" formControlName="zip" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all">
+              <div *ngIf="profileForm.get('zip')?.touched && profileForm.get('zip')?.invalid" class="text-red-500 text-xs mt-1">Zip code is required</div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Country</label>
+              <input type="text" formControlName="country" 
+                     class="w-full p-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed" 
+                     readonly>
+            </div>
+
+          </div>
+
+          <div *ngIf="profileMessage" class="mt-6 mb-2 p-3 rounded-lg text-sm flex items-center animate-fade-in"
+               [ngClass]="profileMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'">
+            <i class="fas mr-2" [ngClass]="profileMessage.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+            {{ profileMessage.text }}
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <button type="submit" 
+              [disabled]="profileForm.invalid || isProfileLoading" 
+              class="px-6 py-3 bg-brand text-inverted font-medium rounded-lg shadow-md hover:bg-opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+              <span *ngIf="isProfileLoading" class="animate-spin"><i class="fas fa-circle-notch"></i></span>
+              {{ isProfileLoading ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="bg-surface rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 sticky top-24">
+        <h3 class="text-lg font-semibold text-main mb-6 border-b border-gray-100 pb-4">
+          Security
+        </h3>
+
+        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="space-y-5">
+          
+          <div>
+            <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Current Password</label>
+            <div class="relative">
+              <input [type]="showCurrentPassword ? 'text' : 'password'" formControlName="currentPassword" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all pr-10" 
+                     placeholder="••••••••">
+              <button type="button" (click)="toggleCurrentPassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand transition-colors focus:outline-none">
+                <i class="fas" [ngClass]="showCurrentPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+            <div *ngIf="passwordForm.get('currentPassword')?.touched && passwordForm.get('currentPassword')?.invalid" class="text-red-500 text-xs mt-1">Required</div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">New Password</label>
+            <div class="relative">
+              <input [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all pr-10" 
+                     placeholder="New password">
+              <button type="button" (click)="toggleNewPassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand transition-colors focus:outline-none">
+                <i class="fas" [ngClass]="showNewPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+            <div *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.hasError('minlength')" class="text-red-500 text-xs mt-1">Must be at least 6 characters</div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-muted uppercase tracking-wider mb-2">Confirm Password</label>
+            <div class="relative">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" 
+                     class="w-full p-3 rounded-lg border border-gray-300 bg-white text-main focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-all pr-10" 
+                     placeholder="Confirm password">
+              <button type="button" (click)="toggleConfirmPassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand transition-colors focus:outline-none">
+                <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+              </button>
+            </div>
+            <div *ngIf="passwordForm.hasError('mismatch') && passwordForm.get('confirmPassword')?.touched" class="text-red-500 text-xs mt-1">Passwords do not match</div>
+          </div>
+
+          <div *ngIf="passwordMessage" class="mt-4 p-3 rounded-lg text-sm flex items-center animate-fade-in"
+               [ngClass]="passwordMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'">
+            <i class="fas mr-2" [ngClass]="passwordMessage.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+            {{ passwordMessage.text }}
+          </div>
+
+          <div class="pt-4">
+            <button type="submit" 
+              [disabled]="passwordForm.invalid || isPasswordLoading" 
+              class="w-full px-4 py-3 bg-white border border-brand text-brand font-medium rounded-lg hover:bg-brand hover:text-inverted transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
+              <span *ngIf="isPasswordLoading" class="animate-spin"><i class="fas fa-circle-notch"></i></span>
+              {{ isPasswordLoading ? 'Updating...' : 'Update Password' }}
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
