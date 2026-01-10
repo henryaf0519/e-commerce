@@ -6,8 +6,9 @@ const routes: Routes = [
   { path: 'cart', loadChildren: () => import('./modules/shopping-cart/shopping-cart.module').then(m => m.ShoppingCartModule)},
   { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
   { path: 'checkout', loadChildren: () => import('./modules/checkout/checkout.module').then(m => m.CheckoutModule) },
+  { path: 'profile', loadChildren: () => import('./modules/customer/customer.module').then(m => m.CustomerModule)},
+  { path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule) },
   { path: '', redirectTo: '/products', pathMatch: 'full' },
-  
   { path: '**', redirectTo: '/products' } 
 ];
 

@@ -1,0 +1,47 @@
+<div class="min-h-screen bg-page py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6">
+      
+      <aside class="w-full md:w-64 flex-shrink-0">
+        <div class="bg-surface rounded-lg shadow-sm p-6 sticky top-24">
+          <div class="flex items-center space-x-4 mb-6">
+             <div class="h-12 w-12 rounded-full bg-brand/10 flex items-center justify-center text-brand font-bold text-xl">
+               DR
+             </div>
+             <div>
+               <p class="text-sm text-muted">Hola,</p>
+               <p class="font-semibold text-main">Daniel Ricciardo</p>
+             </div>
+          </div>
+
+          <nav class="space-y-2">
+            <a routerLink="orders" 
+               routerLinkActive="bg-brand text-inverted shadow-md"
+               class="flex items-center px-4 py-3 text-main font-medium rounded-lg transition-all hover:bg-gray-50 hover:text-brand">
+              <i class="fas fa-shopping-bag mr-3"></i> Mis Pedidos
+            </a>
+            
+            <a routerLink="profile" 
+               routerLinkActive="bg-brand text-inverted shadow-md"
+               class="flex items-center px-4 py-3 text-main font-medium rounded-lg transition-all hover:bg-gray-50 hover:text-brand">
+              <i class="fas fa-user-cog mr-3"></i>
+              Mi Perfil
+            </a>
+
+            <button (click)="logout()" class="w-full flex items-center px-4 py-3 text-red-500 font-medium rounded-lg transition-all hover:bg-red-50 mt-4 border-t border-gray-100">
+              <i class="fas fa-sign-out-alt mr-3"></i>
+              Cerrar Sesión
+            </button>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="flex-1">
+        <div class="bg-surface rounded-lg shadow-sm p-6 min-h-[500px]">
+          <router-outlet></router-outlet>
+        </div>
+      </main>
+
+    </div>
+  </div>
+</div>

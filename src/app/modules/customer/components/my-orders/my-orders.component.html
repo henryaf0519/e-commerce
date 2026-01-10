@@ -1,0 +1,111 @@
+<div class="space-y-6 animate-fade-in-up">
+  
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h2 class="text-2xl font-bold text-main font-poppins">Order History</h2>
+      <p class="text-sm text-muted mt-1">Check the status of your recent orders</p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="orders$ | async as orders; else loading">
+    
+    <div *ngIf="orders.length === 0" class="text-center py-16 bg-white rounded-xl border border-dashed border-gray-300">
+      <div class="text-gray-300 text-5xl mb-4"><i class="fas fa-box-open"></i></div>
+      <p class="text-lg font-medium text-main">No orders found yet</p>
+      <a routerLink="/products" class="mt-4 inline-block text-brand hover:underline font-medium">Start Shopping &rarr;</a>
+    </div>
+
+    <div *ngFor="let order of orders" class="bg-surface rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6 transition-all hover:shadow-md">
+      
+      <div class="bg-gray-50/80 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center">
+        <div class="flex gap-8 text-sm">
+          <div>
+            <p class="text-xs text-muted uppercase font-bold tracking-wider">Order ID</p>
+            <p class="font-mono font-medium text-main mt-0.5">#{{ order.invoice.invoiceId }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted uppercase font-bold tracking-wider">Date</p>
+            <p class="font-medium text-main mt-0.5">{{ order.createdAt | date:'mediumDate' }}</p>
+          </div>
+          <div>
+            <p class="text-xs text-muted uppercase font-bold tracking-wider">Total</p>
+            <p class="font-bold text-main mt-0.5">{{ order.invoice.total | currency:order.invoice.currency }}</p>
+          </div>
+        </div>
+        
+        <span [ngClass]="getStatusClasses(order.status)" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide border">
+          {{ formatStatus(order.status) }}
+        </span>
+      </div>
+
+      <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="md:col-span-2">
+          <h4 class="text-sm font-semibold text-main mb-4 border-b border-gray-100 pb-2">Items Ordered</h4>
+          <div class="space-y-4">
+            <div *ngFor="let item of order.invoice.items" class="flex items-start gap-4">
+              <div class="w-16 h-16 bg-gray-100 rounded-md flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h5 class="text-main font-medium">{{ item.title }}</h5>
+                <p class="text-sm text-muted">Quantity: {{ item.quantity }}</p>
+              </div>
+              <p class="font-medium text-main">{{ item.price | currency:'USD' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-lg p-5 text-sm h-full flex flex-col justify-between">
+          <div>
+            <h4 class="font-semibold text-main mb-3 flex items-center gap-2">
+              <i class="fas fa-truck text-brand"></i> Shipping Details
+            </h4>
+            
+            <div *ngIf="order.shipping; else processing">
+              <p class="font-medium text-main">{{ order.shipping.carrier }}</p>
+              <p class="text-muted text-xs mb-2 break-all font-mono">Track: {{ order.shipping.trackingNumber }}</p>
+              <address class="not-italic text-gray-600 mt-2 leading-relaxed border-t border-gray-200 pt-2">
+                {{ order.shipping.address.street1 }}<br>
+                {{ order.shipping.address.city }}, {{ order.shipping.address.state }} {{ order.shipping.address.zip }}
+              </address>
+            </div>
+            
+            <ng-template #processing>
+              <div class="flex items-center text-orange-600 bg-orange-50 p-3 rounded-md border border-orange-100">
+                <i class="fas fa-clock mr-2"></i>
+                <p class="text-xs font-medium">Processing shipment...</p>
+              </div>
+            </ng-template>
+          </div>
+
+          <div class="mt-6 space-y-2">
+            <a *ngIf="order.shipping?.trackingUrl" 
+               [href]="order.shipping?.trackingUrl" 
+               target="_blank"
+               class="flex items-center justify-center w-full py-2 px-4 bg-brand text-inverted rounded-lg text-xs font-medium hover:bg-opacity-90 transition-all shadow-sm">
+               <i class="fas fa-map-marker-alt mr-2"></i> Track Package
+            </a>
+            
+            <a *ngIf="order.invoice.stripeReceiptUrl" 
+               [href]="order.invoice.stripeReceiptUrl" 
+               target="_blank"
+               class="flex items-center justify-center w-full py-2 px-4 bg-white border border-gray-300 text-main rounded-lg text-xs font-medium hover:bg-gray-50 transition-all">
+               <i class="fas fa-receipt mr-2"></i> View Receipt
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="py-20 text-center">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-brand mx-auto mb-4"></div>
+      <p class="text-muted">Loading your orders...</p>
+    </div>
+  </ng-template>
+
+</div>
