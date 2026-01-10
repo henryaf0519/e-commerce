@@ -11,7 +11,6 @@ import { LoginResponse, User } from '../models/user.model';
 export class AuthService {
   private apiUrl = environment.apiUrl;
 
-  
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -19,14 +18,19 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  login(credentials: { email: string; password: string }): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap(response => {
-        if (response.success) {
-          this.handleLoginSuccess(response);
-        }
-      })
-    );
+  login(credentials: {
+    email: string;
+    password: string;
+  }): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
+      .pipe(
+        tap((response) => {
+          if (response.success) {
+            this.handleLoginSuccess(response);
+          }
+        })
+      );
   }
 
   private handleLoginSuccess(response: LoginResponse): void {
@@ -64,34 +68,40 @@ export class AuthService {
     return this.currentUserSubject.value?.address;
   }
 
-
   updateProfile(data: Partial<User>): Observable<any> {
     return this.http.patch(`${this.apiUrl}/auth/profile`, data).pipe(
       tap(() => {
         const currentUser = this.currentUserSubject.value;
         if (currentUser) {
-            const updatedUser = {
-                ...currentUser,
-                name: data.name || currentUser.name,
-                phone: data.phone || currentUser.phone,
-                address: {
-                    ...currentUser.address,
-                    street1: (data as any).street1 || currentUser.address?.street1,
-                    city: (data as any).city || currentUser.address?.city,
-                    state: (data as any).state || currentUser.address?.state,
-                    zip: (data as any).zip || currentUser.address?.zip,
-                    country: (data as any).country || currentUser.address?.country
-                }
-            };
+          const updatedUser = {
+            ...currentUser,
+            name: data.name || currentUser.name,
+            phone: data.phone || currentUser.phone,
+            address: {
+              ...currentUser.address,
+              street1: (data as any).street1 || currentUser.address?.street1,
+              city: (data as any).city || currentUser.address?.city,
+              state: (data as any).state || currentUser.address?.state,
+              zip: (data as any).zip || currentUser.address?.zip,
+              country: (data as any).country || currentUser.address?.country,
+            },
+          };
 
-            localStorage.setItem('user', JSON.stringify(updatedUser));
-            this.currentUserSubject.next(updatedUser);
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          this.currentUserSubject.next(updatedUser);
         }
       })
     );
   }
 
-  changePassword(passwords: { currentPassword: string; newPassword: string }): Observable<any> {
+  changePassword(passwords: {
+    currentPassword: string;
+    newPassword: string;
+  }): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/change-password`, passwords);
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }
