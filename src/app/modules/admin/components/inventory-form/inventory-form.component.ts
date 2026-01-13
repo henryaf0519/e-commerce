@@ -92,37 +92,71 @@ export class InventoryFormComponent implements OnInit {
   }
 
   onFileSelect(event: any): void {
-    const files = event.target.files;
+    const input = event.target;
+    const files = input.files;
+    
+    // Limpiamos errores previos
     this.errorMessage = ''; 
 
     if (files && files.length > 0) {
       const filesArray = Array.from(files) as File[];
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
-      
-      const validFiles = filesArray.filter(file => {
-        if (!allowedTypes.includes(file.type)) return false;
-        if (file.size > 1024 * 1024) return false;
-        return true;
-      });
+      const maxBytes = 1024 * 1024; // 1MB
 
+      const validFiles: File[] = [];
+
+      // 1. Validamos archivo por archivo
+      for (const file of filesArray) {
+        
+        // Validación de Tipo
+        if (!allowedTypes.includes(file.type)) {
+          this.errorMessage = `El formato de "${file.name}" no es válido. Solo JPG, PNG, WEBP.`;
+          // Detenemos el proceso para mostrar el error inmediatamente
+          input.value = ''; 
+          return; 
+        }
+
+        // Validación de Tamaño
+        if (file.size > maxBytes) {
+          this.errorMessage = `La imagen "${file.name}" es muy pesada (Max 1MB).`;
+          // Detenemos el proceso para mostrar el error inmediatamente
+          input.value = '';
+          return;
+        }
+
+        validFiles.push(file);
+      }
+
+      // 2. Validamos Espacio Disponible (Cupos)
       const currentTotal = this.selectedFiles.length + this.existingImages.length;
       const remainingSlots = this.MAX_IMAGES - currentTotal;
 
       if (remainingSlots <= 0) {
         this.errorMessage = 'Has alcanzado el límite máximo de 4 imágenes.';
+        input.value = '';
         return;
       }
 
+      // 3. Agregamos solo los que caben
       const filesToAdd = validFiles.slice(0, remainingSlots);
+      
       this.selectedFiles = [...this.selectedFiles, ...filesToAdd];
       
+      // Generamos previews
       filesToAdd.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: any) => this.previews.push(e.target.result);
         reader.readAsDataURL(file);
       });
+
+      // Aviso si intentó subir más de los que cabían
+      if (validFiles.length > remainingSlots) {
+        this.errorMessage = 'Solo se agregaron imágenes hasta completar el cupo de 4.';
+      }
     }
-    event.target.value = ''; 
+    
+    // Reset del input para permitir subir el mismo archivo si se equivocó y corrigió
+    input.value = ''; 
   }
 
   removeFile(index: number): void {
