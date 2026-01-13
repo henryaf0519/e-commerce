@@ -7,7 +7,8 @@ export const publicGuard = () => {
   const router = inject(Router);
 
   if (authService.isLoggedIn()) {
-    return router.parseUrl('/profile');
+    const targetUrl = authService.getRedirectUrl();
+    return router.parseUrl(targetUrl);
   }
 
   return true;

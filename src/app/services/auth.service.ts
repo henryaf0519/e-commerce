@@ -42,12 +42,24 @@ export class AuthService {
 
   private redirectBasedOnRole(roles: string[]): void {
     if (roles.includes('admin')) {
-      this.router.navigate(['/admin/dashboard']);
+      this.router.navigate(['/admin']); 
     } else if (roles.includes('customer')) {
-      this.router.navigate(['/profile/orders']);
+      this.router.navigate(['/profile']); 
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  getRedirectUrl(): string {
+    const user = this.currentUserSubject.value;
+    if (!user || !user.roles) return '/';
+
+    if (user.roles.includes('admin')) {
+      return '/admin';
+    } else if (user.roles.includes('customer')) {
+      return '/profile';
+    }
+    return '/';
   }
 
   logout(): void {
