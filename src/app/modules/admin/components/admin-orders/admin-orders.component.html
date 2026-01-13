@@ -1,0 +1,86 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  
+  <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800">Store Orders</h2>
+      <p class="text-sm text-gray-500 mt-1">Monitor and manage customer orders</p>
+    </div>
+    </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold tracking-wider">
+          <th class="px-6 py-4">Order ID</th>
+          <th class="px-6 py-4">Customer</th>
+          <th class="px-6 py-4">Date</th>
+          <th class="px-6 py-4">Status</th>
+          <th class="px-6 py-4 text-right">Total</th>
+          <th class="px-6 py-4 text-center">Actions</th>
+        </tr>
+      </thead>
+      
+      <tbody class="divide-y divide-gray-100">
+        <ng-container *ngIf="orders$ | async as orders; else loading">
+          
+          <tr *ngFor="let order of orders" class="hover:bg-gray-50/50 transition-colors">
+            
+            <td class="px-6 py-4">
+              <span class="font-mono text-sm font-medium text-brand">#{{ order.invoice.invoiceId }}</span>
+              <div class="text-xs text-gray-400 mt-0.5">{{ order.orderId | slice:0:8 }}...</div>
+            </td>
+
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <div class="h-8 w-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-xs font-bold mr-3">
+                  {{ order.email.charAt(0) | uppercase }}
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-900">{{ order.email }}</div>
+                  <div class="text-xs text-gray-500" *ngIf="order.shipping">{{ order.shipping.address.name }}</div>
+                </div>
+              </div>
+            </td>
+
+            <td class="px-6 py-4 text-sm text-gray-600">
+              {{ order.createdAt | date:'mediumDate' }}
+              <div class="text-xs text-gray-400">{{ order.createdAt | date:'shortTime' }}</div>
+            </td>
+
+            <td class="px-6 py-4">
+              <span [ngClass]="getStatusClass(order.status)" class="px-2.5 py-1 rounded-full text-xs font-bold border border-transparent">
+                {{ order.status.replace('_', ' ') }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4 text-right">
+              <span class="text-sm font-bold text-gray-900">{{ order.invoice.total | currency:order.invoice.currency }}</span>
+            </td>
+
+            <td class="px-6 py-4 text-center">
+              <button class="text-gray-400 hover:text-brand transition-colors p-2" title="View Details">
+                <i class="fas fa-eye"></i>
+              </button>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="orders.length === 0">
+            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+              No orders found in the system.
+            </td>
+          </tr>
+
+        </ng-container>
+      </tbody>
+    </table>
+
+    <ng-template #loading>
+      <div class="px-6 py-12 text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto mb-2"></div>
+        <span class="text-sm text-gray-500">Loading orders...</span>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

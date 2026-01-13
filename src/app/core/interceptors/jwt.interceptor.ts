@@ -8,7 +8,10 @@ export class JwtInterceptor implements HttpInterceptor {
   private protectedRoutes = [
     '/orders/my-orders',
     '/profile',
-    '/auth/change-password'
+    '/auth/change-password',
+    '/orders/admin/all',
+    '/products/admin/all',
+    '/products'
   ];
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

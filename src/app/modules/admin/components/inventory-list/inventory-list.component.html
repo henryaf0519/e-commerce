@@ -1,11 +1,120 @@
-<app-admin-header></app-admin-header>
-<app-admin-sidebar></app-admin-sidebar>
-<h2>Inventory</h2>
-    <button (click)="create()">Add Item</button>
-    <ul>
-      <li *ngFor="let item of items">
-        {{item.name}} ({{item.quantity}}) - ${{item.price}}
-        <button (click)="edit(item.id)">Edit</button>
-       <!-- <button (click)="remove(item.id)">Remove</button>-->
-      </li>
-</ul>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden relative">
+  
+  <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800">Inventory</h2>
+      <p class="text-sm text-gray-500 mt-1">Manage your products catalog</p>
+    </div>
+    <button (click)="create()" class="flex items-center px-4 py-2 bg-brand text-inverted rounded-lg hover:bg-opacity-90 transition-all shadow-sm font-medium text-sm">
+      <i class="fas fa-plus mr-2"></i> Add Product
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-50 text-xs uppercase text-gray-500 font-semibold tracking-wider border-b border-gray-100">
+          <th class="px-6 py-4">Product</th>
+          <th class="px-6 py-4 text-center">Stock</th>
+          <th class="px-6 py-4 text-right">Price</th>
+          <th class="px-6 py-4 text-center">Actions</th>
+        </tr>
+      </thead>
+      
+      <tbody class="divide-y divide-gray-100">
+        <ng-container *ngIf="products$ | async as products; else loading">
+          
+          <tr *ngFor="let product of products" class="hover:bg-gray-50/50 transition-colors group">
+            
+            <td class="px-6 py-4">
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0">
+                  <img *ngIf="product.images?.length" [src]="product.images[0]" class="h-full w-full object-cover">
+                  <div *ngIf="!product.images?.length" class="h-full w-full flex items-center justify-center text-gray-400">
+                    <i class="fas fa-image"></i>
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">{{ product.name }}</div>
+                  <div class="text-xs text-gray-400 font-mono">ID: {{ product.id | slice:0:6 }}...</div>
+                </div>
+              </div>
+            </td>
+
+            <td class="px-6 py-4 text-center">
+              <span [ngClass]="product.quantity > 0 ? 'bg-blue-50 text-blue-700' : 'bg-red-50 text-red-700'" 
+                    class="px-2.5 py-1 rounded-md text-xs font-bold border border-transparent">
+                {{ product.quantity }} units
+              </span>
+            </td>
+
+            <td class="px-6 py-4 text-right font-medium text-gray-900">
+              {{ product.price | currency:'USD' }}
+            </td>
+
+            <td class="px-6 py-4 text-center">
+              <div class="flex items-center justify-center gap-2">
+                
+                <button (click)="edit(product)" class="p-2 text-gray-500 hover:text-brand hover:bg-brand/10 rounded-lg transition-colors" title="Edit">
+                  <i class="fas fa-pen"></i>
+                </button>
+                
+                <button (click)="openDeleteModal(product)" class="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="products.length === 0">
+            <td colspan="4" class="px-6 py-12 text-center text-gray-500">
+              No products found.
+            </td>
+          </tr>
+
+        </ng-container>
+      </tbody>
+    </table>
+
+    <ng-template #loading>
+      <div class="py-12 text-center">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto mb-3"></div>
+        <p class="text-sm text-gray-500">Loading inventory...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div *ngIf="isDeleteModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+  
+  <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all scale-100">
+    
+    <div class="p-6 text-center border-b border-gray-100">
+      <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="text-xl font-bold text-gray-900">Delete Product?</h3>
+      <p class="text-sm text-gray-500 mt-2">
+        Are you sure you want to delete <span class="font-bold text-gray-800">"{{ productToDelete?.name }}"</span>? 
+        This action cannot be undone.
+      </p>
+    </div>
+
+    <div class="p-4 bg-gray-50 flex gap-3 justify-center">
+      
+      <button (click)="closeDeleteModal()" 
+              class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-sm">
+        Cancel
+      </button>
+      
+      <button (click)="confirmDelete()" 
+              [disabled]="isDeleting"
+              class="px-5 py-2.5 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm flex items-center disabled:opacity-50">
+        <span *ngIf="isDeleting" class="animate-spin mr-2"><i class="fas fa-circle-notch"></i></span>
+        {{ isDeleting ? 'Deleting...' : 'Yes, Delete' }}
+      </button>
+
+    </div>
+  </div>
+</div>

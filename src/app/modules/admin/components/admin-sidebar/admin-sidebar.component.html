@@ -1,26 +1,43 @@
 <!-- admin-sidebar.component.html -->
 <div class="inset-0 h-full w-64">
-    <aside class="admin-sidebar h-full w-64 bg-gray-900 text-white shadow-lg flex flex-col">
+  <aside
+    class="admin-sidebar h-full w-64 bg-gray-900 text-white shadow-lg flex flex-col"
+  >
     <nav class="flex-1">
-        <ul class="space-y-2 mt-8">
-            <li>
-                <a href="#" class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-                    Inventarios
-                </a>
-            </li>
-            <li>
-                <a routerLink="/admin/create" class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-                    Crear Producto
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium">
-                    Usuarios
-                </a>
-            </li>
-
-        </ul>
+      <ul class="space-y-2 mt-8">
+        <li
+          routerLink="/admin/orders"
+          routerLinkActive="bg-gray-200 text-gray-900"
+          class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          <i class="fas fa-shopping-cart mr-3"></i>
+          <span class="font-medium">Orders</span>
+        </li>
+        <li>
+          <a
+            href="/admin/inventory"
+            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          >
+            Inventarios
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/admin/inventory/create"
+            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          >
+            Crear Producto
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
+          >
+            Usuarios
+          </a>
+        </li>
+      </ul>
     </nav>
-</aside>
+  </aside>
 </div>
-

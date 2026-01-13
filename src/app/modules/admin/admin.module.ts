@@ -8,13 +8,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from "../../shared/shared.module";
 import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.component';
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
+import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 
 @NgModule({
   declarations: [
     InventoryListComponent,
     InventoryFormComponent,
     AdminSidebarComponent,
-    AdminMainComponent
+    AdminMainComponent,
+    AdminOrdersComponent
   ],
   imports: [
     CommonModule,

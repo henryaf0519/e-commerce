@@ -12,31 +12,56 @@ export interface InventoryItem {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
   private apiUrl = `${environment.apiUrl}/products`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private getHeaders(): HttpHeaders {
     return new HttpHeaders().set('x-business-id', environment.businessId);
   }
 
-  getVisibleProducts(): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(this.apiUrl, { headers: this.getHeaders() });
+  // --- PUBLICO ---
+  getVisibleProducts(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl, {
+      headers: this.getHeaders(),
+    });
   }
 
-
-  getAdminProducts(): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(`${this.apiUrl}/admin/all`, { headers: this.getHeaders() });
+  getProductById(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      headers: this.getHeaders(),
+    });
   }
 
-  getProductById(id: string): Observable<CartItem> {
-    return this.http.get<CartItem>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  // --- ADMIN ---
+
+  // Tu cURL específico
+  getAdminProducts(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/all`, {
+      headers: this.getHeaders(),
+    });
   }
 
-  createProduct(product: FormData): Observable<CartItem> {
-    return this.http.post<CartItem>(this.apiUrl, product, { headers: this.getHeaders() });
+  createProduct(product: FormData): Observable<any> {
+    return this.http.post<any>(this.apiUrl, product, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  // Actualizar (usado para Editar y para Ocultar/Mostrar)
+  updateProduct(id: string, data: FormData): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}`, data, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  // Eliminar
+  deleteProduct(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getHeaders(),
+    });
   }
 }

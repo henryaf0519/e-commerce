@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InventoryListComponent } from './components/inventory-list/inventory-list.component';
 import { InventoryFormComponent } from './components/inventory-form/inventory-form.component';
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
+import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,10 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // Ejemplo de dashboard o página principal
       { path: 'dashboard', component: /* tu componente dashboard aquí */ InventoryFormComponent },
-      { path: 'create', component: InventoryFormComponent },
+      { path: 'orders', component: AdminOrdersComponent },
+      { path: 'inventory', component: InventoryListComponent },
+      { path: 'inventory/create', component: InventoryFormComponent },
+      { path: 'inventory/edit/:id', component: InventoryFormComponent },
       // agrega aquí más rutas hijas como 'edit/:id', 'config', etc.
     ]
   }
