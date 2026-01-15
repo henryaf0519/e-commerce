@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InventoryService } from 'src/app/services/inventory-service.service';
+import { SectionsService } from 'src/app/services/sections.service';
 
 @Component({
   selector: 'app-inventory-form',
@@ -14,6 +15,9 @@ export class InventoryFormComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
   
+  // 2. Variable para almacenar las secciones que vienen del backend
+  sections: string[] = [];
+
   selectedFiles: File[] = [];
   previews: string[] = [];
   existingImages: string[] = []; 
@@ -25,22 +29,38 @@ export class InventoryFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService,
+    private sectionService: SectionsService, // 3. Inyectamos el servicio
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.initForm();
+    this.loadSections(); // 4. Cargamos las secciones al iniciar
     this.checkEditMode();
   }
 
+  // Nueva función para obtener las secciones
+  loadSections(): void {
+    this.sectionService.getSections().subscribe({
+      next: (data) => {
+        this.sections = data;
+      },
+      error: (err) => {
+        console.error('Error cargando secciones', err);
+        // No bloqueamos la app, pero podríamos mostrar un aviso si es crítico
+      }
+    });
+  }
+
   initForm(): void {
-    // ELIMINADOS: sizeInput y colorInput
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [0, [Validators.required, Validators.min(0.01)]],
       stock: [1, [Validators.required, Validators.min(0)]],
+      // 5. Agregamos el control de sección (Obligatorio)
+      section: ['', [Validators.required]], 
       show: [true],
       isNew: [true]
     });
@@ -76,12 +96,12 @@ export class InventoryFormComponent implements OnInit {
   }
 
   private populateForm(product: any): void {
-    // ELIMINADOS: Mapeo de size y color
     this.productForm.patchValue({
       name: product.name,
       description: product.description,
       price: product.price,
       stock: product.quantity, 
+      section: product.section || '', 
       show: product.isVisible !== undefined ? product.isVisible : true,
       isNew: product.isNew || false
     });
@@ -94,40 +114,28 @@ export class InventoryFormComponent implements OnInit {
   onFileSelect(event: any): void {
     const input = event.target;
     const files = input.files;
-    
-    // Limpiamos errores previos
     this.errorMessage = ''; 
 
     if (files && files.length > 0) {
       const filesArray = Array.from(files) as File[];
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
       const maxBytes = 1024 * 1024; // 1MB
-
       const validFiles: File[] = [];
 
-      // 1. Validamos archivo por archivo
       for (const file of filesArray) {
-        
-        // Validación de Tipo
         if (!allowedTypes.includes(file.type)) {
           this.errorMessage = `El formato de "${file.name}" no es válido. Solo JPG, PNG, WEBP.`;
-          // Detenemos el proceso para mostrar el error inmediatamente
           input.value = ''; 
           return; 
         }
-
-        // Validación de Tamaño
         if (file.size > maxBytes) {
           this.errorMessage = `La imagen "${file.name}" es muy pesada (Max 1MB).`;
-          // Detenemos el proceso para mostrar el error inmediatamente
           input.value = '';
           return;
         }
-
         validFiles.push(file);
       }
 
-      // 2. Validamos Espacio Disponible (Cupos)
       const currentTotal = this.selectedFiles.length + this.existingImages.length;
       const remainingSlots = this.MAX_IMAGES - currentTotal;
 
@@ -137,25 +145,19 @@ export class InventoryFormComponent implements OnInit {
         return;
       }
 
-      // 3. Agregamos solo los que caben
       const filesToAdd = validFiles.slice(0, remainingSlots);
-      
       this.selectedFiles = [...this.selectedFiles, ...filesToAdd];
       
-      // Generamos previews
       filesToAdd.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: any) => this.previews.push(e.target.result);
         reader.readAsDataURL(file);
       });
 
-      // Aviso si intentó subir más de los que cabían
       if (validFiles.length > remainingSlots) {
         this.errorMessage = 'Solo se agregaron imágenes hasta completar el cupo de 4.';
       }
     }
-    
-    // Reset del input para permitir subir el mismo archivo si se equivocó y corrigió
     input.value = ''; 
   }
 
@@ -189,16 +191,15 @@ export class InventoryFormComponent implements OnInit {
     const formData = new FormData();
     const formValue = this.productForm.value;
 
-    // Solo enviamos los datos esenciales
     formData.append('name', formValue.name);
     formData.append('description', formValue.description);
     formData.append('price', formValue.price);
     formData.append('stock', formValue.stock);
+    // 7. Agregamos la sección al FormData
+    formData.append('section', formValue.section);
     formData.append('show', formValue.show);
     formData.append('isNew', formValue.isNew);
     
-    // ELIMINADOS: size y color del append
-
     this.existingImages.forEach(url => {
       formData.append('existingImages', url);
     });

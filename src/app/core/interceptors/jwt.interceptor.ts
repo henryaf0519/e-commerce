@@ -11,7 +11,8 @@ export class JwtInterceptor implements HttpInterceptor {
     '/auth/change-password',
     '/orders/admin/all',
     '/products/admin/all',
-    '/products'
+    '/products',
+    '/sections',
   ];
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

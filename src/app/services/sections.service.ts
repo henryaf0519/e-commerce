@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SectionsService {
-  private apiUrl = `${environment.apiUrl}/products/sections`;
+  private apiUrl = `${environment.apiUrl}/sections`;
 
   constructor(private http: HttpClient) {}
 
