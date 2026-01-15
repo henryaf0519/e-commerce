@@ -9,6 +9,7 @@ import { SharedModule } from "../../shared/shared.module";
 import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.component';
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
+import { SectionManagerComponent } from './components/section-manager/section-manager.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AdminOrdersComponent } from './components/admin-orders/admin-orders.com
     InventoryFormComponent,
     AdminSidebarComponent,
     AdminMainComponent,
-    AdminOrdersComponent
+    AdminOrdersComponent,
+    SectionManagerComponent
   ],
   imports: [
     CommonModule,

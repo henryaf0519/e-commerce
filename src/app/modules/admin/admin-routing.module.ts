@@ -4,6 +4,7 @@ import { InventoryListComponent } from './components/inventory-list/inventory-li
 import { InventoryFormComponent } from './components/inventory-form/inventory-form.component';
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
+import { SectionManagerComponent } from './components/section-manager/section-manager.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
       { path: 'inventory', component: InventoryListComponent },
       { path: 'inventory/create', component: InventoryFormComponent },
       { path: 'inventory/edit/:id', component: InventoryFormComponent },
+      { path: 'sections', component: SectionManagerComponent },
       // agrega aquí más rutas hijas como 'edit/:id', 'config', etc.
     ]
   }

@@ -13,6 +13,7 @@ import { loadCartState } from './state/cart.actions';
 export class AppComponent implements OnInit {
   // Variable para controlar la visibilidad del layout
   isCheckoutRoute = false;
+  isAdminRoute = false;
 
   constructor(
     private store: Store,
@@ -21,8 +22,10 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(
       filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
+      const currentUrl = event.urlAfterRedirects;
 
       this.isCheckoutRoute = event.urlAfterRedirects.includes('/checkout');
+      this.isAdminRoute = currentUrl.includes('/admin');
     });
   }
 

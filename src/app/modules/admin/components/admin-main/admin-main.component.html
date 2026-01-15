@@ -1,17 +1,17 @@
-
-
-<div class="flex h-[calc(100vh-4rem)] bg-gray-100 overflow-hidden">
+<div class="flex min-h-screen bg-gray-100">
     
-    <app-admin-sidebar class="w-64 flex-shrink-0 h-full overflow-y-auto border-r border-gray-200 bg-white"></app-admin-sidebar>
+    <div class="w-64 flex-shrink-0  border-gray-200 bg-white sticky top-0 h-screen overflow-y-auto">
+        <app-admin-sidebar></app-admin-sidebar>
+    </div>
     
-    <div class="flex flex-col flex-1 h-full min-w-0">
+    <div class="flex flex-col flex-1 min-w-0">
         
-        <div class="p-6 bg-white border-b border-gray-200 shadow-sm z-10 flex-shrink-0">
+        <div class="p-6 bg-white border-b border-gray-200 shadow-sm">
             <h2 class="text-2xl font-bold text-gray-800 mb-1">Admin Dashboard</h2>
-            <p class="text-sm text-gray-500">Welcome back. Manage your application settings, users, and orders.</p>
+            <p class="text-sm text-gray-500">Gestión de la aplicación.</p>
         </div>
         
-        <div class="flex-1 p-6 overflow-y-auto scroll-smooth">
+        <div class="p-6">
             <router-outlet></router-outlet>
         </div>
 

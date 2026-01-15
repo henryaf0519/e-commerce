@@ -1,42 +1,60 @@
-<!-- admin-sidebar.component.html -->
 <div class="inset-0 h-full w-64">
-  <aside
-    class="admin-sidebar h-full w-64 bg-gray-900 text-white shadow-lg flex flex-col"
-  >
+  <aside class="admin-sidebar h-full w-64 bg-gray-900 text-white shadow-lg flex flex-col">
     <nav class="flex-1">
-      <ul class="space-y-2 mt-8">
-        <li
-          routerLink="/admin/orders"
-          routerLinkActive="bg-gray-200 text-gray-900"
-          class="flex items-center px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
-        >
-          <i class="fas fa-shopping-cart mr-3"></i>
-          <span class="font-medium">Orders</span>
-        </li>
+      <ul class="space-y-2 mt-8 px-2">
+        
         <li>
-          <a
-            href="/admin/inventory"
-            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
-          >
-            Inventarios
+          <a routerLink="/admin/orders" 
+             routerLinkActive="bg-gray-800 text-white"
+             class="flex items-center px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors font-medium cursor-pointer">
+            <i class="fas fa-shopping-cart mr-3"></i>
+            <span class="font-medium">Orders</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/admin/inventory" 
+             routerLinkActive="bg-gray-800 text-white"
+             [routerLinkActiveOptions]="{ exact: true }"
+             class="flex items-center px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors font-medium cursor-pointer">
+             <i class="fas fa-boxes mr-3"></i> <span class="font-medium">Inventarios</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/admin/inventory/create" 
+             routerLinkActive="bg-gray-800 text-white"
+             class="flex items-center px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors font-medium cursor-pointer">
+             <i class="fas fa-plus-circle mr-3"></i>
+            <span class="font-medium">Crear Producto</span>
           </a>
         </li>
         <li>
-          <a
-            routerLink="/admin/inventory/create"
-            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
-          >
-            Crear Producto
+          <a routerLink="/admin/sections" 
+             routerLinkActive="bg-gray-800 text-white"
+             class="flex items-center px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors font-medium cursor-pointer">
+             <i class="fas fa-layer-group mr-3"></i>
+            <span class="font-medium">Secciones</span>
           </a>
         </li>
+
         <li>
-          <a
-            href="#"
-            class="flex items-center px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium"
-          >
-            Usuarios
+          <a routerLink="/admin/users"
+             routerLinkActive="bg-gray-800 text-white"
+             class="flex items-center px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors font-medium cursor-pointer">
+             <i class="fas fa-users mr-3"></i>
+            <span class="font-medium">Usuarios</span>
           </a>
         </li>
+
+        <li>
+          <button (click)="logout()" 
+                  class="w-full flex items-center px-4 py-3 rounded-lg text-red-400 hover:bg-gray-800 hover:text-red-300 transition-colors font-medium cursor-pointer">
+              <i class="fas fa-sign-out-alt mr-3"></i>
+              Cerrar Sesión
+          </button>
+        </li>
+            
       </ul>
     </nav>
   </aside>
