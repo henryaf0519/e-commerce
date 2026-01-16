@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CheckoutService } from 'src/app/services/checkout.service';
+import { AuthService } from 'src/app/services/auth.service'; // Import AuthService
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,55 +10,62 @@ import { Router } from '@angular/router';
   styleUrls: ['./checkout-success.component.scss']
 })
 export class CheckoutSuccessComponent implements OnInit, OnDestroy {
-  // Lógica de Registro
+  // Registration Logic
   registerForm: FormGroup;
   showRegister: boolean = false;
   isRegistered: boolean = false;
   
-  // Datos del Usuario
+  // User Data
   userEmail: string = '';
   
-  // Datos de la Orden (Tracking, Invoice, Items)
+  // Order Data (Tracking, Invoice, Items)
   orderData: any = null;
 
   constructor(
     private checkoutService: CheckoutService,
+    private authService: AuthService, // Inject AuthService
     private fb: FormBuilder,
     private router: Router
   ) {
     this.registerForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
-      // Eliminé confirmPassword para simplificar UI, pero puedes agregarlo si gustas
+      // confirmPassword removed to simplify UI, can be added if needed
     });
 
-    // 1. Recuperamos los datos COMPLETOS de la orden que enviamos desde el componente anterior
+    // 1. Retrieve COMPLETE order data sent from the previous component
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       this.orderData = navigation.extras.state['orderResponse'];
-      console.log('Datos de orden recibidos:', this.orderData);
+      console.log('Order data received:', this.orderData);
     }
   }
 
   ngOnInit(): void {
-    // 2. Intentamos obtener el email de los datos de la orden (Prioridad 1)
+    // 2. Try to get email from order data (Priority 1)
     if (this.orderData?.shipping?.email) {
        this.userEmail = this.orderData.shipping.email;
-       this.showRegister = true;
     } 
-    // 3. Si no, intentamos obtenerlo del servicio (Prioridad 2 - Fallback)
+    // 3. If not, try to get it from service (Priority 2 - Fallback)
     else {
       const serviceData = this.checkoutService.getShippingAddress();
       if (serviceData) {
         this.userEmail = serviceData.email;
-        this.showRegister = true;
       } else {
-        console.warn('No se encontraron datos de usuario para registro');
+        console.warn('No user data found for registration');
       }
     }
 
-    // 4. Seguridad: Si no hay orden ni email, volver al inicio
+    // Logic to show registration only if user is NOT logged in and we have an email
+    // Uses AuthService.isLoggedIn()
+    if (this.userEmail && !this.authService.isLoggedIn()) {
+      this.showRegister = true;
+    } else {
+      this.showRegister = false;
+    }
+
+    // 4. Security: If no order and no email, return to home
     if (!this.orderData && !this.userEmail) {
-        // Opcional: Descomentar si quieres redirigir a usuarios que refrescan la página
+        // Optional: Uncomment if you want to redirect users who refresh the page
         // this.router.navigate(['/']);
     }
   }
@@ -65,9 +73,9 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
   onCreateAccount() {
     if (this.registerForm.valid && this.userEmail) {
       const { password } = this.registerForm.value;
-      console.log('CREANDO CUENTA PARA:', this.userEmail, 'PASS:', password);
+      console.log('CREATING ACCOUNT FOR:', this.userEmail, 'PASS:', password);
       
-      // Aquí llamarías a tu AuthService.register()
+      // Here you would call your AuthService.register() method
       
       this.isRegistered = true;
       this.showRegister = false;
@@ -75,7 +83,7 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Limpiamos la data temporal del servicio
+    // Clear temporary service data
     this.checkoutService.setShippingAddress(null as any); 
   }
 }

@@ -1,5 +1,3 @@
-
-
 <div
   *ngIf="loading"
   class="min-h-screen flex justify-center items-center bg-page"
@@ -15,7 +13,7 @@
       <a
         (click)="continueShopping()"
         class="hover:text-brand transition-colors cursor-pointer"
-        >Inicio</a
+        >Home</a
       >
       <span class="mx-2">/</span>
       <span class="text-main cursor-default">{{ product.name }}</span>
@@ -59,7 +57,7 @@
             *ngIf="product.isNew"
             class="absolute top-4 left-4 bg-brand text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-full shadow-lg"
           >
-            Nuevo
+            New
           </span>
         </div>
       </div>
@@ -84,7 +82,7 @@
 
         <div class="space-y-6">
           <div class="flex items-center justify-between">
-            <span class="text-sm font-medium text-main">Cantidad</span>
+            <span class="text-sm font-medium text-main">Quantity</span>
             <span
               class="text-xs font-medium px-2 py-1 rounded-full"
               [ngClass]="
@@ -93,7 +91,7 @@
                   : 'bg-orange-100 text-orange-700'
               "
             >
-              {{ product.stock > 5 ? "Disponible" : "¡Últimas unidades!" }}
+              {{ product.stock > 5 ? "Available" : "Last units!" }}
             </span>
           </div>
 
@@ -131,36 +129,36 @@
               class="flex-1 bg-brand text-white rounded-full font-bold text-lg hover:brightness-90 shadow-lg shadow-brand/20 transition-all transform hover:-translate-y-1 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
             >
               <i class="fas fa-shopping-bag"></i>
-              {{ product.stock === 0 ? "Agotado" : "Agregar" }}
+              {{ product.stock === 0 ? "Out of Stock" : "Add to Cart" }}
             </button>
           </div>
 
           <p
             class="text-xs text-muted text-center flex items-center justify-center gap-2"
           >
-            <i class="fas fa-truck"></i> Envío calculado en el checkout.
+            <i class="fas fa-truck"></i> Shipping calculated at checkout.
           </p>
         </div>
 
         <div class="grid grid-cols-3 gap-2 my-8 py-6 border-y border-black/5">
           <div class="text-center">
             <i class="fas fa-star text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">Calidad Premium</p>
+            <p class="text-xs font-bold text-main">Premium Quality</p>
           </div>
           <div class="text-center border-l border-black/5">
             <i class="fas fa-leaf text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">Ingredientes Frescos</p>
+            <p class="text-xs font-bold text-main">Fresh Ingredients</p>
           </div>
           <div class="text-center border-l border-black/5">
             <i class="fas fa-shield-alt text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">Compra Segura</p>
+            <p class="text-xs font-bold text-main">Secure Purchase</p>
           </div>
         </div>
 
         <div class="space-y-8">
           <div class="border-b border-black/5 pb-6">
             <h3 class="text-lg font-bold text-main mb-3 font-serif">
-              Descripción
+              Description
             </h3>
             <div class="text-muted text-base leading-relaxed space-y-3">
               <p>{{ product.description }}</p>
@@ -186,7 +184,7 @@
       <i class="fas fa-check text-2xl text-green-600"></i>
     </div>
 
-    <h3 class="text-xl font-bold text-main mb-2">¡Genial!</h3>
+    <h3 class="text-xl font-bold text-main mb-2">Great!</h3>
     <p class="text-muted mb-6">{{ message }}</p>
 
     <div class="flex flex-col gap-3">
@@ -194,15 +192,14 @@
         class="w-full py-3 bg-brand text-white rounded-xl font-bold hover:brightness-110 transition-all"
         (click)="continueShopping()"
       >
-        Seguir comprando
+        Continue Shopping
       </button>
       <button
         class="w-full py-3 bg-transparent border-2 border-brand text-brand rounded-xl font-bold hover:bg-brand/5 transition-all"
         (click)="goToCart()"
       >
-        Ir al Carrito
+        Go to Cart
       </button>
     </div>
   </div>
 </div>
-
