@@ -18,26 +18,34 @@ export class AuthService {
     this.loadUserFromStorage();
   }
 
-  login(credentials: {
-    email: string;
-    password: string;
-  }): Observable<LoginResponse> {
+  setUser(user: User) {
+    this.currentUserSubject.next(user);
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+login(
+    credentials: { email: string; password: string },
+    shouldRedirect: boolean = true 
+  ): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
         tap((response) => {
           if (response.success) {
-            this.handleLoginSuccess(response);
+            // Pasamos la bandera a la función manejadora
+            this.handleLoginSuccess(response, shouldRedirect);
           }
         })
       );
   }
 
-  private handleLoginSuccess(response: LoginResponse): void {
+ private handleLoginSuccess(response: LoginResponse, shouldRedirect: boolean): void {
     localStorage.setItem('token', response.access_token);
     localStorage.setItem('user', JSON.stringify(response.user));
     this.currentUserSubject.next(response.user);
-    this.redirectBasedOnRole(response.user.roles);
+    if (shouldRedirect) {
+      this.redirectBasedOnRole(response.user.roles);
+    }
   }
 
   private redirectBasedOnRole(roles: string[]): void {

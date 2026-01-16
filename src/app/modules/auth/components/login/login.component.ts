@@ -25,7 +25,7 @@ export class LoginComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.authService.login(this.loginForm.value).subscribe({
+    this.authService.login(this.loginForm.value,true).subscribe({
       next: () => {
         // La redirección la maneja el servicio
         this.isLoading = false;
