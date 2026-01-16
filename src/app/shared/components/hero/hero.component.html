@@ -1,38 +1,29 @@
-<div class="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
+<div class="relative w-full flex items-center justify-center overflow-hidden bg-gray-900 transition-all duration-700"
+     [ngClass]="fullHeight ? 'min-h-screen' : 'h-[60vh]'">
     
     <div class="absolute inset-0 z-0">
-        <img src="assets/imgs/hero.jpg" 
-             alt="Fondo Dulcilandia" 
-             class="w-full h-full object-cover object-center">
+        <img [src]="backgroundImage" 
+             [alt]="title" 
+             class="w-full h-full object-cover object-center scale-105 animate-slow-zoom">
              
-        <div class="absolute inset-0 bg-black/60"></div>
-
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0  from-black/20 via-transparent to-page"></div>
     </div>
 
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pb-20">
-        
-        <h1 class="text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl drop-shadow-2xl">
-            <span class="block text-accent text-2xl sm:text-4xl font-medium mb-4 font-handwriting tracking-wider">
-                Bienvenido a
-            </span>
-            <span class="block text-white transform transition-transform duration-700 hover:scale-105 cursor-default">
-                {{ title }}
-            </span>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+        <h1 class="text-4xl sm:text-6xl md:text-8xl font-serif font-medium text-white tracking-tight leading-none mb-8 drop-shadow-2xl">
+            {{ title }}
         </h1>
         
-        <p class="mt-8 max-w-2xl mx-auto text-xl md:text-2xl text-gray-200 drop-shadow-lg font-light tracking-wide">
+        <p class="mt-6 max-w-3xl mx-auto text-lg md:text-2xl text-gray-200 font-light leading-relaxed antialiased">
             {{ subtitle }}
         </p>
         
-        <div class="mt-12 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center gap-6">
-            <a href="#" 
-               (click)="scrollToCatalogo($event)"
-               class="w-full flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-full text-accent bg-brand hover:bg-white hover:text-brand transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1">
-               Ver Catálogo
-            </a>
-
-           
+        <div class="mt-12">
+            <button (click)="scrollToCatalogo($event)"
+               class="inline-flex items-center justify-center px-10 py-4 border-2 border-white text-white text-sm font-bold tracking-[0.3em] uppercase rounded-full hover:bg-white hover:text-brand transition-all duration-500 transform hover:-translate-y-1 active:scale-95 shadow-2xl">
+               {{ buttonText }}
+            </button>
         </div>
     </div>
 </div>

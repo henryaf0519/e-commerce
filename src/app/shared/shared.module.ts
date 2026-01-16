@@ -10,6 +10,7 @@ import { AdminHeaderComponent } from './components/admin-header/admin-header.com
 import { HeroComponent } from './components/hero/hero.component';
 import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 import { SideCartComponent } from './components/side-cart/side-cart.component';
+import { PhilosophyComponent } from './components/philosophy/philosophy.component';
 
 
 
@@ -24,7 +25,8 @@ import { SideCartComponent } from './components/side-cart/side-cart.component';
     AdminHeaderComponent,
     HeroComponent,
     WhatsappComponent,
-    SideCartComponent
+    SideCartComponent,
+    PhilosophyComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { SideCartComponent } from './components/side-cart/side-cart.component';
     AdminHeaderComponent,
     HeroComponent,
     WhatsappComponent,
-    SideCartComponent
+    SideCartComponent,
+    PhilosophyComponent
   ]
 })
 export class SharedModule { }
