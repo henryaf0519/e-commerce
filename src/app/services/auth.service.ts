@@ -23,9 +23,9 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-login(
+  login(
     credentials: { email: string; password: string },
-    shouldRedirect: boolean = true 
+    shouldRedirect: boolean = true
   ): Observable<LoginResponse> {
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
@@ -39,7 +39,14 @@ login(
       );
   }
 
- private handleLoginSuccess(response: LoginResponse, shouldRedirect: boolean): void {
+  register(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/register`, userData);
+  }
+
+  private handleLoginSuccess(
+    response: LoginResponse,
+    shouldRedirect: boolean
+  ): void {
     localStorage.setItem('token', response.access_token);
     localStorage.setItem('user', JSON.stringify(response.user));
     this.currentUserSubject.next(response.user);
@@ -50,9 +57,9 @@ login(
 
   private redirectBasedOnRole(roles: string[]): void {
     if (roles.includes('admin')) {
-      this.router.navigate(['/admin']); 
+      this.router.navigate(['/admin']);
     } else if (roles.includes('customer')) {
-      this.router.navigate(['/profile']); 
+      this.router.navigate(['/profile']);
     } else {
       this.router.navigate(['/']);
     }
