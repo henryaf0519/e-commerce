@@ -59,10 +59,13 @@ export class InventoryFormComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       price: [0, [Validators.required, Validators.min(0.01)]],
       stock: [1, [Validators.required, Validators.min(0)]],
-      // 5. Agregamos el control de sección (Obligatorio)
       section: ['', [Validators.required]], 
       show: [true],
-      isNew: [true]
+      isNew: [true],
+      length: [null, [Validators.required, Validators.min(0.1)]],
+      width:  [null, [Validators.required, Validators.min(0.1)]],
+      height: [null, [Validators.required, Validators.min(0.1)]],
+      weight: [null, [Validators.required, Validators.min(0.01)]]
     });
   }
 
@@ -103,7 +106,11 @@ export class InventoryFormComponent implements OnInit {
       stock: product.quantity, 
       section: product.section || '', 
       show: product.isVisible !== undefined ? product.isVisible : true,
-      isNew: product.isNew || false
+      isNew: product.isNew || false,
+      length: product.length || null,
+      width: product.width || null,
+      height: product.height || null,
+      weight: product.weight || null
     });
 
     if (product.images && product.images.length > 0) {
@@ -199,6 +206,10 @@ export class InventoryFormComponent implements OnInit {
     formData.append('section', formValue.section);
     formData.append('show', formValue.show);
     formData.append('isNew', formValue.isNew);
+    formData.append('length', formValue.length);
+    formData.append('width', formValue.width);
+    formData.append('height', formValue.height);
+    formData.append('weight', formValue.weight);
     
     this.existingImages.forEach(url => {
       formData.append('existingImages', url);

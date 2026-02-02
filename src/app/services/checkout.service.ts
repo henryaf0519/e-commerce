@@ -65,12 +65,26 @@ export class CheckoutService {
   getShippingAddress() {
     return this.shippingAddressSubject.value;
   }
-  getShippingRates(
+
+getShippingRates(
     addressTo: ShippingAddress,
     items: any[]
   ): Observable<ShippingResponse> {
+    
+    // Mapeamos los productos del carrito al formato de "Parcelas" que necesita Shippo
+    const parcels = items.map((item) => {
+      return {
+        length: Number(item.length) || 10,
+        width: Number(item.width) || 10,
+        height: Number(item.height) || 10,
+        weight: Number(item.weight) || 0.5,
+        quantity: item.quantity
+      };
+    });
+
     return this.http.post<ShippingResponse>(`${this.apiUrl}/shippo/shipment`, {
       addressTo,
+      parcels, // <--- Enviamos el array de dimensiones
     });
   }
 

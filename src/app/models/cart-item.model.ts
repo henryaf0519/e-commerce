@@ -11,6 +11,10 @@ export interface CartItem {
   size?: string;
   color?: string;
   section?: string;
+  length?: string; // Longitud
+  width?: string  // Ancho
+  height?: string; // Altura
+  weight?: string; // Peso
 }
 
 // Nueva interfaz para la vista agrupada

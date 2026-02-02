@@ -146,7 +146,11 @@ export class CardDetailComponent implements OnInit {
         price: this.product.price,
         images: this.product.images,
         show: this.product.show,
-        isNew: this.product.isNew 
+        isNew: this.product.isNew, 
+        length: this.product.length || '',
+        width: this.product.width || '',
+        height: this.product.height || '',
+        weight: this.product.weight || ''
       };
 
       this.cartService.addToCart(item);

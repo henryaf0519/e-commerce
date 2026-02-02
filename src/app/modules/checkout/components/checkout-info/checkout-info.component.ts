@@ -38,7 +38,6 @@ export class CheckoutInfoComponent implements OnInit {
     private checkoutService: CheckoutService,
     private authService: AuthService // <--- INYECCIÓN
   ) {
-    // Tu formulario principal (INTACTO)
     this.infoForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       name: ['', Validators.required],
@@ -147,22 +146,17 @@ export class CheckoutInfoComponent implements OnInit {
     });
   }
 
-  // Mapea el objeto User (backend) a tu formulario InfoForm
   private fillFormWithUserData(user: any) {
-    // Construimos el objeto que espera el formulario
-    // Asegúrate de que user.address tenga las propiedades correctas
     const addressData = {
-      email: user.email, // El email viene del usuario raíz
+      email: user.email,
       name: user.name,
       phone: user.phone,
       street1: user.address?.street1 || '',
       zip: user.address?.zip || '',
       state: user.address?.state || '',
       city: user.address?.city || '',
-      country: 'US' // Forzamos US según tu lógica
+      country: 'US'
     };
-
-    // Usamos el helper que ya maneja la lógica de ciudades
     this.fillFormWithData(addressData);
   }
 }
