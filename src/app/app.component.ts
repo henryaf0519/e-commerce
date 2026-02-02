@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-// Importamos Router y NavigationEnd para detectar la URL actual
 import { Router, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter } from 'rxjs/operators';
-import { loadCartState } from './state/cart.actions';
+import { filter, map } from 'rxjs/operators';
+import { loadCartState, openCartSidebar } from './state/cart.actions';
+import { selectCartItems } from './state/cart.selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,30 +12,42 @@ import { loadCartState } from './state/cart.actions';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  // Variable para controlar la visibilidad del layout
   isCheckoutRoute = false;
   isAdminRoute = false;
+  isHomePage = false; // Nueva bandera para controlar la Home
+  
+  cartCount$: Observable<number>;
 
   constructor(
     private store: Store,
     private router: Router 
   ) {
+    this.cartCount$ = this.store.select(selectCartItems).pipe(
+      map(items => items ? items.reduce((acc: number, item: any) => acc + item.quantity, 0) : 0)
+    );
+
     this.router.events.pipe(
       filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       const currentUrl = event.urlAfterRedirects;
 
-      this.isCheckoutRoute = event.urlAfterRedirects.includes('/checkout');
+      this.isCheckoutRoute = currentUrl.includes('/checkout');
       this.isAdminRoute = currentUrl.includes('/admin');
+      
+      // Verificamos si es la página principal (ruta vacía o /home)
+      this.isHomePage = currentUrl === '/' || currentUrl === '/products';
     });
   }
 
   ngOnInit(): void {
     const savedCart = localStorage.getItem('cart-state');
-   
     if (savedCart) {
       const cartState = JSON.parse(savedCart);
       this.store.dispatch(loadCartState({ items: cartState.items }));
     }
+  }
+
+  toggleCart() {
+    this.store.dispatch(openCartSidebar());
   }
 }

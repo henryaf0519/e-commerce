@@ -1,8 +1,27 @@
 <app-header *ngIf="!isCheckoutRoute && !isAdminRoute"></app-header>
 
-<main class="min-h-screen bg-page">
+<main class="min-h-screen bg-page relative">
   <router-outlet></router-outlet>
 </main>
+
+<button
+  *ngIf="isHomePage && !isCheckoutRoute && !isAdminRoute"
+  (click)="toggleCart()"
+  class="fixed bottom-28 right-8 z-30 flex h-16 w-16 items-center justify-center rounded-full bg-brand text-inverted shadow-2xl transition-transform duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-brand/50 glow-effect"
+  aria-label="Ver carrito de compras"
+>
+  <span 
+    *ngIf="(cartCount$ | async) as count" 
+    class="absolute -top-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-accent text-xs font-bold text-white shadow-sm animate-bounce"
+  >
+    {{ count }}
+  </span>
+
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+  </svg>
+</button>
+
 <app-whatsapp></app-whatsapp>
 <app-footer *ngIf="!isCheckoutRoute && !isAdminRoute"></app-footer>
 
