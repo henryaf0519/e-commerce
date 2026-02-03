@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./whatsapp.component.scss']
 })
 export class WhatsappComponent {
-  @Input() phone: string = '573196372542'; 
+  @Input() phone: string = '19167506488'; 
   @Input() message: string = 'Hola, estoy interesado en los dulces de Dulcilandia.';
   
   showTooltip: boolean = false;
