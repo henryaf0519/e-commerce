@@ -141,7 +141,7 @@ export class CheckoutInfoComponent implements OnInit {
       },
       error: (err) => {
         this.isLoadingLogin = false;
-        this.loginError = 'Credenciales inválidas.';
+        this.loginError = 'Invalid email or password';
       }
     });
   }
