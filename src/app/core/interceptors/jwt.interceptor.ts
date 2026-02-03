@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse // 1. Importamos esto
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators'; // 2. Importamos catchError
+import { Router } from '@angular/router'; // 3. Importamos Router
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -13,12 +21,15 @@ export class JwtInterceptor implements HttpInterceptor {
     '/products/admin/all',
     '/products',
     '/sections',
+    '/users', // Agregado por si acaso
   ];
+
+  // 4. Inyectamos el Router en el constructor
+  constructor(private router: Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token = localStorage.getItem('token');
     
-    // Verificamos si la URL de la petición coincide con alguna protegida
     const isProtectedRoute = this.protectedRoutes.some(route => request.url.includes(route));
 
     if (token && isProtectedRoute) {
@@ -29,6 +40,27 @@ export class JwtInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(request);
+    // 5. Manejamos la respuesta con un pipe
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        
+        // Si el error es 401 (No autorizado / Token vencido)
+        if (error.status === 401) {
+          
+          // A. Limpiamos la basura del localStorage
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          
+          // B. (Opcional) Si usas un BehaviorSubject en AuthService, idealmente deberías 
+          // notificarle que se cerró sesión, pero limpiar el localStorage es lo crítico.
+
+          // C. Redirigimos al usuario al login
+          this.router.navigate(['/auth/login']);
+        }
+
+        // Propagamos el error para que el componente también se entere si es necesario
+        return throwError(() => error);
+      })
+    );
   }
 }
