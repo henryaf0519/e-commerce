@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class WhatsappComponent {
   @Input() phone: string = '19167506488'; 
-  @Input() message: string = 'Hola, estoy interesado en los dulces de Dulcilandia.';
+  @Input() message: string = 'Hi! I am interested in the candies from Root&Cane. Can you help me?';
   
   showTooltip: boolean = false;
 
