@@ -25,8 +25,9 @@ export class AuthService {
 
   login(
     credentials: { email: string; password: string },
-    shouldRedirect: boolean = true
+    shouldRedirect: boolean
   ): Observable<LoginResponse> {
+    console.log('Login called with shouldRedirect:', shouldRedirect);
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
@@ -50,6 +51,7 @@ export class AuthService {
     localStorage.setItem('token', response.access_token);
     localStorage.setItem('user', JSON.stringify(response.user));
     this.currentUserSubject.next(response.user);
+    console.log('shouldRedirect:', shouldRedirect);
     if (shouldRedirect) {
       this.redirectBasedOnRole(response.user.roles);
     }
