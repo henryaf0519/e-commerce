@@ -5,7 +5,7 @@
       <h2 class="text-xl font-bold text-gray-800">Store Orders</h2>
       <p class="text-sm text-gray-500 mt-1">Monitor and manage customer orders</p>
     </div>
-    </div>
+  </div>
 
   <div class="overflow-x-auto">
     <table class="w-full text-left border-collapse">
@@ -16,7 +16,7 @@
           <th class="px-6 py-4">Date</th>
           <th class="px-6 py-4">Status</th>
           <th class="px-6 py-4 text-right">Total</th>
-          <th class="px-6 py-4 text-center">Actions</th>
+          <th class="px-6 py-4 text-center">Quick Actions</th>
         </tr>
       </thead>
       
@@ -36,7 +36,7 @@
                   {{ order.email.charAt(0) | uppercase }}
                 </div>
                 <div>
-                  <div class="text-sm font-medium text-gray-900">{{ order.email }}</div>
+                  <div class="text-sm font-medium text-gray-900 truncate max-w-[150px]">{{ order.email }}</div>
                   <div class="text-xs text-gray-500" *ngIf="order.shipping">{{ order.shipping.address.name }}</div>
                 </div>
               </div>
@@ -48,7 +48,7 @@
             </td>
 
             <td class="px-6 py-4">
-              <span [ngClass]="getStatusClass(order.status)" class="px-2.5 py-1 rounded-full text-xs font-bold border border-transparent">
+              <span [ngClass]="getStatusClass(order.status)" class="px-2.5 py-1 rounded-full text-[10px] font-bold border uppercase tracking-tight">
                 {{ order.status.replace('_', ' ') }}
               </span>
             </td>
@@ -57,16 +57,42 @@
               <span class="text-sm font-bold text-gray-900">{{ order.invoice.total | currency:order.invoice.currency }}</span>
             </td>
 
-            <td class="px-6 py-4 text-center">
-              <button class="text-gray-400 hover:text-brand transition-colors p-2" title="View Details">
-                <i class="fas fa-eye"></i>
-              </button>
+            <td class="px-6 py-4">
+              <div class="flex items-center justify-center space-x-2">
+                
+                <a *ngIf="order.invoice?.stripeReceiptUrl"
+                   [href]="order.invoice.stripeReceiptUrl"
+                   target="_blank"
+                   class="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                   title="Ver Recibo de Pago">
+                  <i class="fab fa-stripe-s"></i>
+                </a>
+
+                <a *ngIf="order.shipping?.trackingUrl"
+                   [href]="order.shipping?.trackingUrl"
+                   target="_blank"
+                   class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                   [title]="'Track: ' + order.shipping?.trackingNumber">
+                  <i class="fas fa-truck"></i>
+                </a>
+
+                <a *ngIf="order.shipping?.labelUrl"
+                   [href]="order.shipping?.labelUrl"
+                   target="_blank"
+                   class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+                   title="Imprimir Etiqueta Shippo">
+                  <i class="fas fa-file-invoice"></i>
+                </a>
+
+              
+              </div>
             </td>
 
           </tr>
 
           <tr *ngIf="orders.length === 0">
             <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+              <i class="fas fa-box-open text-3xl mb-3 block opacity-20"></i>
               No orders found in the system.
             </td>
           </tr>
@@ -78,7 +104,7 @@
     <ng-template #loading>
       <div class="px-6 py-12 text-center">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand mx-auto mb-2"></div>
-        <span class="text-sm text-gray-500">Loading orders...</span>
+        <span class="text-sm text-gray-500 font-medium">Fetching orders from server...</span>
       </div>
     </ng-template>
 

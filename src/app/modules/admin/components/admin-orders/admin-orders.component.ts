@@ -16,15 +16,25 @@ export class AdminOrdersComponent {
   ngOnInit(): void {
     this.orders$ = this.orderService.getAllOrders();
   }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'PAID_AND_SHIPPED': return 'bg-green-100 text-green-800';
-      case 'PAID': return 'bg-blue-100 text-blue-800';
-      case 'PENDING': return 'bg-yellow-100 text-yellow-800';
-      case 'CANCELLED': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
+// Dentro de tu clase OrdersComponent
+getStatusClass(status: string): string {
+  switch (status) {
+    case 'PAID_AND_SHIPPED':
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case 'PAID':
+      return 'bg-blue-50 text-blue-700 border-blue-200';
+    case 'PENDING':
+      return 'bg-amber-50 text-amber-700 border-amber-200';
+    case 'CANCELLED':
+      return 'bg-red-50 text-red-700 border-red-200';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200';
   }
+}
+
+viewOrderDetails(order: any) {
+  console.log('Navegando a detalles de:', order.orderId);
+  // Aquí podrías abrir un modal o navegar a /orders/:id
+}
 
 }
