@@ -70,7 +70,7 @@ getShippingRates(
     addressTo: ShippingAddress,
     items: any[]
   ): Observable<ShippingResponse> {
-    
+    console.log('Items enviados para el cálculo de tarifas:', items);
     // Mapeamos los productos del carrito al formato de "Parcelas" que necesita Shippo
     const parcels = items.map((item) => {
       return {

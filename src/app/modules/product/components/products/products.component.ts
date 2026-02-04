@@ -123,17 +123,11 @@ private groupProductsBySection(products: CartItem[]): SectionGroup[] {
   }
 
   addToCartFromCard(productWithQuantity: any) {
-    const item: CartItem = {
-      id: productWithQuantity.id,
-      name: productWithQuantity.name,
-      description: productWithQuantity.description,
-      price: productWithQuantity.price,
-      images: productWithQuantity.images,
-      quantity: productWithQuantity.quantity,
-      stock: productWithQuantity.stock,
-      show: true,
-    };
+   const item: CartItem = {
+    ...productWithQuantity, 
+    show: true
+  };
 
-    this.cartService.addToCart(item);
+  this.cartService.addToCart(item);
   }
 }
