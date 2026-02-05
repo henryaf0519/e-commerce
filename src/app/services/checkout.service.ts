@@ -74,10 +74,10 @@ getShippingRates(
     // Mapeamos los productos del carrito al formato de "Parcelas" que necesita Shippo
     const parcels = items.map((item) => {
       return {
-        length: Number(item.length) || 10,
-        width: Number(item.width) || 10,
-        height: Number(item.height) || 10,
-        weight: Number(item.weight) || 0.5,
+        length: Number(item.length),
+        width: Number(item.width),
+        height: Number(item.height),
+        weight: Number(item.weight),
         quantity: item.quantity
       };
     });

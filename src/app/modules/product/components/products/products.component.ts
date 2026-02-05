@@ -123,6 +123,7 @@ private groupProductsBySection(products: CartItem[]): SectionGroup[] {
   }
 
   addToCartFromCard(productWithQuantity: any) {
+    console.log('Adding to cart from ProductsComponent:', productWithQuantity);
    const item: CartItem = {
     ...productWithQuantity, 
     show: true

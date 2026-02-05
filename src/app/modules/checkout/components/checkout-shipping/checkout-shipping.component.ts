@@ -43,6 +43,7 @@ export class CheckoutShippingComponent {
   loadRates() {
     this.loading = true;
     this.cartItems$.pipe(take(1)).subscribe(items => {
+      console.log('Items redux:', items);
       
       if (!this.address) return;
 
