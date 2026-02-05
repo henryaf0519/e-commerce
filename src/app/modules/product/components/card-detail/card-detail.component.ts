@@ -86,12 +86,9 @@ export class CardDetailComponent implements OnInit {
     this.inventoryService.getProductById(id).subscribe({
       next: (data) => {
         this.product = data;
-        
-        // SHOP_LOGIC: Inicializamos la imagen principal al cargar de API
         if (this.product?.images?.length) {
           this.mainImage = this.product.images[0];
         }
-        
         this.loading = false;
       },
       error: (err) => {
@@ -101,19 +98,14 @@ export class CardDetailComponent implements OnInit {
     });
   }
 
-  // --- MÉTODOS VISUALES SHOPIFY (NUEVOS) ---
-
-  // Cambiar la foto principal al hacer click en miniatura
   changeImage(img: string): void {
     this.mainImage = img;
   }
 
-  // Abrir/Cerrar acordeones de información
   toggleAccordion(section: 'description' | 'ingredients' | 'shipping'): void {
     this.accordions[section] = !this.accordions[section];
   }
 
-  // Aumentar cantidad (usando tus selectedOptions)
   increaseQuantity(): void {
     if (this.product && this.selectedOptions.quantity < this.product.stock) {
       this.selectedOptions.quantity++;
@@ -135,23 +127,18 @@ export class CardDetailComponent implements OnInit {
 
   addToCart(): void {
     if (this.product && this.selectedOptions.quantity > 0) {
-      const item: CartItem = {
-        id: this.product.id,
-        name: this.product.name,
-        description: this.product.description,
-        size: this.selectedOptions.size || '',
-        color: this.selectedOptions.color || '',
+     
+     const item: CartItem = {
+        ...this.product, 
         quantity: this.selectedOptions.quantity,
-        stock: this.product.stock,
-        price: this.product.price,
-        images: this.product.images,
-        show: this.product.show,
-        isNew: this.product.isNew, 
-        length: this.product.length || '',
-        width: this.product.width || '',
-        height: this.product.height || '',
-        weight: this.product.weight || ''
+        length: this.product.length,
+        width: this.product.width,
+        height: this.product.height,
+        weight: this.product.weight,
+        show: true
       };
+
+       console.log('Adding to cart from CardDetailComponent:', item);
 
       this.cartService.addToCart(item);
       this.showModal = true;

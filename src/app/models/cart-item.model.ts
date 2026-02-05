@@ -11,10 +11,19 @@ export interface CartItem {
   size?: string;
   color?: string;
   section?: string;
-  length?: string; // Longitud
-  width?: string  // Ancho
-  height?: string; // Altura
-  weight?: string; // Peso
+  
+  // Dimensiones
+  length?: string | number;
+  width?: string | number;
+  height?: string | number;
+  weight?: string | number;
+
+  // --- NUEVOS CAMPOS (Para paridad con DynamoDB) ---
+  PK?: string;
+  SK?: string;
+  entityType?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // Nueva interfaz para la vista agrupada

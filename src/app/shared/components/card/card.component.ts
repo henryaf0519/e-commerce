@@ -32,6 +32,7 @@ export class CardComponent {
 
   onAddToCart(event: Event) {
     event.stopPropagation();
+    console.log('Adding to cart from CardComponent:', this.products);
     
     this.addToCart.emit({ 
       ...this.products, 
