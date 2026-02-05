@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CartState } from '../state/cart.reducer';
 import { Store } from '@ngrx/store';
-import { addToCart, removeFromCart, updateQuantity } from '../state/cart.actions';
+import { addToCart, clearCart, removeFromCart, updateQuantity } from '../state/cart.actions';
 import { CartItem } from '../models/cart-item.model';
 
 @Injectable({
@@ -36,4 +36,8 @@ export class CartService {
  updateQuantity(itemId: string, size: string, color: string, quantity: number) {
    this.store.dispatch(updateQuantity({ itemId, size, color, quantity }));  // Despacha la acción para actualizar la cantidad
  }
+
+ clearCart() {
+    this.store.dispatch(clearCart());
+  }
 }
