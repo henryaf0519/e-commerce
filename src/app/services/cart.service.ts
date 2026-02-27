@@ -4,7 +4,7 @@ import { CartState } from '../state/cart.reducer';
 import { Store } from '@ngrx/store';
 import { addToCart, clearCart, removeFromCart, updateQuantity } from '../state/cart.actions';
 import { CartItem } from '../models/cart-item.model';
-
+declare let fbq: Function;
 @Injectable({
   providedIn: 'root'
 })
@@ -24,7 +24,15 @@ export class CartService {
 
  // Método para agregar un producto al carrito
   addToCart(item: CartItem) {
-    this.store.dispatch(addToCart({ item }));  // Despacha la acción para agregar al carrito
+    this.store.dispatch(addToCart({ item }));
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'AddToCart', {
+        content_ids: [item.id], // Opcional: si tu CartItem tiene un ID
+        content_name: item.name, // Asegúrate que 'name' sea la propiedad correcta de tu CartItem
+        value: item.price,       // Asegúrate que 'price' sea la propiedad correcta
+        currency: 'USD'          // Cambia a 'COP' si cobras en pesos colombianos
+      });
+    }
   }
 
  // Método para eliminar un producto del carrito

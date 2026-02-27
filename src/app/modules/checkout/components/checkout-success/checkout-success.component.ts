@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
+declare let fbq: Function;
 @Component({
   selector: 'app-checkout-success',
   templateUrl: './checkout-success.component.html',
@@ -67,6 +68,12 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
     if (!this.orderData && !this.userEmail) {
         // Optional: Redirect if page is refreshed and state is lost
         // this.router.navigate(['/']);
+    }
+    if (this.orderData && typeof fbq !== 'undefined') {
+      fbq('track', 'Purchase', {
+        value: this.orderData.total || 0, // Asegúrate de que 'total' exista en tu orderData
+        currency: 'USD'                   // O la moneda que uses (ej: 'COP')
+      });
     }
   }
 

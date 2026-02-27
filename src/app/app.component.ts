@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs/operators';
 import { loadCartState, openCartSidebar } from './state/cart.actions';
 import { selectCartItems } from './state/cart.selector';
 import { Observable } from 'rxjs';
-
+declare let fbq: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   isCheckoutRoute = false;
   isAdminRoute = false;
-  isHomePage = false; // Nueva bandera para controlar la Home
+  isHomePage = false;
+  
   
   cartCount$: Observable<number>;
 
@@ -36,6 +37,9 @@ export class AppComponent implements OnInit {
       
       // Verificamos si es la página principal (ruta vacía o /home)
       this.isHomePage = currentUrl === '/' || currentUrl === '/products';
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'PageView');
+      }
     });
   }
 
