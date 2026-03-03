@@ -59,7 +59,7 @@
                 [disabled]="products.stock === 0"
                 class="w-full py-2.5 md:py-3 bg-brand text-white font-bold rounded-xl shadow-lg hover:bg-white hover:text-brand transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 disabled:bg-gray-500">
             <i class="fas" [ngClass]="products.stock === 0 ? 'fa-ban' : 'fa-cart-plus'"></i>
-            <span>{{ products.stock === 0 ? 'No Stock' : 'Add' }}</span>
+            <span>{{ (products.stock === 0 ? 'PRODUCTS.OUT_OF_STOCK' : 'PRODUCTS.ADD_TO_CART') | translate }}</span>
         </button>
 
       </div>
