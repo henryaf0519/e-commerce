@@ -11,6 +11,7 @@ import { HeroComponent } from './components/hero/hero.component';
 import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 import { SideCartComponent } from './components/side-cart/side-cart.component';
 import { PhilosophyComponent } from './components/philosophy/philosophy.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 
@@ -29,8 +30,9 @@ import { PhilosophyComponent } from './components/philosophy/philosophy.componen
     PhilosophyComponent
   ],
   imports: [
+    TranslateModule,
     CommonModule,
-    FormsModule
+    FormsModule,
     
   ],
   exports: [
@@ -43,7 +45,8 @@ import { PhilosophyComponent } from './components/philosophy/philosophy.componen
     HeroComponent,
     WhatsappComponent,
     SideCartComponent,
-    PhilosophyComponent
+    PhilosophyComponent,
+    TranslateModule
   ]
 })
 export class SharedModule { }
