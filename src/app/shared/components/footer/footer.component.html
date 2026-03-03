@@ -3,7 +3,7 @@
     
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-4xl font-serif text-main mb-12 italic">
-        The Root & Cane Standard
+        {{ 'FOOTER.STANDARD_TITLE' | translate }}
       </h2>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
@@ -11,9 +11,11 @@
           <div class="flex justify-center text-accent mb-4">
             <i class="fas fa-leaf text-2xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-main tracking-widest uppercase">No High Fructose Corn Syrup</h3>
+          <h3 class="text-lg font-bold text-main tracking-widest uppercase">
+            {{ 'FOOTER.CORN_SYRUP_TITLE' | translate }}
+          </h3>
           <p class="text-muted font-light leading-relaxed">
-            We sweeten with the land. Pure panela and natural extracts.
+            {{ 'FOOTER.CORN_SYRUP_DESC' | translate }}
           </p>
         </div>
 
@@ -21,9 +23,11 @@
           <div class="flex justify-center text-accent mb-4">
             <i class="fas fa-mountain text-2xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-main tracking-widest uppercase">Small Batch</h3>
+          <h3 class="text-lg font-bold text-main tracking-widest uppercase">
+            {{ 'FOOTER.SMALL_BATCH_TITLE' | translate }}
+          </h3>
           <p class="text-muted font-light leading-relaxed">
-            Made in Zapatoca, Santander. Preserving the "Silk Climate" flavor.
+            {{ 'FOOTER.SMALL_BATCH_DESC' | translate }}
           </p>
         </div>
 
@@ -31,16 +35,18 @@
           <div class="flex justify-center text-accent mb-4">
             <i class="fas fa-hand-holding-heart text-2xl"></i>
           </div>
-          <h3 class="text-lg font-bold text-main tracking-widest uppercase">Family Owned</h3>
+          <h3 class="text-lg font-bold text-main tracking-widest uppercase">
+            {{ 'FOOTER.FAMILY_OWNED_TITLE' | translate }}
+          </h3>
           <p class="text-muted font-light leading-relaxed">
-            60 years of recipes, direct from our kitchen to your door.
+            {{ 'FOOTER.FAMILY_OWNED_DESC' | translate }}
           </p>
         </div>
       </div>
     </div>
 
     <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
-      <a href="mailto:hello@dulciland.com" 
+      <a href="mailto:hello@rootandcane.com" 
          class="text-main font-medium hover:text-brand transition-colors tracking-widest">
         hello@rootandcane.com
       </a>
@@ -51,7 +57,7 @@
       </div>
 
       <p class="text-muted text-sm tracking-wide">
-        Crafted with <span class="text-brand">❤️</span> in Colombia
+        {{ 'FOOTER.CRAFTED_WITH' | translate }} <span class="text-brand">❤️</span> {{ 'FOOTER.IN_COLOMBIA' | translate }}
       </p>
     </div>
 

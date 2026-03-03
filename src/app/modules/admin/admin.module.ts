@@ -10,6 +10,7 @@ import { AdminSidebarComponent } from './components/admin-sidebar/admin-sidebar.
 import { AdminMainComponent } from './components/admin-main/admin-main.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { SectionManagerComponent } from './components/section-manager/section-manager.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,11 @@ import { SectionManagerComponent } from './components/section-manager/section-ma
     CommonModule,
     AdminRoutingModule,
     ReactiveFormsModule,
-    SharedModule
-]
+    SharedModule,
+    TranslateModule
+  ],
+  exports: [
+    TranslateModule
+  ]
 })
 export class AdminModule { }

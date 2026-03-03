@@ -6,9 +6,23 @@
     "ADMIN": "Panel Admin"
   },
   "FOOTER": {
-    "RIGHTS": "Todos los derechos reservados",
-    "CONTACT": "Contacto",
-    "ABOUT": "Sobre nosotros"
+    "STANDARD_TITLE": "El Estándar Root & Cane",
+    "CORN_SYRUP_TITLE": "Sin Jarabe de Maíz",
+    "CORN_SYRUP_DESC": "Endulzamos con la tierra. Panela pura y extractos naturales.",
+    "SMALL_BATCH_TITLE": "Lotes Pequeños",
+    "SMALL_BATCH_DESC": "Hechos en Zapatoca, Santander. Preservando el sabor del \"Clima de Seda\".",
+    "FAMILY_OWNED_TITLE": "Empresa Familiar",
+    "FAMILY_OWNED_DESC": "60 años de recetas, directo de nuestra cocina a tu puerta.",
+    "CRAFTED_WITH": "Elaborado con",
+    "IN_COLOMBIA": "en Colombia",
+    "RIGHTS": "Todos los derechos reservados"
+  },
+  "HOME": {
+    "HERO_TITLE": "Dulzura cultivada en la montaña. El alma de Santander.",
+    "HERO_SUBTITLE": "Dulces colombianos en lotes pequeños elaborados con azúcar de caña sin refinar, raíces ancestrales y técnicas tradicionales. Sin fábricas. Solo tres generaciones de paciencia.",
+    "HERO_BUTTON": "Comprar Colecciones",
+    "EMPTY_COLLECTION": "Nuestra colección se está preparando...",
+    "LOADING_EXPERIENCE": "Cargando la experiencia..."
   },
   "PRODUCTS": {
     "TITLE": "Nuestros Productos",
@@ -28,15 +42,92 @@
     "TAX_NOTE": "Impuestos y envío calculados al finalizar la compra"
   },
   "CHECKOUT": {
-    "SHIPPING": "Datos de Envío",
-    "PAYMENT": "Método de Pago",
-    "CONFIRM": "Confirmar Orden",
-    "SUCCESS": "¡Compra realizada con éxito!",
-    "FORM": {
-      "NAME": "Nombre completo",
-      "ADDRESS": "Dirección",
-      "CITY": "Ciudad",
-      "PHONE": "Teléfono"
+    "RETURN_STORE": "Volver a la tienda",
+    "STEPS": {
+      "INFO": "Información",
+      "SHIPPING": "Envío",
+      "PAYMENT": "Pago"
+    },
+    "CONTACT": {
+      "TITLE": "Información de Contacto",
+      "HAVE_ACCOUNT": "¿Ya tienes una cuenta?",
+      "LOG_IN": "Iniciar sesión",
+      "EMAIL_PLACEHOLDER": "Correo electrónico",
+      "EMAIL_ERROR": "Se requiere un correo electrónico válido"
+    },
+    "SHIPPING": {
+      "TITLE": "Dirección de Envío",
+      "NAME_PLACEHOLDER": "Nombre completo (ej. Daniel Ricciardo)",
+      "STREET_PLACEHOLDER": "Dirección (Calle, Apartamento, etc.)",
+      "STATE_PLACEHOLDER": "Departamento / Provincia",
+      "CITY_PLACEHOLDER": "Seleccionar Ciudad",
+      "ZIP_PLACEHOLDER": "Código Postal",
+      "PHONE_PLACEHOLDER": "Teléfono",
+      "CONTINUE_BTN": "Continuar con el envío"
+    },
+    "SUMMARY": {
+      "TITLE": "Resumen del Pedido",
+      "SUBTOTAL": "Subtotal",
+      "SHIPPING_LABEL": "Envío",
+      "CALCULATED_NEXT": "Calculado en el siguiente paso",
+      "TOTAL": "Total",
+      "SHOW_SUMMARY": "Mostrar resumen del pedido",
+      "ITEMS_IN_CART": "Productos en tu carrito..."
+    },
+    "QUICK_LOGIN": {
+      "TITLE": "Bienvenido de nuevo",
+      "SUBTITLE": "Inicia sesión para autocompletar tus datos",
+      "SUBMIT": "Entrar y Autocompletar",
+      "ERROR_PREFIX": "Atención"
+    }
+  },
+  "CHECKOUT_SHIPPING": {
+    "CONTACT_LABEL": "Contacto",
+    "SHIP_TO_LABEL": "Enviar a",
+    "CHANGE_LINK": "Cambiar",
+    "METHOD_TITLE": "Método de Envío",
+    "BUSINESS_DAYS": "días hábiles",
+    "BACK_LINK": "Volver",
+    "CONTINUE_BTN": "Continuar con el pago",
+    "SELECT_METHOD_NOTE": "Selecciona un método",
+    "SUMMARY": {
+      "TOTAL_PAY": "Total a pagar"
+    }
+  },
+  "CHECKOUT_PAYMENT": {
+    "EDIT_LINK": "Editar",
+    "METHOD_LABEL": "Método",
+    "ARRIVES_IN": "Llega en",
+    "SECURE_TITLE": "Pago Seguro",
+    "STRIPE_INFO": "Haz clic abajo para iniciar una sesión segura. Tu información de pago está encriptada y procesada de forma segura por Stripe.",
+    "ENCRYPTED_NOTE": "Transacción Segura y Encriptada",
+    "ESTABLISHING": "Estableciendo conexión segura...",
+    "INIT_BTN": "Proceder al Pago",
+    "PAY_BTN": "Pagar",
+    "FAILED_TITLE": "Pago Fallido",
+    "TRY_AGAIN": "Reintentar"
+  },
+  "SUCCESS": {
+    "THANK_YOU": "¡Gracias por tu compra!",
+    "ORDER_CONFIRMED": "Tu pedido",
+    "ORDER_SUCCESS": "ha sido procesado con éxito.",
+    "CONFIRMATION_EMAIL": "Hemos enviado un correo de confirmación a",
+    "SHIPMENT_READY": "Envío Preparado",
+    "PACKAGE_READY_TITLE": "Tu paquete está listo para salir",
+    "PACKAGE_READY_DESC": "Hemos generado tu etiqueta de envío. Las actualizaciones de rastreo estarán disponibles pronto.",
+    "TRACK_BTN": "Rastrear Paquete",
+    "RECEIPT_TITLE": "Recibo de Pago",
+    "STATUS_LABEL": "Estado",
+    "TOTAL_PAID": "Total Pagado",
+    "VIEW_OFFICIAL_RECEIPT": "Ver Recibo Oficial",
+    "SUMMARY_TITLE": "Resumen del Pedido",
+    "REGISTER": {
+      "SAVE_INFO": "Guarda tu información para la próxima vez",
+      "DESC": "Crea una contraseña para tu correo para guardar de forma segura tu dirección e historial.",
+      "PASS_PLACEHOLDER": "Crea una contraseña segura",
+      "CREATE_BTN": "Crear Cuenta",
+      "ACCOUNT_CREATED": "¡Cuenta Creada!",
+      "ACCOUNT_CREATED_DESC": "Ya puedes ver tu historial de pedidos."
     }
   },
   "COMMON": {
@@ -61,5 +152,119 @@
     "SUCCESS_TITLE": "¡Genial!",
     "CONTINUE_SHOPPING": "Continuar comprando",
     "GO_TO_CART": "Ir al carrito"
-  }
+  },
+  "PHILOSOPHY": {
+    "TITLE_LABEL": "Nuestra filosofía",
+    "HERO_TITLE": "La altitud es un ",
+    "HERO_ACCENT": "ingrediente.",
+    "P1": "Zapatoca no es solo nuestro hogar; es nuestro perfil de sabor. Ubicados en los altos Andes, nuestro exclusivo ",
+    "P1_ACCENT": "\"Clima de Seda\"",
+    "P1_END": " nos permite enfriar nuestros dulces de forma natural, preservando la integridad de los ingredientes.",
+    "P2": "No usamos el \"azúcar\" como relleno. Utilizamos ",
+    "P2_ACCENT": "Panela",
+    "P2_END": "—jugo de caña evaporado que conserva los minerales y sabores complejos de la tierra. Esto no es solo un dulce; es la historia comestible de las montañas colombianas.",
+    "TRADITION": "Preservando la tradición desde 1945.",
+    "ALTITUDE_LABEL": "Sobre el nivel del mar"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Bienvenido de nuevo",
+      "SUBTITLE": "Inicia sesión para acceder a tus pedidos y perfil",
+      "EMAIL_LABEL": "Correo electrónico",
+      "EMAIL_PLACEHOLDER": "Correo electrónico",
+      "EMAIL_ERROR": "Se requiere un correo electrónico válido",
+      "PASSWORD_LABEL": "Contraseña",
+      "PASSWORD_PLACEHOLDER": "Contraseña",
+      "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+      "SUBMIT": "Iniciar sesión",
+      "SUBMITTING": "Iniciando sesión...",
+      "NO_ACCOUNT": "¿No tienes una cuenta?",
+      "SIGN_UP": "Regístrate"
+    }
+  },
+  "ADMIN": {
+    "ORDERS": {
+      "TITLE": "Pedidos de la Tienda",
+      "SUBTITLE": "Monitorea y gestiona los pedidos de los clientes",
+      "COL_ID": "ID Pedido",
+      "COL_CUSTOMER": "Cliente",
+      "COL_DATE": "Fecha",
+      "COL_STATUS": "Estado",
+      "COL_TOTAL": "Total",
+      "COL_ACTIONS": "Acciones Rápidas",
+      "EMPTY": "No se encontraron pedidos en el sistema.",
+      "FETCHING": "Obteniendo pedidos del servidor...",
+      "TOOLTIP_STRIPE": "Ver Recibo de Pago",
+      "TOOLTIP_TRACK": "Rastrear envío",
+      "TOOLTIP_LABEL": "Imprimir Etiqueta Shippo"
+    },
+    "ORDER_HISTORY": {
+      "TITLE": "Historial de Pedidos",
+      "SUBTITLE": "Consulta el estado de tus pedidos recientes",
+      "EMPTY": "Aún no se han encontrado pedidos",
+      "START_SHOPPING": "Comenzar a comprar",
+      "ORDER_ID": "ID del Pedido",
+      "DATE": "Fecha",
+      "TOTAL": "Total",
+      "ITEMS_ORDERED": "Productos Pedidos",
+      "QUANTITY": "Cantidad",
+      "SHIPPING_DETAILS": "Detalles de Envío",
+      "TRACKING": "Rastreo",
+      "PROCESSING_SHIPMENT": "Procesando envío...",
+      "TRACK_PACKAGE": "Rastrear Paquete",
+      "VIEW_RECEIPT": "Ver Recibo",
+      "LOADING": "Cargando tus pedidos..."
+    },
+    "PROFILE": {
+      "TITLE": "Configuración de la Cuenta",
+      "SUBTITLE": "Gestiona los detalles de tu perfil y seguridad",
+      "PERSONAL_INFO": "Información Personal y Dirección de Envío",
+      "FULL_NAME": "Nombre completo",
+      "EMAIL": "Correo electrónico",
+      "PHONE": "Número de teléfono",
+      "SHIPPING": "Dirección de Envío",
+      "STREET": "Dirección",
+      "STATE": "Departamento / Provincia",
+      "CITY": "Ciudad",
+      "ZIP": "Código Postal",
+      "COUNTRY": "País",
+      "SAVE_BTN": "Guardar Cambios",
+      "SAVING": "Guardando...",
+      "ERRORS": {
+        "NAME_REQ": "El nombre es obligatorio",
+        "STREET_REQ": "La dirección es obligatoria",
+        "STATE_REQ": "El departamento es obligatorio",
+        "CITY_REQ": "La ciudad es obligatoria",
+        "ZIP_REQ": "El código postal es obligatorio"
+      },
+      "SECURITY": {
+        "TITLE": "Seguridad",
+        "CURRENT_PASS": "Contraseña Actual",
+        "NEW_PASS": "Nueva Contraseña",
+        "CONFIRM_PASS": "Confirmar Contraseña",
+        "UPDATE_BTN": "Actualizar Contraseña",
+        "UPDATING": "Actualizando...",
+        "MIN_LENGTH": "Debe tener al menos 6 caracteres",
+        "MISMATCH": "Las contraseñas no coinciden",
+        "REQUIRED": "Obligatorio"
+      }
+    }
+  },
+  "CART_PAGE": {
+      "TITLE": "Tu Carrito de Compras",
+      "REMOVE": "Eliminar",
+      "CONTINUE_SHOPPING": "Continuar Comprando",
+      "SUMMARY_TITLE": "Resumen del Pedido",
+      "SUBTOTAL": "Subtotal",
+      "SHIPPING": "Envío",
+      "SHIPPING_NOTE": "Calculado en el siguiente paso",
+      "TOTAL": "Total",
+      "PROCEED_BTN": "Proceder al Pago",
+      "SECURE_PAYMENT": "Pago 100% Seguro y Encriptado",
+      "EMPTY": {
+        "TITLE": "Tu carrito está vacío",
+        "SUBTITLE": "Parece que aún no has encontrado tu dulce favorito. ¡Nuestro catálogo está lleno de delicias!",
+        "EXPLORE_BTN": "Explorar Dulces"
+      }
+    }
 }

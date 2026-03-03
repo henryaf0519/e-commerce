@@ -1,9 +1,9 @@
 <div class="flex min-h-screen flex-col bg-page font-sans">
 
   <app-hero 
-    title="Mountain-Grown Sweetness. The Soul of Santander."
-    subtitle="Small-batch Colombian confections crafted from unrefined cane sugar, heirloom roots, and ancestral techniques. No factories. Just three generations of patience."
-    buttonText="Shop The Collections"
+    [title]="'HOME.HERO_TITLE' | translate"
+    [subtitle]="'HOME.HERO_SUBTITLE' | translate"
+    [buttonText]="'HOME.HERO_BUTTON' | translate"
     backgroundImage="assets/imgs/hero.png"
     [fullHeight]="true">
   </app-hero>
@@ -58,7 +58,7 @@
 
       <div *ngIf="sections.length === 0" class="flex flex-col items-center justify-center py-32 text-muted">
         <i class="fas fa-box-open text-6xl mb-4 opacity-50"></i>
-        <p class="text-2xl font-serif">Our collection is being prepared...</p>
+        <p class="text-2xl font-serif">{{ 'HOME.EMPTY_COLLECTION' | translate }}</p>
       </div>
 
     </div>
@@ -67,7 +67,9 @@
   <ng-template #loadingTpl>
     <div class="flex h-[60vh] flex-col items-center justify-center bg-page gap-4">
        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
-       <span class="text-muted text-sm tracking-widest uppercase animate-pulse">Loading the experience...</span>
+       <span class="text-muted text-sm tracking-widest uppercase animate-pulse">
+         {{ 'HOME.LOADING_EXPERIENCE' | translate }}
+       </span>
     </div>
   </ng-template>
 

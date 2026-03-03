@@ -4,28 +4,32 @@
       
       <div class="space-y-8 order-2 lg:order-1">
         <div class="space-y-4">
-          <span class="text-brand font-bold tracking-[0.2em] uppercase text-sm">Our philosophy</span>
+          <span class="text-brand font-bold tracking-[0.2em] uppercase text-sm">
+            {{ 'PHILOSOPHY.TITLE_LABEL' | translate }}
+          </span>
           <h2 class="text-4xl md:text-6xl font-serif text-main leading-tight">
-            Altitude is an <span class="italic text-accent">Ingredient.</span>
+            {{ 'PHILOSOPHY.HERO_TITLE' | translate }}<span class="italic text-accent">{{ 'PHILOSOPHY.HERO_ACCENT' | translate }}</span>
           </h2>
         </div>
 
         <div class="space-y-6 text-muted text-lg leading-relaxed font-light">
           <p>
-            Zapatoca isn’t just our home; it’s our flavor profile. Nestled in the high Andes, our unique 
-            <span class="font-medium text-main">"Silk Climate"</span> allows us to cool our sweets naturally, 
-            preserving the integrity of the ingredients.
+            {{ 'PHILOSOPHY.P1' | translate }}
+            <span class="font-medium text-main">{{ 'PHILOSOPHY.P1_ACCENT' | translate }}</span>
+            {{ 'PHILOSOPHY.P1_END' | translate }}
           </p>
           <p>
-            We don't use "sugar" as a filler. We use <span class="italic underline decoration-accent/30 text-main">Panela</span>—evaporated 
-            cane juice that retains the minerals and complex flavors of the land. This isn't just candy; 
-            it’s the edible history of the Colombian mountains.
+            {{ 'PHILOSOPHY.P2' | translate }}
+            <span class="italic underline decoration-accent/30 text-main">{{ 'PHILOSOPHY.P2_ACCENT' | translate }}</span>
+            {{ 'PHILOSOPHY.P2_END' | translate }}
           </p>
         </div>
 
         <div class="flex items-center gap-4 py-4">
           <div class="h-[1px] w-12 bg-brand/30"></div>
-          <p class="text-sm font-serif italic text-muted">Preserving tradition since 1945.</p>
+          <p class="text-sm font-serif italic text-muted">
+            {{ 'PHILOSOPHY.TRADITION' | translate }}
+          </p>
         </div>
       </div>
 
@@ -39,7 +43,9 @@
         
         <div class="absolute -bottom-8 -left-8 bg-surface p-8 rounded-xl shadow-xl hidden md:block border border-black/5 animate-float">
           <p class="text-3xl font-serif text-brand mb-1">1,720m</p>
-          <p class="text-xs uppercase tracking-widest text-muted font-bold">Above sea level</p>
+          <p class="text-xs uppercase tracking-widest text-muted font-bold">
+            {{ 'PHILOSOPHY.ALTITUDE_LABEL' | translate }}
+          </p>
         </div>
       </div>
 

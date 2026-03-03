@@ -3,23 +3,25 @@
     
     <div class="text-center">
       <h2 class="mt-2 text-3xl font-extrabold text-main font-poppins">
-        Welcome Back
+        {{ 'AUTH.LOGIN.TITLE' | translate }}
       </h2>
       <p class="mt-2 text-sm text-muted">
-        Sign in to access your orders and profile
+        {{ 'AUTH.LOGIN.SUBTITLE' | translate }}
       </p>
     </div>
 
     <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       
       <div *ngIf="errorMessage" class="bg-red-50 text-red-500 text-sm p-3 rounded-lg flex items-center">
-        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
         {{ errorMessage }}
       </div>
 
       <div class="rounded-md shadow-sm -space-y-px">
         <div class="mb-4">
-          <label for="email-address" class="sr-only">Email address</label>
+          <label for="email-address" class="sr-only">{{ 'AUTH.LOGIN.EMAIL_LABEL' | translate }}</label>
           <input 
             id="email-address" 
             name="email" 
@@ -28,13 +30,14 @@
             required 
             formControlName="email"
             class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-brand focus:border-brand focus:z-10 sm:text-sm transition-colors" 
-            placeholder="Email address">
+            [placeholder]="'AUTH.LOGIN.EMAIL_PLACEHOLDER' | translate">
+            
             <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="text-red-500 text-xs mt-1 ml-1">
-              Valid email is required
+              {{ 'AUTH.LOGIN.EMAIL_ERROR' | translate }}
             </div>
         </div>
         <div>
-          <label for="password" class="sr-only">Password</label>
+          <label for="password" class="sr-only">{{ 'AUTH.LOGIN.PASSWORD_LABEL' | translate }}</label>
           <input 
             id="password" 
             name="password" 
@@ -43,14 +46,14 @@
             required 
             formControlName="password"
             class="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-brand focus:border-brand focus:z-10 sm:text-sm transition-colors" 
-            placeholder="Password">
+            [placeholder]="'AUTH.LOGIN.PASSWORD_PLACEHOLDER' | translate">
         </div>
       </div>
 
       <div class="flex items-center justify-between">
         <div class="text-sm">
           <a href="#" class="font-medium text-accent hover:text-accent/80 transition-colors">
-            Forgot your password?
+            {{ 'AUTH.LOGIN.FORGOT_PASSWORD' | translate }}
           </a>
         </div>
       </div>
@@ -67,16 +70,18 @@
             </svg>
           </span>
           
-          <span *ngIf="!isLoading">Sign in</span>
-          <span *ngIf="isLoading">Signing in...</span>
+          <span *ngIf="!isLoading">{{ 'AUTH.LOGIN.SUBMIT' | translate }}</span>
+          <span *ngIf="isLoading">{{ 'AUTH.LOGIN.SUBMITTING' | translate }}</span>
         </button>
       </div>
     </form>
     
     <div class="text-center mt-4">
         <p class="text-sm text-muted">
-            Don't have an account? 
-            <a routerLink="/auth/register" class="font-medium text-brand hover:underline">Sign up</a>
+            {{ 'AUTH.LOGIN.NO_ACCOUNT' | translate }} 
+            <a routerLink="/auth/register" class="font-medium text-brand hover:underline">
+              {{ 'AUTH.LOGIN.SIGN_UP' | translate }}
+            </a>
         </p>
     </div>
 

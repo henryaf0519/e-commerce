@@ -1,89 +1,92 @@
 <div class="min-h-screen bg-page flex flex-col lg:flex-row">
   
   <div class="flex-1 px-4 py-12 lg:px-20 lg:py-16 overflow-y-auto">
-    
     <div class="mb-8">
       <h1 class="text-brand font-bold text-2xl tracking-tighter">Root & Cane</h1>
     </div>
 
     <div class="flex items-center space-x-2 text-sm mb-8">
-      <a routerLink="/checkout/info" class="text-muted hover:text-brand">Information</a>
+      <a routerLink="/checkout/info" class="text-muted hover:text-brand">{{ 'CHECKOUT.STEPS.INFO' | translate }}</a>
       <span class="text-muted">/</span>
-      <span class="font-bold text-brand">Shipping</span>
+      <span class="font-bold text-brand">{{ 'CHECKOUT.STEPS.SHIPPING' | translate }}</span>
       <span class="text-muted">/</span>
-      <span class="text-muted">Payment</span>
+      <span class="text-muted">{{ 'CHECKOUT.STEPS.PAYMENT' | translate }}</span>
     </div>
 
     <div class="border border-muted/20 rounded-lg bg-surface p-4 mb-8 text-sm text-main shadow-sm">
       <div class="flex justify-between items-center border-b border-muted/10 pb-3 mb-3">
         <div class="flex flex-col">
-          <span class="text-muted text-xs uppercase tracking-wide">Contact</span>
+          <span class="text-muted text-xs uppercase tracking-wide">{{ 'CHECKOUT_SHIPPING.CONTACT_LABEL' | translate }}</span>
           <span class="font-medium">{{ address?.email }}</span>
         </div>
-        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Change</a>
+        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">
+          {{ 'CHECKOUT_SHIPPING.CHANGE_LINK' | translate }}
+        </a>
       </div>
       <div class="flex justify-between items-center">
         <div class="flex flex-col">
-          <span class="text-muted text-xs uppercase tracking-wide">Ship to</span>
+          <span class="text-muted text-xs uppercase tracking-wide">{{ 'CHECKOUT_SHIPPING.SHIP_TO_LABEL' | translate }}</span>
           <span class="font-medium">{{ address?.street1 }}, {{ address?.city }}, {{ address?.state }}</span>
         </div>
-        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">Change</a>
+        <a routerLink="/checkout/info" class="text-brand text-xs font-bold hover:underline cursor-pointer">
+          {{ 'CHECKOUT_SHIPPING.CHANGE_LINK' | translate }}
+        </a>
       </div>
     </div>
 
-    <h2 class="text-lg font-semibold text-main mb-4">Shipping Method</h2>
+    <h2 class="text-lg font-semibold text-main mb-4">{{ 'CHECKOUT_SHIPPING.METHOD_TITLE' | translate }}</h2>
 
     <div *ngIf="loading" class="space-y-4">
       <div *ngFor="let i of [1,2,3]" class="flex items-center justify-between p-4 border border-muted/10 rounded-lg bg-surface animate-pulse">
         <div class="flex items-center space-x-4">
-           <div class="w-4 h-4 bg-muted/20 rounded-full"></div>
-           <div class="space-y-2">
-             <div class="h-4 bg-muted/20 rounded w-32"></div>
-             <div class="h-3 bg-muted/20 rounded w-20"></div>
-           </div>
+            <div class="w-4 h-4 bg-muted/20 rounded-full"></div>
+            <div class="space-y-2">
+              <div class="h-4 bg-muted/20 rounded w-32"></div>
+              <div class="h-3 bg-muted/20 rounded w-20"></div>
+            </div>
         </div>
         <div class="h-4 bg-muted/20 rounded w-16"></div>
       </div>
     </div>
 
-  <div *ngIf="!loading && rates.length > 0" class="space-y-3">
-  <div 
-    *ngFor="let rate of rates" 
-    (click)="selectRate(rate)"
-    class="relative flex items-center justify-between p-3 sm:p-4 border rounded-xl cursor-pointer transition-all duration-200 group hover:shadow-md active:scale-[0.98]"
-    [ngClass]="selectedRate?.id === rate.id ? 'border-brand bg-brand/5 ring-1 ring-brand' : 'border-muted/30 bg-surface'"
-  >
-    <div class="flex items-center space-x-3 sm:space-x-4 flex-1">
-      <div class="shrink-0 relative flex items-center justify-center w-5 h-5 border-2 rounded-full transition-colors"
-           [ngClass]="selectedRate?.id === rate.id ? 'border-brand' : 'border-muted'">
-        <div *ngIf="selectedRate?.id === rate.id" class="w-2.5 h-2.5 bg-brand rounded-full"></div>
-      </div>
-      
-      <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white p-1.5 border border-muted/10 shadow-sm overflow-hidden flex items-center justify-center">
-        <img [src]="rate.image" 
-             [alt]="rate.provider" 
-             class="max-w-full max-h-full object-contain filter group-hover:grayscale-0 transition-all"
-             [ngClass]="{'grayscale-0': selectedRate?.id === rate.id}">
-      </div>
+    <div *ngIf="!loading && rates.length > 0" class="space-y-3">
+      <div 
+        *ngFor="let rate of rates" 
+        (click)="selectRate(rate)"
+        class="relative flex items-center justify-between p-3 sm:p-4 border rounded-xl cursor-pointer transition-all duration-200 group hover:shadow-md active:scale-[0.98]"
+        [ngClass]="selectedRate?.id === rate.id ? 'border-brand bg-brand/5 ring-1 ring-brand' : 'border-muted/30 bg-surface'"
+      >
+        <div class="flex items-center space-x-3 sm:space-x-4 flex-1">
+          <div class="shrink-0 relative flex items-center justify-center w-5 h-5 border-2 rounded-full transition-colors"
+               [ngClass]="selectedRate?.id === rate.id ? 'border-brand' : 'border-muted'">
+            <div *ngIf="selectedRate?.id === rate.id" class="w-2.5 h-2.5 bg-brand rounded-full"></div>
+          </div>
+          
+          <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white p-1.5 border border-muted/10 shadow-sm overflow-hidden flex items-center justify-center">
+            <img [src]="rate.image" 
+                 [alt]="rate.provider" 
+                 class="max-w-full max-h-full object-contain filter group-hover:grayscale-0 transition-all"
+                 [ngClass]="{'grayscale-0': selectedRate?.id === rate.id}">
+          </div>
 
-      <div class="flex flex-col min-w-0">
-        <span class="font-semibold text-main text-sm sm:text-base truncate">
-          {{ rate.provider }} <span class="font-normal text-muted/80 hidden xs:inline">-</span> {{ rate.name }}
-        </span>
-        <span class="text-[10px] sm:text-xs font-medium text-muted flex items-center">
-          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          {{ rate.days }} business days
-        </span>
+          <div class="flex flex-col min-w-0">
+            <span class="font-semibold text-main text-sm sm:text-base truncate">
+              {{ rate.provider }} <span class="font-normal text-muted/80 hidden xs:inline">-</span> {{ rate.name }}
+            </span>
+            <span class="text-[10px] sm:text-xs font-medium text-muted flex items-center">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              {{ rate.days }} {{ 'CHECKOUT_SHIPPING.BUSINESS_DAYS' | translate }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end ml-2">
+          <span class="font-bold text-main text-sm sm:text-lg">
+            {{ rate.price | currency:rate.currency }}
+          </span>
+        </div>
       </div>
     </div>
-
-    <div class="flex flex-col items-end ml-2">
-      <span class="font-bold text-main text-sm sm:text-lg">
-        {{ rate.price | currency:rate.currency }}
-      </span>
-    </div>
-  </div>
-</div>
 
     <div *ngIf="!loading && rates.length === 0" class="p-4 border border-red-200 bg-red-50 text-red-600 rounded-lg">
       {{ messageError }}
@@ -91,14 +94,14 @@
 
     <div class="flex justify-between items-center mt-8">
       <a routerLink="/checkout/info" class="text-brand font-medium hover:text-brand/80 transition-colors flex items-center gap-1">
-        <span class="text-xl">‹</span> Back
+        <span class="text-xl">‹</span> {{ 'CHECKOUT_SHIPPING.BACK_LINK' | translate }}
       </a>
       <button 
         (click)="goToPayment()"
         [disabled]="loading || !selectedRate"
         class="bg-brand text-inverted px-8 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg glow-effect disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Continue to Payment
+        {{ 'CHECKOUT_SHIPPING.CONTINUE_BTN' | translate }}
       </button>
     </div>
 
@@ -106,12 +109,12 @@
 
   <div class="hidden lg:block w-[40%] bg-surface border-l border-muted/10 p-12 overflow-y-auto">
     <div class="sticky top-12">
-      <h3 class="text-xl font-bold text-main mb-6">Order Summary</h3>
+      <h3 class="text-xl font-bold text-main mb-6">{{ 'CHECKOUT.SUMMARY.TITLE' | translate }}</h3>
       
       <div class="space-y-4 mb-6 max-h-[400px] overflow-auto pr-2 custom-scrollbar">
         <div *ngFor="let item of cartItems$ | async" class="flex items-center gap-4">
           <div class="relative">
-            <img [src]="item.images[0]" class="w-16 h-16 rounded-md object-cover border border-muted/20">
+            <img [src]="item.images[0]" [alt]="item.name" class="w-16 h-16 rounded-md object-cover border border-muted/20">
             <span class="absolute -top-2 -right-2 bg-muted text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
               {{ item.quantity }}
             </span>
@@ -126,22 +129,24 @@
 
       <div class="border-t border-muted/10 pt-4 space-y-2">
         <div class="flex justify-between text-sm text-muted">
-          <span>Subtotal</span>
+          <span>{{ 'CHECKOUT.SUMMARY.SUBTOTAL' | translate }}</span>
           <span>${{ productTotal$ | async | number:'1.0-0' }}</span>
         </div>
         
         <div class="flex justify-between text-sm items-center">
-          <span class="text-muted">Shipping</span>
+          <span class="text-muted">{{ 'CHECKOUT.SUMMARY.SHIPPING_LABEL' | translate }}</span>
           <div *ngIf="loading" class="h-4 w-16 bg-muted/20 rounded animate-pulse"></div>
           <span *ngIf="!loading && selectedRate" class="text-main font-medium">
             {{ selectedRate.price | currency:selectedRate.currency }}
           </span>
-          <span *ngIf="!loading && !selectedRate" class="text-xs text-muted italic">Select a method</span>
+          <span *ngIf="!loading && !selectedRate" class="text-xs text-muted italic">
+            {{ 'CHECKOUT_SHIPPING.SELECT_METHOD_NOTE' | translate }}
+          </span>
         </div>
       </div>
 
       <div class="border-t border-muted/10 mt-4 pt-4 flex justify-between items-center">
-        <span class="text-xl font-bold text-main">Total to Pay</span>
+        <span class="text-xl font-bold text-main">{{ 'CHECKOUT_SHIPPING.SUMMARY.TOTAL_PAY' | translate }}</span>
         <div class="flex items-baseline gap-1">
           <span class="text-xs text-muted">USD</span>
           <span class="text-2xl font-bold text-brand">
@@ -149,7 +154,6 @@
           </span>
         </div>
       </div>
-
     </div>
   </div>
 </div>

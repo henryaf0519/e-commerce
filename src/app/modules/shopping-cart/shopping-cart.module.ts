@@ -5,20 +5,19 @@ import { ShoppingCartRoutingModule } from './shopping-cart-routing.module';
 import { CartComponent } from './components/cart/cart.component';
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from '../../state/cart.reducer';
-import { SharedModule } from "../../shared/shared.module";
+import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
-
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    CartComponent
-  ],
+  declarations: [CartComponent],
   imports: [
     CommonModule,
     ShoppingCartRoutingModule,
     SharedModule,
-    FormsModule
-]
+    FormsModule,
+    TranslateModule,
+  ],
+  exports: [TranslateModule],
 })
-export class ShoppingCartModule { }
+export class ShoppingCartModule {}

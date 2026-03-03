@@ -9,6 +9,7 @@ import { CheckoutPaymentComponent } from './components/checkout-payment/checkout
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -22,7 +23,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CommonModule,
     CheckoutRoutingModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    TranslateModule
+  ],
+    exports: [
+    TranslateModule
   ]
 })
 export class CheckoutModule { }
