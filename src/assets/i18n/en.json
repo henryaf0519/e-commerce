@@ -1,0 +1,270 @@
+{
+  "HEADER": {
+    "LOGIN": "Log In",
+    "CART": "View Cart",
+    "HOME_ALT": "Dulcilandia",
+    "ADMIN": "Admin Panel"
+  },
+  "FOOTER": {
+    "STANDARD_TITLE": "The Root & Cane Standard",
+    "CORN_SYRUP_TITLE": "No High Fructose Corn Syrup",
+    "CORN_SYRUP_DESC": "We sweeten with the land. Pure panela and natural extracts.",
+    "SMALL_BATCH_TITLE": "Small Batch",
+    "SMALL_BATCH_DESC": "Made in Zapatoca, Santander. Preserving the 'Silk Climate' flavor.",
+    "FAMILY_OWNED_TITLE": "Family Owned",
+    "FAMILY_OWNED_DESC": "60 years of recipes, direct from our kitchen to your door.",
+    "CRAFTED_WITH": "Crafted with",
+    "IN_COLOMBIA": "in Colombia",
+    "RIGHTS": "All rights reserved"
+  },
+  "HOME": {
+    "HERO_TITLE": "Mountain-Grown Sweetness. The Soul of Santander.",
+    "HERO_SUBTITLE": "Small-batch Colombian confections crafted from unrefined cane sugar, heirloom roots, and ancestral techniques. No factories. Just three generations of patience.",
+    "HERO_BUTTON": "Shop The Collections",
+    "EMPTY_COLLECTION": "Our collection is being prepared...",
+    "LOADING_EXPERIENCE": "Loading the experience..."
+  },
+  "PRODUCTS": {
+    "TITLE": "Our Products",
+    "ADD_TO_CART": "Add to cart",
+    "PRICE": "Price",
+    "CATEGORY": "Category",
+    "OUT_OF_STOCK": "Out of stock",
+    "DETAILS": "View details"
+  },
+  "CART": {
+    "TITLE": "Your Cart",
+    "EMPTY": "Your cart is empty",
+    "TOTAL": "Total",
+    "CHECKOUT": "Checkout",
+    "REMOVE": "Remove",
+    "SUBTOTAL": "Subtotal",
+    "TAX_NOTE": "Taxes and shipping calculated at checkout"
+  },
+  "CHECKOUT": {
+    "RETURN_STORE": "Return to store",
+    "STEPS": {
+      "INFO": "Information",
+      "SHIPPING": "Shipping",
+      "PAYMENT": "Payment"
+    },
+    "CONTACT": {
+      "TITLE": "Contact Information",
+      "HAVE_ACCOUNT": "Already have an account?",
+      "LOG_IN": "Log in",
+      "EMAIL_PLACEHOLDER": "Email address",
+      "EMAIL_ERROR": "Valid email is required"
+    },
+    "SHIPPING": {
+      "TITLE": "Shipping Address",
+      "NAME_PLACEHOLDER": "Full Name (e.g. Daniel Ricciardo)",
+      "STREET_PLACEHOLDER": "Address (Street, PO Box, etc.)",
+      "STATE_PLACEHOLDER": "State / Province",
+      "CITY_PLACEHOLDER": "Select City",
+      "ZIP_PLACEHOLDER": "ZIP Code",
+      "PHONE_PLACEHOLDER": "Phone",
+      "CONTINUE_BTN": "Continue to shipping"
+    },
+    "SUMMARY": {
+      "TITLE": "Order Summary",
+      "SUBTOTAL": "Subtotal",
+      "SHIPPING_LABEL": "Shipping",
+      "CALCULATED_NEXT": "Calculated at next step",
+      "TOTAL": "Total",
+      "SHOW_SUMMARY": "Show order summary",
+      "ITEMS_IN_CART": "Items in your cart..."
+    },
+    "QUICK_LOGIN": {
+      "TITLE": "Welcome Back",
+      "SUBTITLE": "Log in to autofill your shipping details",
+      "SUBMIT": "Login & Autofill",
+      "ERROR_PREFIX": "Attention"
+    }
+  },
+  "CHECKOUT_SHIPPING": {
+    "CONTACT_LABEL": "Contact",
+    "SHIP_TO_LABEL": "Ship to",
+    "CHANGE_LINK": "Change",
+    "METHOD_TITLE": "Shipping Method",
+    "BUSINESS_DAYS": "business days",
+    "BACK_LINK": "Back",
+    "CONTINUE_BTN": "Continue to payment",
+    "SELECT_METHOD_NOTE": "Select a method",
+    "SUMMARY": {
+      "TOTAL_PAY": "Total to pay"
+    }
+  },
+  "CHECKOUT_PAYMENT": {
+    "EDIT_LINK": "Edit",
+    "METHOD_LABEL": "Method",
+    "ARRIVES_IN": "Arrives in",
+    "SECURE_TITLE": "Secure Payment",
+    "STRIPE_INFO": "Click below to initialize a secure session. Your payment information is encrypted and processed securely by Stripe.",
+    "ENCRYPTED_NOTE": "Secure & Encrypted Transaction",
+    "ESTABLISHING": "Establishing secure connection...",
+    "INIT_BTN": "Proceed to Payment",
+    "PAY_BTN": "Pay",
+    "FAILED_TITLE": "Payment Failed",
+    "TRY_AGAIN": "Try Again"
+  },
+  "SUCCESS": {
+    "THANK_YOU": "Thank you for your purchase!",
+    "ORDER_CONFIRMED": "Your order",
+    "ORDER_SUCCESS": "has been successfully processed.",
+    "CONFIRMATION_EMAIL": "We have sent a confirmation email to",
+    "SHIPMENT_READY": "Shipment Ready",
+    "PACKAGE_READY_TITLE": "Your package is ready to go",
+    "PACKAGE_READY_DESC": "We've generated your shipping label. Tracking updates will be available shortly.",
+    "TRACK_BTN": "Track Package",
+    "RECEIPT_TITLE": "Payment Receipt",
+    "STATUS_LABEL": "Status",
+    "TOTAL_PAID": "Total Paid",
+    "VIEW_OFFICIAL_RECEIPT": "View Official Receipt",
+    "SUMMARY_TITLE": "Order Summary",
+    "REGISTER": {
+      "SAVE_INFO": "Save your information for next time",
+      "DESC": "Create a password for your email to securely save your address and order history.",
+      "PASS_PLACEHOLDER": "Create a secure password",
+      "CREATE_BTN": "Create Account",
+      "ACCOUNT_CREATED": "Account Created!",
+      "ACCOUNT_CREATED_DESC": "You can now view your order history."
+    }
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "BACK": "Back",
+    "LOADING": "Loading..."
+  },
+  "PRODUCT_DETAIL": {
+    "HOME": "Home",
+    "NEW": "New",
+    "QUANTITY": "Quantity",
+    "AVAILABLE": "Available",
+    "LAST_UNITS": "Last units!",
+    "TAX_SHIPPING_NOTE": "Shipping calculated at checkout.",
+    "PREMIUM_QUALITY": "Premium Quality",
+    "FRESH_INGREDIENTS": "Fresh Ingredients",
+    "SECURE_PURCHASE": "Secure Purchase",
+    "DESCRIPTION": "Description"
+  },
+  "MODAL": {
+    "SUCCESS_TITLE": "Great!",
+    "CONTINUE_SHOPPING": "Continue shopping",
+    "GO_TO_CART": "Go to cart"
+  },
+  "PHILOSOPHY": {
+    "TITLE_LABEL": "Our philosophy",
+    "HERO_TITLE": "Altitude is an ",
+    "HERO_ACCENT": "ingredient.",
+    "P1": "Zapatoca isn't just our home; it's our flavor profile. Nestled in the high Andes, our unique ",
+    "P1_ACCENT": "\"Silk Climate\"",
+    "P1_END": " allows us to cool our sweets naturally, preserving the integrity of the ingredients.",
+    "P2": "We don't use \"sugar\" as a filler. We use ",
+    "P2_ACCENT": "Panela",
+    "P2_END": "—evaporated cane juice that retains the minerals and complex flavors of the land. This isn't just candy; it’s the edible history of the Colombian mountains.",
+    "TRADITION": "Preserving tradition since 1945.",
+    "ALTITUDE_LABEL": "Above sea level"
+  },
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Welcome Back",
+      "SUBTITLE": "Sign in to access your orders and profile",
+      "EMAIL_LABEL": "Email address",
+      "EMAIL_PLACEHOLDER": "Email address",
+      "EMAIL_ERROR": "Valid email is required",
+      "PASSWORD_LABEL": "Password",
+      "PASSWORD_PLACEHOLDER": "Password",
+      "FORGOT_PASSWORD": "Forgot your password?",
+      "SUBMIT": "Log In",
+      "SUBMITTING": "Logging in...",
+      "NO_ACCOUNT": "Don't have an account?",
+      "SIGN_UP": "Sign Up"
+    }
+  },
+  "ADMIN": {
+    "ORDERS": {
+      "TITLE": "Store Orders",
+      "SUBTITLE": "Monitor and manage customer orders",
+      "COL_ID": "Order ID",
+      "COL_CUSTOMER": "Customer",
+      "COL_DATE": "Date",
+      "COL_STATUS": "Status",
+      "COL_TOTAL": "Total",
+      "COL_ACTIONS": "Quick Actions",
+      "EMPTY": "No orders found in the system.",
+      "FETCHING": "Fetching orders from server...",
+      "TOOLTIP_STRIPE": "View Payment Receipt",
+      "TOOLTIP_TRACK": "Track Shipment",
+      "TOOLTIP_LABEL": "Print Shippo Label"
+    },
+    "ORDER_HISTORY": {
+      "TITLE": "Order History",
+      "SUBTITLE": "Check the status of your recent orders",
+      "EMPTY": "No orders found yet",
+      "START_SHOPPING": "Start shopping",
+      "ORDER_ID": "Order ID",
+      "DATE": "Date",
+      "TOTAL": "Total",
+      "ITEMS_ORDERED": "Items Ordered",
+      "QUANTITY": "Quantity",
+      "SHIPPING_DETAILS": "Shipping Details",
+      "TRACKING": "Tracking",
+      "PROCESSING_SHIPMENT": "Processing shipment...",
+      "TRACK_PACKAGE": "Track Package",
+      "VIEW_RECEIPT": "View Receipt",
+      "LOADING": "Loading your orders..."
+    },
+    "PROFILE": {
+      "TITLE": "Account Settings",
+      "SUBTITLE": "Manage your profile details and security",
+      "PERSONAL_INFO": "Personal Information & Shipping Address",
+      "FULL_NAME": "Full Name",
+      "EMAIL": "Email address",
+      "PHONE": "Phone number",
+      "SHIPPING": "Shipping Address",
+      "STREET": "Street Address",
+      "STATE": "State / Province",
+      "CITY": "City",
+      "ZIP": "Zip Code",
+      "COUNTRY": "Country",
+      "SAVE_BTN": "Save Changes",
+      "SAVING": "Saving...",
+      "ERRORS": {
+        "NAME_REQ": "Name is required",
+        "STREET_REQ": "Street address is required",
+        "STATE_REQ": "State is required",
+        "CITY_REQ": "City is required",
+        "ZIP_REQ": "Zip code is required"
+      },
+      "SECURITY": {
+        "TITLE": "Security",
+        "CURRENT_PASS": "Current Password",
+        "NEW_PASS": "New Password",
+        "CONFIRM_PASS": "Confirm Password",
+        "UPDATE_BTN": "Update Password",
+        "UPDATING": "Updating...",
+        "MIN_LENGTH": "Must be at least 6 characters",
+        "MISMATCH": "Passwords do not match",
+        "REQUIRED": "Required"
+      }
+    }
+  },
+  "CART_PAGE": {
+    "TITLE": "Your Shopping Cart",
+    "REMOVE": "Remove",
+    "CONTINUE_SHOPPING": "Continue Shopping",
+    "SUMMARY_TITLE": "Order Summary",
+    "SUBTOTAL": "Subtotal",
+    "SHIPPING": "Shipping",
+    "SHIPPING_NOTE": "Calculated at next step",
+    "TOTAL": "Total",
+    "PROCEED_BTN": "Proceed to Checkout",
+    "SECURE_PAYMENT": "100% Secure & Encrypted Payment",
+    "EMPTY": {
+      "TITLE": "Your cart is empty",
+      "SUBTITLE": "It seems you haven't found your favorite sweet yet. Our catalog is full of delights!",
+      "EXPLORE_BTN": "Explore Sweets"
+    }
+  }
+}

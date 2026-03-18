@@ -6,6 +6,7 @@ import { loadCartState, openCartSidebar } from './state/cart.actions';
 import { selectCartItems } from './state/cart.selector';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment.prod';
 declare let fbq: Function;
 @Component({
   selector: 'app-root',
@@ -25,8 +26,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private translate: TranslateService
   ) {
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
+    this.translate.setDefaultLang(environment.defaultLanguage);
+    this.translate.use(environment.defaultLanguage);
     
     this.cartCount$ = this.store.select(selectCartItems).pipe(
       map(items => items ? items.reduce((acc: number, item: any) => acc + item.quantity, 0) : 0)
