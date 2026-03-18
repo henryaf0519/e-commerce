@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, forkJoin } from 'rxjs'; // Importamos forkJoin
 import { CartService } from 'src/app/services/cart.service';
-import { InventoryService } from 'src/app/services/inventory-service.service'; // Importamos el servicio
+import { InventoryService } from 'src/app/services/inventory-service.service';
+import { SectionsService } from 'src/app/services/sections.service'; // Importamos el servicio de secciones
 import { CartState } from 'src/app/state/cart.reducer';
 import { CartItem, SectionGroup } from 'src/app/models/cart-item.model';
-
-interface SectionMetadata {
-  title: string;
-  subtitle: string;
-  tagline: string;
-  image: string;
-}
 
 @Component({
   selector: 'app-products',
@@ -27,37 +21,12 @@ export class ProductsComponent implements OnInit {
   products: CartItem[] = [];
   loading: boolean = true;
 
-  readonly SECTION_CONFIG: Record<string, SectionMetadata> = {
-    'Harvest': {
-      title: 'The Harvest',
-      subtitle: 'Botanical & Heirloom',
-      tagline: 'Rare botanical sweets. Gluten-free by nature. Ancient by tradition.',
-      image: 'assets/imgs/harvest.png'
-    },
-    'Heritage': {
-      title: 'The Heritage',
-      subtitle: 'Rustic & Process-Driven',
-      tagline: 'The Art of Patience. Hand-turned and fire-roasted.',
-      image: 'assets/imgs/heritage.png'
-    },
-    'Comfort': {
-      title: 'The Comfort',
-      subtitle: 'Nostalgia & Gifting',
-      tagline: 'Pure Pleasure. The flavors of home, elevated.',
-      image: 'assets/imgs/comfort.png'
-    },
-    // Fallback para secciones desconocidas
-    'default': {
-      title: 'Our Collection',
-      subtitle: 'Signature Selection',
-      tagline: 'Crafted with passion for the discerning palate.',
-      image: 'assets/imgs/hero.jpg'
-    }
-  };
+  // ¡SECTION_CONFIG ha sido eliminado!
 
   constructor(
     private cartService: CartService,
     private inventoryService: InventoryService,
+    private sectionsService: SectionsService, // Inyectamos el servicio
     private router: Router
   ) {
     this.cart$ = this.cartService.getCartState();
@@ -75,14 +44,29 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts() {
-    this.sections$ = this.inventoryService.getVisibleProducts().pipe(
-      map((products: CartItem[]) => this.groupProductsBySection(products))
+    // Usamos forkJoin para esperar a que ambas peticiones (productos y secciones) terminen
+    this.sections$ = forkJoin({
+      products: this.inventoryService.getVisibleProducts(),
+      sectionsData: this.sectionsService.getSections()
+    }).pipe(
+      map(({ products, sectionsData }) => this.groupProductsBySection(products, sectionsData))
     );
   }
 
-private groupProductsBySection(products: CartItem[]): SectionGroup[] {
+  // Ahora recibimos también la data de las secciones desde la BD
+  private groupProductsBySection(products: CartItem[], sectionsData: any[]): SectionGroup[] {
+    
+    // 1. Convertimos el array de secciones de la BD en un diccionario (Map) 
+    // para buscar más rápido usando el título en minúsculas.
+    const sectionConfigMap = sectionsData.reduce((acc, sec) => {
+      // Usamos title o name como clave de búsqueda (todo en minúscula para evitar errores)
+      const key = (sec.title || sec.name || '').toLowerCase().trim();
+      acc[key] = sec;
+      return acc;
+    }, {} as Record<string, any>);
+
+    // 2. Agrupamos los productos por su propiedad 'section'
     const grouped = products.reduce((acc, product) => {
-      // Normalizamos la key (ej: "  Harvest " -> "Harvest")
       const rawSection = product.section || 'default';
       const key = rawSection.trim(); 
 
@@ -93,19 +77,21 @@ private groupProductsBySection(products: CartItem[]): SectionGroup[] {
       return acc;
     }, {} as Record<string, CartItem[]>);
 
-    // Mapeamos a la estructura SectionGroup enriquecida
+    // 3. Construimos el arreglo final de SectionGroup
     return Object.keys(grouped).map(key => {
-      // Intentamos buscar la config exacta, si no existe probamos lowercase, si no default
-      const config = this.SECTION_CONFIG[key] 
-                  || this.SECTION_CONFIG[key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()] // Intento de Capitalize
-                  || this.SECTION_CONFIG['default'];
+      
+      // Buscamos la configuración de la sección en nuestro diccionario
+      // (Convertimos a minúscula para asegurar la coincidencia exacta)
+      const config = sectionConfigMap[key.toLowerCase()];
 
       return {
         id: key,
-        displayTitle: config.title,
-        subtitle: config.subtitle,
-        tagline: config.tagline,
-        bannerImage: config.image,
+        // Si encontramos la configuración en BD, usamos sus valores; 
+        // de lo contrario, aplicamos un fallback por defecto
+        displayTitle: config?.title || key,
+        subtitle: config?.subtitle || 'Signature Selection',
+        tagline: config?.tagline || 'Crafted with passion for the discerning palate.',
+        bannerImage: config?.image || 'assets/imgs/hero.jpg', // Imagen por defecto si no tiene
         products: grouped[key]
       };
     });
@@ -124,20 +110,21 @@ private groupProductsBySection(products: CartItem[]): SectionGroup[] {
 
   addToCartFromCard(productWithQuantity: any) {
     console.log('2A Adding to cart from ProductsComponent:', productWithQuantity);
-   const item: CartItem = {
-    ...productWithQuantity, 
-    show: true,
-    length: productWithQuantity.length, 
-    width: productWithQuantity.width,
-    height: productWithQuantity.height,
-    weight: productWithQuantity.weight
-  };
-  console.log('🔍 [2B. ProductsComponent] Enviando al CartService:', {
+    const item: CartItem = {
+      ...productWithQuantity, 
+      show: true,
+      length: productWithQuantity.length, 
+      width: productWithQuantity.width,
+      height: productWithQuantity.height,
+      weight: productWithQuantity.weight
+    };
+    
+    console.log('🔍 [2B. ProductsComponent] Enviando al CartService:', {
       id: item.id,
       weight: item.weight,
       length: item.length
-  });
+    });
 
-  this.cartService.addToCart(item);
+    this.cartService.addToCart(item);
   }
 }

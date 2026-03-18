@@ -56,7 +56,9 @@
                 class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all outline-none appearance-none bg-white text-gray-900 cursor-pointer"
                 [class.border-red-300]="productForm.get('section')?.invalid && productForm.get('section')?.touched">
                 <option value="" disabled selected>Selecciona una categoría</option>
-                <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
+                <option *ngFor="let sec of sections" [value]="sec.title || sec.name">
+                  {{ sec.title || sec.name }}
+                </option>
               </select>
               <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
                 <i class="fas fa-chevron-down text-sm"></i>

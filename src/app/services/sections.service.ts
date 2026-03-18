@@ -14,7 +14,7 @@ export class SectionsService {
   private getHeaders(): HttpHeaders {
     return new HttpHeaders().set(
       'x-business-id',
-      environment.businessId || 'tienda-de-henry'
+      environment.businessId || 'tienda-de-henry',
     );
   }
 
@@ -24,13 +24,9 @@ export class SectionsService {
     });
   }
 
-  createSection(name: string): Observable<any> {
-    return this.http.post<any>(
-      this.apiUrl,
-      { name },
-      {
-        headers: this.getHeaders(),
-      }
-    );
+  createSection(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.apiUrl, formData, {
+      headers: this.getHeaders(),
+    });
   }
 }

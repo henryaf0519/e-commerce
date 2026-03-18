@@ -16,7 +16,7 @@ export class InventoryFormComponent implements OnInit {
   errorMessage = '';
   
   // 2. Variable para almacenar las secciones que vienen del backend
-  sections: string[] = [];
+  sections: any[] = [];
 
   selectedFiles: File[] = [];
   previews: string[] = [];
