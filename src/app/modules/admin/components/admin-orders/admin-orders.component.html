@@ -15,6 +15,9 @@
           <th class="px-6 py-4">{{ 'ADMIN.ORDERS.COL_CUSTOMER' | translate }}</th>
           <th class="px-6 py-4">{{ 'ADMIN.ORDERS.COL_DATE' | translate }}</th>
           <th class="px-6 py-4">{{ 'ADMIN.ORDERS.COL_STATUS' | translate }}</th>
+          
+          <th class="px-6 py-4">Productos</th> 
+          
           <th class="px-6 py-4 text-right">{{ 'ADMIN.ORDERS.COL_TOTAL' | translate }}</th>
           <th class="px-6 py-4 text-center">{{ 'ADMIN.ORDERS.COL_ACTIONS' | translate }}</th>
         </tr>
@@ -51,6 +54,17 @@
               <span [ngClass]="getStatusClass(order.status)" class="px-2.5 py-1 rounded-full text-[10px] font-bold border uppercase tracking-tight">
                 {{ order.status.replace('_', ' ') }}
               </span>
+            </td>
+            <td class="px-6 py-4">
+              <ul class="text-xs text-gray-600 space-y-1">
+                <li *ngFor="let item of order.invoice?.items" class="flex items-start">
+                  <span class="font-bold text-gray-800 mr-1">{{ item.quantity }}x</span>
+                  <span class="truncate max-w-[150px]" [title]="item.title">{{ item.title }}</span>
+                </li>
+              </ul>
+              <div *ngIf="!order.invoice?.items?.length" class="text-xs text-gray-400 italic">
+                Sin detalles
+              </div>
             </td>
 
             <td class="px-6 py-4 text-right">
