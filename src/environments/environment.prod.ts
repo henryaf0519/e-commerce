@@ -3,5 +3,7 @@ export const environment = {
   apiUrl: 'https://pruebasfaciles.online/v2',
   businessId: 'root&CaneCO',
   strippeKey:'pk_live_51SZhHTJ51nohVpnZ0iAa3JuhZiLaoc0gZaiIlrZHNebm9QemVGI3db7eaVSa93y44J04KPdqlTaVSCpzVF2HQdfJ00vhCixMsA',
-  defaultLanguage: 'es'
+  defaultLanguage: 'es',
+  useWompi: true,
+  wompiPublicKey: 'pub_test_PI1lecs8s9BnomqC3FOONcPUKJTTeXAl',
 };

@@ -9,8 +9,12 @@
     <div class="flex items-center space-x-2 text-sm mb-8">
       <a routerLink="/checkout/info" class="text-muted hover:text-brand">{{ 'CHECKOUT.STEPS.INFO' | translate }}</a>
       <span class="text-muted">/</span>
-      <a routerLink="/checkout/shipping" class="text-muted hover:text-brand">{{ 'CHECKOUT.STEPS.SHIPPING' | translate }}</a>
-      <span class="text-muted">/</span>
+      
+      <ng-container *ngIf="!useWompi">
+        <a routerLink="/checkout/shipping" class="text-muted hover:text-brand">{{ 'CHECKOUT.STEPS.SHIPPING' | translate }}</a>
+        <span class="text-muted">/</span>
+      </ng-container>
+
       <span class="font-bold text-brand">{{ 'CHECKOUT.STEPS.PAYMENT' | translate }}</span>
     </div>
 
@@ -35,12 +39,12 @@
         </a>
       </div>
 
-      <div class="flex justify-between items-start">
+      <div *ngIf="!useWompi" class="flex justify-between items-start">
         <div class="flex flex-col">
           <span class="text-muted text-xs uppercase tracking-wide">{{ 'CHECKOUT_PAYMENT.METHOD_LABEL' | translate }}</span>
           <span class="text-xs text-muted">
             {{ shippingRate?.provider }} 
-            <span *ngIf="shippingRate?.days && shippingRate?.days !== 'To be confirmed'">
+            <span *ngIf="shippingRate?.days && shippingRate?.days !== 'To be confirmed' && shippingRate?.days !== 'Por confirmar'">
                - {{ 'CHECKOUT_PAYMENT.ARRIVES_IN' | translate }} {{ shippingRate?.days }} {{ 'CHECKOUT_SHIPPING.BUSINESS_DAYS' | translate }}
             </span>
           </span>
@@ -53,7 +57,7 @@
 
     <h2 class="text-lg font-semibold text-main mb-4">{{ 'CHECKOUT_PAYMENT.SECURE_TITLE' | translate }}</h2>
     
-    <div class="bg-surface border border-muted/20 rounded-xl mb-8 shadow-sm transition-all duration-300 min-h-[160px] flex flex-col justify-center relative overflow-hidden">
+    <div *ngIf="!useWompi" class="bg-surface border border-muted/20 rounded-xl mb-8 shadow-sm transition-all duration-300 min-h-[160px] flex flex-col justify-center relative overflow-hidden">
       
       <div *ngIf="!clientSecret" class="p-8 text-center flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-500">
         <div class="flex items-center justify-center space-x-2">
@@ -81,33 +85,59 @@
       </div>
     </div>
 
+    <div *ngIf="useWompi" class="bg-surface border border-muted/20 p-8 rounded-xl mb-8 shadow-sm flex flex-col items-center justify-center text-center">
+      <div class="flex items-center justify-center space-x-2 mb-4">
+        <span class="text-[10px] font-bold text-muted uppercase tracking-[0.2em]">Pagos Seguros con</span>
+      </div>
+      <img src="https://wompi.com/wp-content/uploads/2021/08/Logo-Wompi.png" alt="Wompi" class="h-8 mx-auto mb-4 object-contain">
+      <p class="text-xs text-muted max-w-[320px] leading-relaxed">
+        Serás redirigido a la pasarela segura de Wompi para completar tu pago con Tarjeta, Nequi, PSE o transferencia bancaria.
+      </p>
+    </div>
+
     <div class="flex justify-between items-center mt-8">
-      <a routerLink="/checkout/shipping" class="text-brand font-medium hover:text-brand/80 transition-colors flex items-center gap-1 cursor-pointer">
+      <a [routerLink]="useWompi ? '/checkout/info' : '/checkout/shipping'" class="text-brand font-medium hover:text-brand/80 transition-colors flex items-center gap-1 cursor-pointer">
         <span class="text-xl">‹</span> {{ 'CHECKOUT_SHIPPING.BACK_LINK' | translate }}
       </a>
 
-      <button
-        *ngIf="!clientSecret"
-        (click)="initPaymentFlow()"
-        [disabled]="isProcessing"
-        class="bg-brand text-inverted px-10 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center gap-3 disabled:opacity-50"
-      >
-        <svg *ngIf="isProcessing" class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-        <span>{{ (isProcessing ? 'COMMON.LOADING' : 'CHECKOUT_PAYMENT.INIT_BTN') | translate }}</span>
-      </button>
+      <ng-container *ngIf="!useWompi">
+        <button
+          *ngIf="!clientSecret"
+          (click)="initPaymentFlow()"
+          [disabled]="isProcessing"
+          class="bg-brand text-inverted px-10 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center gap-3 disabled:opacity-50"
+        >
+          <svg *ngIf="isProcessing" class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <span>{{ (isProcessing ? 'COMMON.LOADING' : 'CHECKOUT_PAYMENT.INIT_BTN') | translate }}</span>
+        </button>
 
-      <button
-        *ngIf="clientSecret"
-        (click)="confirmPayment()"
-        [disabled]="isProcessing || isLoadingStripe"
-        class="bg-green-600 text-white px-10 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center gap-3 disabled:opacity-50"
-      >
-        <svg *ngIf="isProcessing" class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-        <span>{{ 'CHECKOUT_PAYMENT.PAY_BTN' | translate }} ${{ grandTotal$ | async | number : "1.0-0" }}</span>
-        <svg *ngIf="!isProcessing" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      </button>
+        <button
+          *ngIf="clientSecret"
+          (click)="confirmPayment()"
+          [disabled]="isProcessing || isLoadingStripe"
+          class="bg-green-600 text-white px-10 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center gap-3 disabled:opacity-50"
+        >
+          <svg *ngIf="isProcessing" class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <span>{{ 'CHECKOUT_PAYMENT.PAY_BTN' | translate }} ${{ grandTotal$ | async | number : "1.0-0" }}</span>
+          <svg *ngIf="!isProcessing" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </button>
+      </ng-container>
+
+      <ng-container *ngIf="useWompi">
+        <button
+          (click)="openWompiWidget()"
+          [disabled]="isProcessing"
+          class="bg-[#001B94] text-white px-10 py-4 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg flex items-center gap-3 disabled:opacity-50"
+        >
+          <svg *ngIf="isProcessing" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          <span>{{ 'CHECKOUT_PAYMENT.PAY_BTN' | translate }} ${{ grandTotal$ | async | number : "1.0-0" }}</span>
+          <svg *ngIf="!isProcessing" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </button>
+      </ng-container>
     </div>
 
     <div class="mt-8 flex justify-center gap-4 opacity-40 grayscale">
@@ -140,8 +170,12 @@
           <span>${{ productTotal$ | async | number : "1.0-0" }}</span>
         </div>
         <div class="flex justify-between text-sm text-muted">
-          <span>{{ 'CHECKOUT.SUMMARY.SHIPPING_LABEL' | translate }} ({{ shippingRate?.provider }})</span>
-          <span>${{ shippingRate?.price | number : "1.0-0" }}</span>
+          <span>
+          {{ 'CHECKOUT.SUMMARY.SHIPPING_LABEL' | translate }} 
+          <span *ngIf="!useWompi">({{ shippingRate?.provider }})</span>
+        </span>
+          <span *ngIf="!useWompi">${{ shippingRate?.price | number : "1.0-0" }}</span>
+        <span *ngIf="useWompi" class="text-brand font-medium">Gratis</span>
         </div>
       </div>
 
@@ -173,5 +207,30 @@
         {{ 'CHECKOUT_PAYMENT.TRY_AGAIN' | translate }}
       </button>
     </div>
+  </div>
+</div>
+
+<div *ngIf="isConfirmingOrder" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-0">
+  <div class="absolute inset-0 bg-page/80 backdrop-blur-sm transition-opacity"></div>
+  
+  <div class="relative bg-surface border border-muted/20 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center flex flex-col items-center animate-modal-in">
+    
+    <div class="relative w-20 h-20 mb-6">
+      <div class="absolute inset-0 border-4 border-muted/20 rounded-full"></div>
+      <div class="absolute inset-0 border-4 border-brand rounded-full border-t-transparent animate-spin"></div>
+      
+      <div class="absolute inset-0 flex items-center justify-center text-brand">
+        <svg class="w-6 h-6 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      </div>
+    </div>
+    
+    <h3 class="text-xl font-bold text-main mb-2">Procesando pago...</h3>
+    <p class="text-sm text-muted leading-relaxed">
+      Estamos confirmando tu transacción de forma segura y creando tu orden. 
+      <br><br>
+      <span class="font-semibold text-brand animate-pulse">Por favor, no cierres esta ventana.</span>
+    </p>
   </div>
 </div>

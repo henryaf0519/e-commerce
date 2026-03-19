@@ -6,6 +6,7 @@ import { CheckoutService } from 'src/app/services/checkout.service';
 import { AuthService } from 'src/app/services/auth.service'; // <--- IMPORTADO
 import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
 import { State, City, IState, ICity } from 'country-state-city';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout-info',
@@ -102,10 +103,14 @@ export class CheckoutInfoComponent implements OnInit {
   onSubmit() {
     if (this.infoForm.valid) {
       this.checkoutService.setShippingAddress(this.infoForm.getRawValue());
-      this.router.navigate(['/checkout/shipping']);
+      if (environment.useWompi) {
+        this.router.navigate(['/checkout/payment']);
+      } else {
+        this.router.navigate(['/checkout/shipping']);
+      }
     } else {
       this.infoForm.markAllAsTouched();
-    }
+    } 
   }
 
   // =========================================================

@@ -2,21 +2,23 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { delay, map, Observable, of, take } from 'rxjs';
-import { CheckoutService, ShippingAddress, ShippingRate } from 'src/app/services/checkout.service';
+import {
+  CheckoutService,
+  ShippingAddress,
+  ShippingRate,
+} from 'src/app/services/checkout.service';
 import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
-
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout-shipping',
   templateUrl: './checkout-shipping.component.html',
-  styleUrls: ['./checkout-shipping.component.scss']
+  styleUrls: ['./checkout-shipping.component.scss'],
 })
 export class CheckoutShippingComponent {
-
   cartItems$ = this.store.select(selectCartItems);
   productTotal$ = this.store.select(selectTotalPrice);
-  
+
   address: ShippingAddress | null = null;
   loading: boolean = true;
   rates: ShippingRate[] = [];
@@ -26,12 +28,12 @@ export class CheckoutShippingComponent {
   constructor(
     private checkoutService: CheckoutService,
     private router: Router,
-    private store: Store
+    private store: Store,
   ) {}
 
   ngOnInit(): void {
     this.address = this.checkoutService.getShippingAddress();
-    
+
     if (!this.address) {
       this.router.navigate(['/checkout/info']);
       return;
@@ -42,9 +44,26 @@ export class CheckoutShippingComponent {
 
   loadRates() {
     this.loading = true;
-    this.cartItems$.pipe(take(1)).subscribe(items => {
+    if (environment.useWompi) {
+      this.rates = [
+        {
+          id: 'wompi_default_shipping',
+          provider: 'Envío',
+          name: 'Estándar',
+          days: 'Por confirmar',
+          price: 0,
+          duration: '1-3',
+          currency: 'COP',
+          image: 'assets/imgs/shipping-icon.png',
+        },
+      ];
+      this.selectedRate = this.rates[0];
+      this.loading = false;
+      return;
+    }
+    this.cartItems$.pipe(take(1)).subscribe((items) => {
       console.log('Items redux:', items);
-      
+
       if (!this.address) return;
 
       this.checkoutService.getShippingRates(this.address, items).subscribe({
@@ -58,9 +77,10 @@ export class CheckoutShippingComponent {
         },
         error: (err) => {
           console.error('Error fetching rates', err);
-          this.messageError = err.error?.message || 'Failed to fetch shipping rates.';
+          this.messageError =
+            err.error?.message || 'Failed to fetch shipping rates.';
           this.loading = false;
-        }
+        },
       });
     });
   }
@@ -71,7 +91,7 @@ export class CheckoutShippingComponent {
 
   get totalWithShipping$(): Observable<number> {
     return this.productTotal$.pipe(
-      map(total => total + (this.selectedRate?.price || 0))
+      map((total) => total + (this.selectedRate?.price || 0)),
     );
   }
 
@@ -81,5 +101,4 @@ export class CheckoutShippingComponent {
       this.router.navigate(['/checkout/payment']);
     }
   }
-
 }

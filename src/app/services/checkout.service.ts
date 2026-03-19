@@ -114,4 +114,14 @@ getShippingRates(
   createOrder(orderPayload: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/orders`, orderPayload);
   }
+
+  createWompiOrder(order: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/orders/wompi`, order);
+  }
+
+  getWompiSignature(reference: string, amountInCents: number, currency: string): Observable<{signature: string}> {
+  return this.http.get<{signature: string}>(`${this.apiUrl}/wompi/generate-signature`, {
+    params: { reference, amountInCents, currency }
+  });
+}
 }
