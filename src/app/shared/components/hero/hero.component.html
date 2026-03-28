@@ -19,11 +19,17 @@
             {{ subtitle }}
         </p>
         
-        <div class="mt-12">
-            <button (click)="scrollToCatalogo($event)"
-               class="inline-flex items-center justify-center px-10 py-4 border-2 border-white text-white text-sm font-bold tracking-[0.3em] uppercase rounded-full hover:bg-white hover:text-brand transition-all duration-500 transform hover:-translate-y-1 active:scale-95 shadow-2xl">
-               {{ buttonText }}
-            </button>
-        </div>
+<div class="mt-12">
+  <button (click)="scrollToCatalogo($event)"
+    class="group relative inline-flex items-center justify-center px-12 py-5 font-bold tracking-[0.4em] uppercase transition-all duration-500 rounded-full text-white overflow-hidden shadow-[0_10px_40px_-10px_rgba(234,88,12,0.5)] hover:shadow-[0_20px_50px_rgba(234,88,12,0.6)] hover:-translate-y-2 active:scale-95"
+    style="background-color: #ea580c;">
+    
+    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+    
+    <span class="relative z-10 text-xs sm:text-sm">
+      {{ buttonText }}
+    </span>
+  </button>
+</div>
     </div>
 </div>

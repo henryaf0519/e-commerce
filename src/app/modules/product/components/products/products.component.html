@@ -1,49 +1,62 @@
 <div class="flex min-h-screen flex-col bg-page font-sans">
-
-  <app-hero 
+  <app-hero
     [title]="'HOME.HERO_TITLE' | translate"
     [subtitle]="'HOME.HERO_SUBTITLE' | translate"
     [buttonText]="'HOME.HERO_BUTTON' | translate"
     backgroundImage="assets/imgs/hero.png"
-    [fullHeight]="true">
+    [fullHeight]="true"
+  >
   </app-hero>
-
-  <app-philosophy></app-philosophy>
+  <div class="py-16 text-center">
+    <h2 class="text-3xl font-serif text-gray-800 uppercase tracking-widest">
+       {{ "HOME.SECTION_TITLE" | translate }}
+    </h2>
+    <div class="w-16 h-1 bg-brand mx-auto mt-4"></div>
+  </div>
 
   <ng-container *ngIf="sections$ | async as sections; else loadingTpl">
-    
-    <div id="catalogo" class="flex-1 pb-24 scroll-mt-20">
-      
-      <section *ngFor="let section of sections" class="mb-20">
-        
+    <div class="flex-1 pb-24 scroll-mt-20">
+      <section id="catalogo" *ngFor="let section of sections" class="mb-20">
         <div class="relative w-full h-[400px] mb-12 overflow-hidden group">
-            <img 
-              [src]="section.bannerImage" 
-              [alt]="section.displayTitle"
-              class="w-full h-full object-cover transition-transform duration-[2s] ease-in-out group-hover:scale-110"
+          <img
+            [src]="section.bannerImage"
+            [alt]="section.displayTitle"
+            class="w-full h-full object-cover transition-transform duration-[2s] ease-in-out group-hover:scale-110"
+          />
+
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-page"
+          ></div>
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+          >
+            <span
+              class="text-accent text-sm md:text-base font-bold tracking-[0.2em] uppercase mb-4"
             >
-            
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-page"></div>
+              {{ section.subtitle }}
+            </span>
 
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-              <span class="text-accent text-sm md:text-base font-bold tracking-[0.2em] uppercase mb-4">
-                {{ section.subtitle }}
-              </span>
+            <h2
+              class="text-5xl md:text-7xl font-serif text-white font-medium tracking-tight mb-6 drop-shadow-lg"
+            >
+              {{ section.displayTitle }}
+            </h2>
 
-              <h2 class="text-5xl md:text-7xl font-serif text-white font-medium tracking-tight mb-6 drop-shadow-lg">
-                {{ section.displayTitle }}
-              </h2>
+            <div class="w-24 h-1 bg-brand/80 rounded-full mb-6"></div>
 
-              <div class="w-24 h-1 bg-brand/80 rounded-full mb-6"></div>
-
-              <p class="text-gray-200 text-lg md:text-xl max-w-2xl font-light italic leading-relaxed">
-                "{{ section.tagline }}"
-              </p>
-            </div>
+            <p
+              class="text-gray-200 text-lg md:text-xl max-w-2xl font-light italic leading-relaxed"
+            >
+              "{{ section.tagline }}"
+            </p>
+          </div>
         </div>
 
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          >
             <app-card
               *ngFor="let product of section.products"
               [products]="product"
@@ -56,21 +69,29 @@
         </div>
       </section>
 
-      <div *ngIf="sections.length === 0" class="flex flex-col items-center justify-center py-32 text-muted">
+      <div
+        *ngIf="sections.length === 0"
+        class="flex flex-col items-center justify-center py-32 text-muted"
+      >
         <i class="fas fa-box-open text-6xl mb-4 opacity-50"></i>
-        <p class="text-2xl font-serif">{{ 'HOME.EMPTY_COLLECTION' | translate }}</p>
+        <p class="text-2xl font-serif">
+          {{ "HOME.EMPTY_COLLECTION" | translate }}
+        </p>
       </div>
-
     </div>
   </ng-container>
+  <app-philosophy></app-philosophy>
 
   <ng-template #loadingTpl>
-    <div class="flex h-[60vh] flex-col items-center justify-center bg-page gap-4">
-       <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"></div>
-       <span class="text-muted text-sm tracking-widest uppercase animate-pulse">
-         {{ 'HOME.LOADING_EXPERIENCE' | translate }}
-       </span>
+    <div
+      class="flex h-[60vh] flex-col items-center justify-center bg-page gap-4"
+    >
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand"
+      ></div>
+      <span class="text-muted text-sm tracking-widest uppercase animate-pulse">
+        {{ "HOME.LOADING_EXPERIENCE" | translate }}
+      </span>
     </div>
   </ng-template>
-
 </div>

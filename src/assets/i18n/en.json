@@ -20,9 +20,10 @@
   "HOME": {
     "HERO_TITLE": "Mountain-Grown Sweetness. The Soul of Santander.",
     "HERO_SUBTITLE": "Small-batch Colombian confections crafted from unrefined cane sugar, heirloom roots, and ancestral techniques. No factories. Just three generations of patience.",
-    "HERO_BUTTON": "Shop The Collections",
+    "HERO_BUTTON": "Buy now",
     "EMPTY_COLLECTION": "Our collection is being prepared...",
-    "LOADING_EXPERIENCE": "Loading the experience..."
+    "LOADING_EXPERIENCE": "Loading the experience...",
+    "SECTION_TITLE": "Handcrafted Treats"
   },
   "PRODUCTS": {
     "TITLE": "Our Products",

@@ -1,33 +1,34 @@
 <footer class="bg-surface border-t border-black/5 pt-16 pb-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-4xl font-serif text-main mb-12 italic">
-        {{ 'FOOTER.STANDARD_TITLE' | translate }}
+        {{ "FOOTER.STANDARD_TITLE" | translate }}
       </h2>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
         <div class="space-y-3">
           <div class="flex justify-center text-accent mb-4">
             <i class="fas fa-leaf text-2xl"></i>
           </div>
           <h3 class="text-lg font-bold text-main tracking-widest uppercase">
-            {{ 'FOOTER.CORN_SYRUP_TITLE' | translate }}
+            {{ "FOOTER.CORN_SYRUP_TITLE" | translate }}
           </h3>
           <p class="text-muted font-light leading-relaxed">
-            {{ 'FOOTER.CORN_SYRUP_DESC' | translate }}
+            {{ "FOOTER.CORN_SYRUP_DESC" | translate }}
           </p>
         </div>
 
-        <div class="space-y-3 border-y md:border-y-0 md:border-x border-black/5 py-8 md:py-0">
+        <div
+          class="space-y-3 border-y md:border-y-0 md:border-x border-black/5 py-8 md:py-0"
+        >
           <div class="flex justify-center text-accent mb-4">
             <i class="fas fa-mountain text-2xl"></i>
           </div>
           <h3 class="text-lg font-bold text-main tracking-widest uppercase">
-            {{ 'FOOTER.SMALL_BATCH_TITLE' | translate }}
+            {{ "FOOTER.SMALL_BATCH_TITLE" | translate }}
           </h3>
           <p class="text-muted font-light leading-relaxed">
-            {{ 'FOOTER.SMALL_BATCH_DESC' | translate }}
+            {{ "FOOTER.SMALL_BATCH_DESC" | translate }}
           </p>
         </div>
 
@@ -36,34 +37,57 @@
             <i class="fas fa-hand-holding-heart text-2xl"></i>
           </div>
           <h3 class="text-lg font-bold text-main tracking-widest uppercase">
-            {{ 'FOOTER.FAMILY_OWNED_TITLE' | translate }}
+            {{ "FOOTER.FAMILY_OWNED_TITLE" | translate }}
           </h3>
           <p class="text-muted font-light leading-relaxed">
-            {{ 'FOOTER.FAMILY_OWNED_DESC' | translate }}
+            {{ "FOOTER.FAMILY_OWNED_DESC" | translate }}
           </p>
         </div>
       </div>
     </div>
 
-    <div class="pt-8 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-6">
-      <a href="mailto:hello@rootandcane.com" 
-         class="text-main font-medium hover:text-brand transition-colors tracking-widest">
-        hello@rootandcane.com
-      </a>
-
-      <div class="flex flex-col items-center">
-        <span class="text-xs text-muted uppercase tracking-[0.4em] font-bold">Root & Cane</span>
-        <div class="h-[1px] w-8 bg-brand/30 mt-1"></div>
+   <div class="pt-12 border-t border-black/5 flex flex-col items-center gap-10">
+  
+  <div class="flex items-center gap-6">
+    <a href="https://www.instagram.com/rootandcane?igsh=NTc4MTIwNjQ2YQ%3D%3D&utm_source=qr" target="_blank" 
+       class="group flex flex-col items-center gap-2 transition-all duration-300">
+      <div class="w-14 h-14 rounded-full border border-black/10 flex items-center justify-center bg-white shadow-sm group-hover:shadow-md group-hover:border-[#ea580c] transition-all">
+        <i class="fab fa-instagram text-xl text-main group-hover:text-[#ea580c]"></i>
       </div>
+      <span class="text-[9px] uppercase tracking-[0.3em] font-black text-muted group-hover:text-main">Instagram</span>
+    </a>
 
-      <p class="text-muted text-sm tracking-wide">
-        {{ 'FOOTER.CRAFTED_WITH' | translate }} <span class="text-brand">❤️</span> {{ 'FOOTER.IN_COLOMBIA' | translate }}
-      </p>
+    <div class="h-8 w-[1px] bg-black/5 mx-2"></div>
+
+    <a href="https://www.facebook.com/profile.php?id=61588547414501&mibextid=wwXIfr" target="_blank" 
+       class="group flex flex-col items-center gap-2 transition-all duration-300">
+      <div class="w-14 h-14 rounded-full border border-black/10 flex items-center justify-center bg-white shadow-sm group-hover:shadow-md group-hover:border-[#ea580c] transition-all">
+        <i class="fab fa-facebook-f text-xl text-main group-hover:text-[#ea580c]"></i>
+      </div>
+      <span class="text-[9px] uppercase tracking-[0.3em] font-black text-muted group-hover:text-main">Facebook</span>
+    </a>
+  </div>
+
+  <div class="flex flex-col md:flex-row justify-between items-center w-full gap-6">
+    <a href="mailto:hello@rootandcane.com" 
+       class="text-main font-medium hover:text-[#ea580c] transition-colors tracking-widest text-sm">
+      hello@rootandcane.com
+    </a>
+
+    <div class="flex flex-col items-center">
+      <span class="text-xs text-muted uppercase tracking-[0.4em] font-bold">Root & Cane</span>
+      <div class="h-[1px] w-8 mt-1" style="background-color: #ea580c; opacity: 0.4;"></div>
     </div>
+
+    <p class="text-muted text-sm tracking-wide">
+      {{ 'FOOTER.CRAFTED_WITH' | translate }} <span style="color: #ea580c;">❤️</span> {{ 'FOOTER.IN_COLOMBIA' | translate }}
+    </p>
+  </div>
+</div>
 
     <div class="mt-8 text-center">
       <p class="text-[10px] text-muted/50 uppercase tracking-widest">
-        &copy; 2026 Root & Cane. {{ 'FOOTER.RIGHTS' | translate }}
+        &copy; 2026 Root & Cane. {{ "FOOTER.RIGHTS" | translate }}
       </p>
     </div>
   </div>
