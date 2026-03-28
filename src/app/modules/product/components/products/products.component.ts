@@ -20,6 +20,7 @@ export class ProductsComponent implements OnInit {
 
   products: CartItem[] = [];
   loading: boolean = true;
+  latestFeedbacks: any[] = [];
 
   // ¡SECTION_CONFIG ha sido eliminado!
 
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.fetchGlobalFeedbacks();
   }
 
   loadProducts() {
@@ -127,4 +129,14 @@ export class ProductsComponent implements OnInit {
 
     this.cartService.addToCart(item);
   }
+
+
+  fetchGlobalFeedbacks() {
+  this.inventoryService.getLatestGlobalFeedbacks().subscribe({
+    next: (data) => {
+      this.latestFeedbacks = data;
+    },
+    error: (err) => console.error('Error al cargar testimonios:', err)
+  });
+}
 }

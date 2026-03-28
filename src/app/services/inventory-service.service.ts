@@ -83,4 +83,13 @@ export class InventoryService {
       },
     );
   }
+
+ getLatestGlobalFeedbacks(): Observable<any[]> {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/feedback/latest/global`,
+    {
+      headers: this.getHeaders(), // Aquí se envía el x-business-id
+    }
+  );
+}
 }
