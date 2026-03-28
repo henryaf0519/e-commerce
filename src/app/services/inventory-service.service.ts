@@ -64,4 +64,23 @@ export class InventoryService {
       headers: this.getHeaders(),
     });
   }
+
+  getFeedbacks(productId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${productId}/feedback`, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  addFeedback(
+    productId: string,
+    feedback: { comment: string; customerName?: string },
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/${productId}/feedback`,
+      feedback,
+      {
+        headers: this.getHeaders(),
+      },
+    );
+  }
 }

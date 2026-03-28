@@ -36,8 +36,11 @@ export class CardDetailComponent implements OnInit {
     quantity: 1,
   };
 
-  // --- NUEVAS VARIABLES (PARA EL ESTILO SHOPIFY) ---
-  mainImage: string = ''; // Controla la foto grande de la galería
+  mainImage: string = '';
+  feedbacks: any[] = [];
+  newComment: string = '';
+  newCustomerName: string = '';
+  isSubmittingFeedback: boolean = false;
   
   // Control de los acordeones de información (Descripción abierta por defecto)
   accordions = {
@@ -69,10 +72,11 @@ export class CardDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
+      debugger
       if (params['id']) {
         this.productId = params['id'];
       }
-      if (!this.product && this.productId) {
+      if (this.productId) {
         this.loadProduct(this.productId);
       } else if (!this.product && !this.productId) {
         this.loading = false;
@@ -90,11 +94,23 @@ export class CardDetailComponent implements OnInit {
           this.mainImage = this.product.images[0];
         }
         this.loading = false;
+        this.loadFeedbacks(id);
       },
       error: (err) => {
         console.error('Error cargando el producto:', err);
         this.loading = false;
       },
+    });
+  }
+
+  loadFeedbacks(id: string): void {
+    this.inventoryService.getFeedbacks(id).subscribe({
+      next: (data) => {
+        this.feedbacks = data.sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      },
+      error: (err) => console.error('Error al cargar comentarios:', err)
     });
   }
 
@@ -167,5 +183,35 @@ export class CardDetailComponent implements OnInit {
       return [];
     }
     return Array.from({ length: this.product.stock }, (_, i) => i + 1);
+  }
+
+
+  submitFeedback(): void {
+    if (!this.newComment.trim() || !this.productId) return;
+
+    this.isSubmittingFeedback = true;
+    const payload = {
+      comment: this.newComment,
+      customerName: this.newCustomerName.trim() || 'Anónimo'
+    };
+
+    this.inventoryService.addFeedback(this.productId, payload).subscribe({
+      next: (res) => {
+        // Agregamos el nuevo comentario a la lista localmente para no recargar
+        this.feedbacks.unshift({
+          ...payload,
+          createdAt: new Date().toISOString()
+        });
+        
+        // Limpiamos el formulario
+        this.newComment = '';
+        this.newCustomerName = '';
+        this.isSubmittingFeedback = false;
+      },
+      error: (err) => {
+        console.error('Error al enviar comentario:', err);
+        this.isSubmittingFeedback = false;
+      }
+    });
   }
 }

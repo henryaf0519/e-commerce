@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CardDetailComponent } from './components/card-detail/card-detail.component';
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from '../../state/cart.reducer';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { cartReducer } from '../../state/cart.reducer';
   imports: [
     CommonModule,
     ProductRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
