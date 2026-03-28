@@ -147,12 +147,24 @@
     "PREMIUM_QUALITY": "Premium Quality",
     "FRESH_INGREDIENTS": "Fresh Ingredients",
     "SECURE_PURCHASE": "Secure Purchase",
-    "DESCRIPTION": "Description"
+    "DESCRIPTION": "Description",
+    "RELATED_SUBTITLE": "Sweet Pairs",
+    "RELATED_TITLE": "You might also like...",
+    "FEEDBACK_TITLE": "Community Reviews",
+    "FEEDBACK_SUBTITLE": "Share your experience",
+    "NAME_PLACEHOLDER": "Your name",
+    "COMMENT_PLACEHOLDER": "What did you think of this treat?",
+    "SUBMIT_BUTTON": "Post review",
+    "SUBMITTING_BUTTON": "Sending...",
+    "ANONYMOUS": "Anonymous"
   },
   "MODAL": {
-    "SUCCESS_TITLE": "Great!",
-    "CONTINUE_SHOPPING": "Continue shopping",
-    "GO_TO_CART": "Go to cart"
+    "SUCCESS_TITLE": "Sweet choice!",
+    "SUCCESS_MESSAGE": "Your item has been successfully added.",
+    "CONTINUE_EXPLORING": "Keep exploring treats",
+    "BACK_TO_CATALOG": "Back to main catalog",
+    "GO_TO_CART": "Go to cart",
+    "OR_SEPARATOR": "or"
   },
   "PHILOSOPHY": {
     "TITLE_LABEL": "Our philosophy",

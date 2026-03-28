@@ -23,12 +23,15 @@ import { CartItem } from 'src/app/models/cart-item.model';
   ],
 })
 export class CardDetailComponent implements OnInit {
-  // --- TUS VARIABLES ORIGINALES (INTACTAS) ---
+  // --- VARIABLES DE ESTADO ---
   showModal: boolean = false;
   message: string = '';
   productId: string | null = null;
   product: CartItem | null = null;
   loading: boolean = true;
+
+  // Venta cruzada: Productos de la misma sección
+  relatedProducts: CartItem[] = [];
 
   selectedOptions: { size: string; color: string; quantity: number } = {
     size: '',
@@ -41,12 +44,12 @@ export class CardDetailComponent implements OnInit {
   newComment: string = '';
   newCustomerName: string = '';
   isSubmittingFeedback: boolean = false;
-  
-  // Control de los acordeones de información (Descripción abierta por defecto)
+
+  // Control de los acordeones de información
   accordions = {
     description: true,
     ingredients: false,
-    shipping: false
+    shipping: false,
   };
 
   constructor(
@@ -54,32 +57,29 @@ export class CardDetailComponent implements OnInit {
     private router: Router,
     private store: Store,
     private cartService: CartService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state?.['productData']) {
       this.product = navigation.extras.state['productData'] as CartItem;
       this.productId = this.product.id;
-      
-      // SHOP_LOGIC: Inicializamos la imagen principal si viene por navegación
+
       if (this.product.images?.length) {
         this.mainImage = this.product.images[0];
       }
-      
       this.loading = false;
     }
   }
 
   ngOnInit(): void {
+    // Escuchamos cambios en los queryParams para permitir navegación entre productos
     this.route.queryParams.subscribe((params) => {
-      debugger
       if (params['id']) {
         this.productId = params['id'];
-      }
-      if (this.productId) {
-        this.loadProduct(this.productId);
-      } else if (!this.product && !this.productId) {
-        this.loading = false;
+        if (this.productId) {
+          this.loadProduct(this.productId);
+        }
+      } else if (!this.product) {
         this.router.navigate(['/products']);
       }
     });
@@ -93,8 +93,14 @@ export class CardDetailComponent implements OnInit {
         if (this.product?.images?.length) {
           this.mainImage = this.product.images[0];
         }
-        this.loading = false;
+
+        // Cargamos feedbacks y productos relacionados
         this.loadFeedbacks(id);
+        if (this.product?.section) {
+          this.loadRelatedProducts(this.product.section, id);
+        }
+
+        this.loading = false;
       },
       error: (err) => {
         console.error('Error cargando el producto:', err);
@@ -103,17 +109,45 @@ export class CardDetailComponent implements OnInit {
     });
   }
 
-  loadFeedbacks(id: string): void {
-    this.inventoryService.getFeedbacks(id).subscribe({
-      next: (data) => {
-        this.feedbacks = data.sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+  // --- LÓGICA DE VENTA CRUZADA ---
+  loadRelatedProducts(section: string, currentId: string): void {
+    this.inventoryService.getVisibleProducts().subscribe({
+      next: (products) => {
+        // Filtramos por sección y excluimos el producto actual
+        this.relatedProducts = products
+          .filter((p) => p.section === section && p.id !== currentId)
+          .slice(0, 4); // Limitamos a 4 para el diseño
       },
-      error: (err) => console.error('Error al cargar comentarios:', err)
+      error: (err) => console.error('Error cargando relacionados:', err),
     });
   }
 
+  // Acción al hacer clic en un producto relacionado
+  onProductClicked(relatedProduct: CartItem): void {
+    this.router
+      .navigate(['products/detail'], {
+        queryParams: { id: relatedProduct.id },
+        state: { productData: relatedProduct },
+      })
+      .then(() => {
+        // Forzamos el scroll al inicio y recargamos la vista
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+  }
+
+  loadFeedbacks(id: string): void {
+    this.inventoryService.getFeedbacks(id).subscribe({
+      next: (data) => {
+        this.feedbacks = data.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
+      },
+      error: (err) => console.error('Error al cargar comentarios:', err),
+    });
+  }
+
+  // --- MÉTODOS DE INTERFAZ ---
   changeImage(img: string): void {
     this.mainImage = img;
   }
@@ -128,40 +162,30 @@ export class CardDetailComponent implements OnInit {
     }
   }
 
-  // Disminuir cantidad
   decreaseQuantity(): void {
     if (this.selectedOptions.quantity > 1) {
       this.selectedOptions.quantity--;
     }
   }
 
-  // --- TUS MÉTODOS ORIGINALES (MANTENIDOS) ---
-
-  handleSelectionChange(selection: { size: string; color: string; quantity: number }): void {
-    this.selectedOptions = selection;
-  }
-
   addToCart(): void {
     if (this.product && this.selectedOptions.quantity > 0) {
-     
-     const item: CartItem = {
-        ...this.product, 
+      const item: CartItem = {
+        ...this.product,
         quantity: this.selectedOptions.quantity,
-        length: this.product.length,
-        width: this.product.width,
-        height: this.product.height,
-        weight: this.product.weight,
-        show: true
+        show: true,
       };
-
-       console.log('Adding to cart from CardDetailComponent:', item);
-
       this.cartService.addToCart(item);
       this.showModal = true;
-      this.message = 'Producto agregado al carrito!';
-    } else {
-      alert('Por favor selecciona una cantidad válida.');
+      this.message = '¡Producto agregado al carrito!';
     }
+  }
+
+  // Para el evento del componente app-card en relacionados
+  addToCartFromCard(productWithQuantity: any): void {
+    this.cartService.addToCart(productWithQuantity);
+    this.showModal = true;
+    this.message = '¡Producto agregado al carrito!';
   }
 
   continueShopping(): void {
@@ -172,38 +196,21 @@ export class CardDetailComponent implements OnInit {
     this.router.navigate(['/cart']);
   }
 
-  // Helper para select (si decides mantener el select en lugar de los botones +/-)
-  updateQuantitySelect(event: any): void {
-    const val = parseInt(event.target.value, 10);
-    this.selectedOptions.quantity = val;
-  }
-  
-  getStockArray(): number[] {
-    if (!this.product || this.product.stock <= 0) {
-      return [];
-    }
-    return Array.from({ length: this.product.stock }, (_, i) => i + 1);
-  }
-
-
   submitFeedback(): void {
     if (!this.newComment.trim() || !this.productId) return;
 
     this.isSubmittingFeedback = true;
     const payload = {
       comment: this.newComment,
-      customerName: this.newCustomerName.trim() || 'Anónimo'
+      customerName: this.newCustomerName.trim() || 'Anónimo',
     };
 
     this.inventoryService.addFeedback(this.productId, payload).subscribe({
       next: (res) => {
-        // Agregamos el nuevo comentario a la lista localmente para no recargar
         this.feedbacks.unshift({
           ...payload,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         });
-        
-        // Limpiamos el formulario
         this.newComment = '';
         this.newCustomerName = '';
         this.isSubmittingFeedback = false;
@@ -211,7 +218,7 @@ export class CardDetailComponent implements OnInit {
       error: (err) => {
         console.error('Error al enviar comentario:', err);
         this.isSubmittingFeedback = false;
-      }
+      },
     });
   }
 }

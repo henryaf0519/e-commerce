@@ -3,7 +3,7 @@
   class="min-h-screen flex justify-center items-center bg-page"
 >
   <div
-    class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand"
+    class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#ea580c]"
   ></div>
 </div>
 
@@ -12,9 +12,9 @@
     <nav class="flex text-sm font-medium text-muted">
       <a
         (click)="continueShopping()"
-        class="hover:text-brand transition-colors cursor-pointer"
+        class="hover:text-[#ea580c] transition-colors cursor-pointer"
       >
-        {{ 'PRODUCT_DETAIL.HOME' | translate }}
+        {{ "PRODUCT_DETAIL.HOME" | translate }}
       </a>
       <span class="mx-2">/</span>
       <span class="text-main cursor-default">{{ product.name }}</span>
@@ -32,13 +32,12 @@
               class="relative h-20 bg-white rounded-lg overflow-hidden cursor-pointer transition-all border-2"
               [ngClass]="
                 mainImage === img
-                  ? 'border-brand ring-1 ring-brand/20 opacity-100'
+                  ? 'border-[#ea580c] ring-1 ring-[#ea580c]/20'
                   : 'border-transparent opacity-60 hover:opacity-100'
               "
             >
               <img
                 [src]="img"
-                [alt]="product.name"
                 class="w-full h-full object-cover object-center"
               />
             </button>
@@ -50,15 +49,13 @@
         >
           <img
             [src]="mainImage || product.images[0]"
-            [alt]="product.name"
             class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
           />
-
           <span
             *ngIf="product.isNew"
-            class="absolute top-4 left-4 bg-brand text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-full shadow-lg"
+            class="absolute top-4 left-4 bg-[#ea580c] text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-full"
           >
-            {{ 'PRODUCT_DETAIL.NEW' | translate }}
+            {{ "PRODUCT_DETAIL.NEW" | translate }}
           </span>
         </div>
       </div>
@@ -69,173 +66,174 @@
         >
           {{ product.name }}
         </h1>
-
         <div class="flex items-end gap-4 mb-6">
-          <p class="text-3xl text-brand font-medium tracking-tight">
+          <p class="text-3xl text-[#ea580c] font-medium tracking-tight">
             $ {{ product.price }}
           </p>
-          <span class="text-lg text-muted line-through decoration-brand/30"
-            >$ {{ (product.price * 1.2).toFixed(2) }}</span
-          >
         </div>
 
-        <div class="border-t border-black/5 my-6"></div>
-
-        <div class="space-y-6">
-          <div class="flex items-center justify-between">
-            <span class="text-sm font-medium text-main">{{ 'PRODUCT_DETAIL.QUANTITY' | translate }}</span>
-            <span
-              class="text-xs font-medium px-2 py-1 rounded-full"
-              [ngClass]="
-                product.stock > 5
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-orange-100 text-orange-700'
-              "
-            >
-              {{ (product.stock > 5 ? 'PRODUCT_DETAIL.AVAILABLE' : 'PRODUCT_DETAIL.LAST_UNITS') | translate }}
-            </span>
-          </div>
-
-          <div class="flex gap-4 h-12">
-            <div
-              class="flex items-center border border-muted/30 rounded-full w-32 px-1 bg-surface shadow-sm"
-            >
-              <button
-                (click)="decreaseQuantity()"
-                [disabled]="selectedOptions.quantity <= 1"
-                class="w-10 h-full text-muted hover:text-brand disabled:opacity-30 text-xl font-bold transition-colors pb-1"
-              >
-                -
-              </button>
-
-              <input
-                type="number"
-                [value]="selectedOptions.quantity"
-                readonly
-                class="w-full text-center bg-transparent border-none text-main font-bold focus:ring-0 text-lg"
-              />
-
-              <button
-                (click)="increaseQuantity()"
-                [disabled]="selectedOptions.quantity >= product.stock"
-                class="w-10 h-full text-muted hover:text-brand disabled:opacity-30 text-xl font-bold transition-colors pb-1"
-              >
-                +
-              </button>
-            </div>
-
+        <div class="flex gap-4 h-12 mt-10">
+          <div
+            class="flex items-center border border-muted/30 rounded-full w-32 px-1 bg-surface"
+          >
             <button
-              (click)="addToCart()"
-              [disabled]="product.stock === 0"
-              class="flex-1 bg-brand text-white rounded-full font-bold text-lg hover:brightness-90 shadow-lg shadow-brand/20 transition-all transform hover:-translate-y-1 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+              (click)="decreaseQuantity()"
+              [disabled]="selectedOptions.quantity <= 1"
+              class="w-10 text-muted hover:text-[#ea580c] disabled:opacity-30 text-xl font-bold"
             >
-              <i class="fas fa-shopping-bag"></i>
-              {{ (product.stock === 0 ? 'PRODUCTS.OUT_OF_STOCK' : 'PRODUCTS.ADD_TO_CART') | translate }}
+              -
+            </button>
+            <input
+              type="number"
+              [value]="selectedOptions.quantity"
+              readonly
+              class="w-full text-center bg-transparent border-none text-main font-bold focus:ring-0"
+            />
+            <button
+              (click)="increaseQuantity()"
+              [disabled]="selectedOptions.quantity >= product.stock"
+              class="w-10 text-muted hover:text-[#ea580c] disabled:opacity-30 text-xl font-bold"
+            >
+              +
             </button>
           </div>
 
-          <p
-            class="text-xs text-muted text-center flex items-center justify-center gap-2"
+          <button
+            (click)="addToCart()"
+            [disabled]="product.stock === 0"
+            class="flex-1 bg-[#ea580c] text-white rounded-full font-bold text-lg hover:brightness-90 shadow-lg shadow-[#ea580c]/20 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
           >
-            <i class="fas fa-truck"></i> {{ 'PRODUCT_DETAIL.TAX_SHIPPING_NOTE' | translate }}
+            <i class="fas fa-shopping-bag"></i>
+            {{
+              (product.stock === 0
+                ? "PRODUCTS.OUT_OF_STOCK"
+                : "PRODUCTS.ADD_TO_CART"
+              ) | translate
+            }}
+          </button>
+        </div>
+
+        <div class="mt-10 border-t border-black/5 pt-6">
+          <h3 class="text-lg font-bold text-main mb-3 font-serif">
+            {{ "PRODUCT_DETAIL.DESCRIPTION" | translate }}
+          </h3>
+          <p class="text-muted text-base leading-relaxed">
+            {{ product.description }}
           </p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 my-8 py-6 border-y border-black/5">
-          <div class="text-center">
-            <i class="fas fa-star text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">{{ 'PRODUCT_DETAIL.PREMIUM_QUALITY' | translate }}</p>
-          </div>
-          <div class="text-center border-l border-black/5">
-            <i class="fas fa-leaf text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">{{ 'PRODUCT_DETAIL.FRESH_INGREDIENTS' | translate }}</p>
-          </div>
-          <div class="text-center border-l border-black/5">
-            <i class="fas fa-shield-alt text-xl text-accent mb-2"></i>
-            <p class="text-xs font-bold text-main">{{ 'PRODUCT_DETAIL.SECURE_PURCHASE' | translate }}</p>
-          </div>
-        </div>
-
-        <div class="space-y-8">
-          <div class="border-b border-black/5 pb-6">
-            <h3 class="text-lg font-bold text-main mb-3 font-serif">
-              {{ 'PRODUCT_DETAIL.DESCRIPTION' | translate }}
-            </h3>
-            <div class="text-muted text-base leading-relaxed space-y-3">
-              <p>{{ product.description }}</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-16 lg:mt-24 border-t border-black/5 pt-10">
-      <h3 class="text-2xl font-bold text-main mb-8 font-serif">
-        Comentarios de Clientes
+    <div
+      class="mt-32 border-t border-black/5 pt-16"
+      *ngIf="relatedProducts.length > 0"
+    >
+      <div class="flex items-center justify-between mb-12">
+        <div>
+          <span
+            class="text-[10px] uppercase tracking-[0.6em] font-black mb-2 block"
+            style="color: #ea580c"
+          >
+            {{ "PRODUCT_DETAIL.RELATED_SUBTITLE" | translate }}
+          </span>
+
+          <h3 class="text-4xl font-serif italic text-main tracking-tighter">
+            {{ "PRODUCT_DETAIL.RELATED_TITLE" | translate }}
+          </h3>
+        </div>
+
+        <div class="h-[1px] flex-1 bg-black/5 ml-12 hidden md:block"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <app-card
+          *ngFor="let item of relatedProducts"
+          [products]="item"
+          (productClicked)="onProductClicked(item)"
+          (addToCart)="addToCartFromCard($event)"
+          class="transform transition-all duration-500 hover:-translate-y-3"
+        ></app-card>
+      </div>
+    </div>
+
+    <div class="mt-32 border-t border-black/5 pt-16">
+      <h3 class="text-3xl font-bold text-main mb-12 font-serif italic">
+        {{ "PRODUCT_DETAIL.FEEDBACK_TITLE" | translate }}
       </h3>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        
-        <div class="lg:col-span-1 bg-surface p-6 rounded-2xl shadow-sm border border-black/5 h-fit">
-          <h4 class="text-lg font-bold text-main mb-4">Deja tu opinión</h4>
-          
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-muted mb-1">Nombre (Opcional)</label>
-              <input 
-                type="text" 
-                [(ngModel)]="newCustomerName"
-                placeholder="Ej. Juan Pérez"
-                class="w-full px-4 py-2 bg-page border border-black/10 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-all outline-none"
-              >
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium text-muted mb-1">Comentario *</label>
-              <textarea 
-                [(ngModel)]="newComment"
-                rows="4" 
-                placeholder="¿Qué te pareció este producto?"
-                class="w-full px-4 py-2 bg-page border border-black/10 rounded-xl focus:ring-2 focus:ring-brand focus:border-brand transition-all outline-none resize-none"
-              ></textarea>
-            </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div
+          class="lg:col-span-1 bg-surface p-8 rounded-[2rem] shadow-sm border border-black/5 h-fit"
+        >
+          <h4
+            class="text-lg font-bold text-main mb-6 uppercase tracking-widest text-xs"
+          >
+            {{ "PRODUCT_DETAIL.FEEDBACK_SUBTITLE" | translate }}
+          </h4>
 
-            <button 
+          <div class="space-y-4">
+            <input
+              type="text"
+              [(ngModel)]="newCustomerName"
+              [placeholder]="'PRODUCT_DETAIL.NAME_PLACEHOLDER' | translate"
+              class="w-full px-5 py-3 bg-page border border-black/10 rounded-2xl outline-none focus:border-[#ea580c]"
+            />
+
+            <textarea
+              [(ngModel)]="newComment"
+              rows="4"
+              [placeholder]="'PRODUCT_DETAIL.COMMENT_PLACEHOLDER' | translate"
+              class="w-full px-5 py-3 bg-page border border-black/10 rounded-2xl outline-none focus:border-[#ea580c] resize-none"
+            ></textarea>
+
+            <button
               (click)="submitFeedback()"
               [disabled]="!newComment.trim() || isSubmittingFeedback"
-              class="w-full py-3 bg-brand text-white rounded-xl font-bold hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+              class="w-full py-4 bg-[#ea580c] text-white rounded-2xl font-bold hover:brightness-110 transition-all flex justify-center items-center gap-2"
             >
-              <i *ngIf="isSubmittingFeedback" class="fas fa-spinner fa-spin"></i>
-              {{ isSubmittingFeedback ? 'Enviando...' : 'Publicar comentario' }}
+              <i
+                *ngIf="isSubmittingFeedback"
+                class="fas fa-spinner fa-spin"
+              ></i>
+              {{
+                (isSubmittingFeedback
+                  ? "PRODUCT_DETAIL.SUBMITTING_BUTTON"
+                  : "PRODUCT_DETAIL.SUBMIT_BUTTON"
+                ) | translate
+              }}
             </button>
           </div>
         </div>
 
         <div class="lg:col-span-2 space-y-6">
-          <div *ngIf="feedbacks.length === 0" class="text-center py-10 bg-surface rounded-2xl border border-dashed border-black/10">
-            <i class="far fa-comments text-4xl text-muted/50 mb-3"></i>
-            <p class="text-muted">Aún no hay comentarios. ¡Sé el primero en opinar!</p>
-          </div>
-
-          <div *ngFor="let feedback of feedbacks" class="bg-surface p-6 rounded-2xl shadow-sm border border-black/5 flex gap-4">
-            <div class="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0">
-              <span class="text-brand font-bold text-lg">
-                {{ feedback.customerName ? feedback.customerName.charAt(0).toUpperCase() : 'A' }}
-              </span>
+          <div
+            *ngFor="let feedback of feedbacks"
+            class="bg-surface p-8 rounded-[2rem] shadow-sm border border-black/5 flex gap-5"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-[#ea580c]/10 flex items-center justify-center flex-shrink-0 text-[#ea580c] font-bold"
+            >
+              {{ feedback.customerName?.charAt(0).toUpperCase() || "A" }}
             </div>
-            
+
             <div class="flex-1">
-              <div class="flex items-center justify-between mb-1">
-                <h5 class="font-bold text-main">{{ feedback.customerName || 'Anónimo' }}</h5>
-                <span class="text-xs text-muted">{{ feedback.createdAt | date:'mediumDate' }}</span>
+              <div class="flex items-center justify-between mb-2">
+                <h5 class="font-bold text-main">
+                  {{
+                    feedback.customerName ||
+                      ("PRODUCT_DETAIL.ANONYMOUS" | translate)
+                  }}
+                </h5>
+                <span class="text-[10px] text-muted uppercase tracking-widest">
+                  {{ feedback.createdAt | date: "mediumDate" }}
+                </span>
               </div>
-              <p class="text-muted text-sm leading-relaxed whitespace-pre-line">
-                {{ feedback.comment }}
+              <p class="text-muted text-sm leading-relaxed italic">
+                "{{ feedback.comment }}"
               </p>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </main>
@@ -244,32 +242,55 @@
 <div
   *ngIf="showModal"
   [@modalAnimation]
-  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"
 >
   <div
-    class="bg-surface rounded-2xl shadow-2xl p-6 w-full max-w-sm text-center transform transition-all scale-100"
+    class="bg-surface rounded-[2.5rem] shadow-2xl p-10 w-full max-w-sm text-center border border-white/20"
   >
     <div
-      class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4"
+      class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-50 mb-6"
     >
-      <i class="fas fa-check text-2xl text-green-600"></i>
+      <i class="fas fa-check text-3xl text-green-500"></i>
     </div>
 
-    <h3 class="text-xl font-bold text-main mb-2">{{ 'MODAL.SUCCESS_TITLE' | translate }}</h3>
-    <p class="text-muted mb-6">{{ message }}</p>
+    <h3 class="text-2xl font-serif italic text-main mb-2">
+      {{ "MODAL.SUCCESS_TITLE" | translate }}
+    </h3>
+    <p class="text-muted mb-8 text-sm">
+      {{ "MODAL.SUCCESS_MESSAGE" | translate }}
+    </p>
 
-    <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-4">
       <button
-        class="w-full py-3 bg-brand text-white rounded-xl font-bold hover:brightness-110 transition-all"
-        (click)="continueShopping()"
-      > 
-        {{ 'MODAL.CONTINUE_SHOPPING' | translate }}
-      </button>
-      <button
-        class="w-full py-3 bg-transparent border-2 border-brand text-brand rounded-xl font-bold hover:bg-brand/5 transition-all"
+        class="w-full py-4 bg-[#ea580c] text-white rounded-2xl font-bold shadow-lg shadow-[#ea580c]/30 hover:brightness-110 transform transition-all active:scale-95"
         (click)="goToCart()"
       >
-        {{ 'MODAL.GO_TO_CART' | translate }}
+        {{ "MODAL.GO_TO_CART" | translate }}
+      </button>
+
+      <div class="flex items-center gap-3 my-1">
+        <div class="h-[1px] flex-1 bg-black/5"></div>
+        <span
+          class="text-[10px] uppercase tracking-widest text-muted font-bold"
+        >
+          {{ "MODAL.OR_SEPARATOR" | translate }}
+        </span>
+        <div class="h-[1px] flex-1 bg-black/5"></div>
+      </div>
+
+      <button
+        class="text-main text-sm font-bold hover:text-[#ea580c] transition-colors flex items-center justify-center gap-2"
+        (click)="showModal = false"
+      >
+        <i class="fas fa-arrow-left text-[10px]"></i>
+        {{ "MODAL.CONTINUE_EXPLORING" | translate }}
+      </button>
+
+      <button
+        class="text-muted text-[10px] font-medium hover:underline tracking-widest uppercase opacity-70"
+        (click)="continueShopping()"
+      >
+        {{ "MODAL.BACK_TO_CATALOG" | translate }}
       </button>
     </div>
   </div>

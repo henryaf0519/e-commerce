@@ -147,12 +147,24 @@
     "PREMIUM_QUALITY": "Calidad Premium",
     "FRESH_INGREDIENTS": "Ingredientes Frescos",
     "SECURE_PURCHASE": "Compra Segura",
-    "DESCRIPTION": "Descripción"
+    "DESCRIPTION": "Descripción",
+    "RELATED_SUBTITLE": "Combinaciones Dulces",
+    "RELATED_TITLE": "También te podría gustar...",
+    "FEEDBACK_TITLE": "Opiniones de la Comunidad",
+    "FEEDBACK_SUBTITLE": "Cuéntanos tu experiencia",
+    "NAME_PLACEHOLDER": "Tu nombre",
+    "COMMENT_PLACEHOLDER": "¿Qué te pareció este dulce?",
+    "SUBMIT_BUTTON": "Publicar",
+    "SUBMITTING_BUTTON": "Enviando...",
+    "ANONYMOUS": "Anónimo"
   },
   "MODAL": {
-    "SUCCESS_TITLE": "¡Genial!",
-    "CONTINUE_SHOPPING": "Continuar comprando",
-    "GO_TO_CART": "Ir al carrito"
+    "SUCCESS_TITLE": "¡Dulce elección!",
+    "SUCCESS_MESSAGE": "Tu producto ha sido agregado correctamente.",
+    "CONTINUE_EXPLORING": "Seguir explorando dulces",
+    "BACK_TO_CATALOG": "Volver al catálogo principal",
+    "GO_TO_CART": "Ir al carrito",
+    "OR_SEPARATOR": "o"
   },
   "PHILOSOPHY": {
     "TITLE_LABEL": "Nuestra filosofía",
@@ -252,20 +264,20 @@
     }
   },
   "CART_PAGE": {
-      "TITLE": "Tu Carrito de Compras",
-      "REMOVE": "Eliminar",
-      "CONTINUE_SHOPPING": "Continuar Comprando",
-      "SUMMARY_TITLE": "Resumen del Pedido",
-      "SUBTOTAL": "Subtotal",
-      "SHIPPING": "Envío",
-      "SHIPPING_NOTE": "Calculado en el siguiente paso",
-      "TOTAL": "Total",
-      "PROCEED_BTN": "Proceder al Pago",
-      "SECURE_PAYMENT": "Pago 100% Seguro y Encriptado",
-      "EMPTY": {
-        "TITLE": "Tu carrito está vacío",
-        "SUBTITLE": "Parece que aún no has encontrado tu dulce favorito. ¡Nuestro catálogo está lleno de delicias!",
-        "EXPLORE_BTN": "Explorar Dulces"
-      }
+    "TITLE": "Tu Carrito de Compras",
+    "REMOVE": "Eliminar",
+    "CONTINUE_SHOPPING": "Continuar Comprando",
+    "SUMMARY_TITLE": "Resumen del Pedido",
+    "SUBTOTAL": "Subtotal",
+    "SHIPPING": "Envío",
+    "SHIPPING_NOTE": "Calculado en el siguiente paso",
+    "TOTAL": "Total",
+    "PROCEED_BTN": "Proceder al Pago",
+    "SECURE_PAYMENT": "Pago 100% Seguro y Encriptado",
+    "EMPTY": {
+      "TITLE": "Tu carrito está vacío",
+      "SUBTITLE": "Parece que aún no has encontrado tu dulce favorito. ¡Nuestro catálogo está lleno de delicias!",
+      "EXPLORE_BTN": "Explorar Dulces"
     }
+  }
 }
