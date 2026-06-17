@@ -2,13 +2,13 @@
   class="bg-brand shadow-lg transition-colors duration-300 sticky top-0 z-50"
 >
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
+    <div class="relative flex h-20 items-center justify-between">
       <div
-        class="flex shrink-0 items-center cursor-pointer transform hover:scale-105 transition-transform"
+        class="flex shrink-0 items-center cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out"
         (click)="goToHome()"
       >
         <img
-          class="cont-img brightness-0 invert "
+          class="h-14 w-auto object-contain brightness-0 invert rendering-auto"
           src="assets/imgs/logo.png"
           alt="Dulcilandia"
         />
@@ -19,14 +19,14 @@
           (click)="goToLogin()"
           class="group relative text-inverted/80 hover:text-inverted transition-colors p-1"
         >
-          <span class="sr-only">{{ 'HEADER.LOGIN' | translate }}</span>
+          <span class="sr-only">{{ "HEADER.LOGIN" | translate }}</span>
           <i
             class="fas fa-user text-2xl group-hover:drop-shadow-md transition-all"
           ></i>
           <span
             class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] bg-black/80 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
           >
-            {{ 'HEADER.LOGIN' | translate }}
+            {{ "HEADER.LOGIN" | translate }}
           </span>
         </button>
 

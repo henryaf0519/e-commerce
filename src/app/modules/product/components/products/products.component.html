@@ -7,12 +7,13 @@
     [fullHeight]="true"
   >
   </app-hero>
-  <div class="py-16 text-center">
-    <h2 class="text-3xl font-serif text-gray-800 uppercase tracking-widest">
-      {{ "HOME.SECTION_TITLE" | translate }}
-    </h2>
-    <div class="w-16 h-1 bg-brand mx-auto mt-4"></div>
-  </div>
+<div class="py-16 flex justify-center items-center">
+  <h2 class="sr-only">Dulcilandia</h2> <img
+    class="h-[160px] w-auto object-contain"
+    src="assets/imgs/logoA.png"
+    alt="Dulcilandia"
+  />
+</div>
 
   <ng-container *ngIf="sections$ | async as sections; else loadingTpl">
     <div class="flex-1 pb-24 scroll-mt-20">
