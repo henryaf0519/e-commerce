@@ -1,35 +1,62 @@
-<div class="relative w-full flex items-center justify-center overflow-hidden bg-gray-900 transition-all duration-700"
-     [ngClass]="fullHeight ? 'min-h-screen' : 'h-[60vh]'">
-    
-    <div class="absolute inset-0 z-0">
-        <img [src]="backgroundImage" 
-             [alt]="title" 
-             class="w-full h-full object-cover object-center scale-105 animate-slow-zoom">
-             
-        <div class="absolute inset-0 bg-black/50"></div>
-        <div class="absolute inset-0  from-black/20 via-transparent to-page"></div>
-    </div>
+<div
+  class="relative w-full flex flex-col md:flex md:items-center md:justify-center overflow-hidden bg-secondary transition-all duration-700"
+  [ngClass]="fullHeight ? 'min-h-screen' : 'h-auto md:h-[60vh]'">
 
-    <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <h1 class="text-4xl sm:text-6xl md:text-8xl font-serif font-medium text-white tracking-tight leading-none mb-8 drop-shadow-2xl">
-            {{ title }}
-        </h1>
-        
-        <p class="mt-6 max-w-3xl mx-auto text-lg md:text-2xl text-gray-200 font-light leading-relaxed antialiased">
-            {{ subtitle }}
-        </p>
-        
-<div class="mt-12">
-  <button (click)="scrollToCatalogo($event)"
-    class="group relative inline-flex items-center justify-center px-12 py-5 font-bold tracking-[0.4em] uppercase transition-all duration-500 rounded-full text-white overflow-hidden shadow-[0_10px_40px_-10px_rgba(234,88,12,0.5)] hover:shadow-[0_20px_50px_rgba(234,88,12,0.6)] hover:-translate-y-2 active:scale-95"
-    style="background-color: #ea580c;">
-    
-    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
-    
-    <span class="relative z-10 text-xs sm:text-sm">
-      {{ buttonText }}
-    </span>
-  </button>
-</div>
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 pt-12 pb-8 md:py-0 flex justify-center md:justify-end">
+    <div class="max-w-xl text-center">
+
+      <p class="text-white text-sm uppercase tracking-[0.2em] mb-2 font-light">A unique 60-year family recipe.</p>
+
+      <h1 class="text-5xl md:text-7xl font-serif font-medium text-[#d4b483] tracking-tight leading-none mb-6">
+        Colombia<br>Artisan Sweets
+      </h1>
+
+      <div class="flex justify-center mb-8">
+        <div class="w-full max-w-[380px] h-1 flex">
+          <div class="flex-1 bg-[#6b8e23]"></div>
+          <div class="flex-1 bg-[#d4b483]"></div>
+          <div class="flex-1 bg-[#a52a2a]"></div>
+          <div class="flex-1 bg-[#6b8e23]"></div>
+          <div class="flex-1 bg-[#d4b483]"></div>
+          <div class="flex-1 bg-[#a52a2a]"></div>
+        </div>
+      </div>
+
+      <p class="text-gray-100 text-center text-lg md:text-xl font-light leading-relaxed mb-8">
+        Handcrafted from sugarcane.<br>
+        Small batch, artisan, and<br>
+        made with no high-fructose corn syrup<br>
+        — brought to Northern California with love.
+      </p>
+
+      <span class="text-[#d4b483] italic block mb-6">No factories, just three generations of patience.</span>
+      <div class=" p-6 md:p-8 rounded-none md:rounded-lg inline-block mt-8">
+        <div class="flex flex-col sm:flex-row gap-4">
+
+          <button (click)="scrollToCatalogo($event)"
+            class="px-8 py-3 bg-[#c68e3d] text-white hover:bg-[#a3742f] transition-all duration-300 uppercase tracking-widest text-sm font-bold">
+            EXPLORE COLLECTIONS
+          </button>
+
+          <button 
+            class="px-8 py-3 border border-[#c68e3d] text-[#c68e3d] hover:bg-[#c68e3d] hover:text-white transition-all duration-300 uppercase tracking-widest text-sm font-bold">
+            OUR STORY
+          </button>
+
+        </div>
+      </div>
+
     </div>
+  </div>
+
+  <div class="hidden md:block md:absolute md:inset-0 z-0 w-full h-full">
+    <img [src]="backgroundImage" [alt]="title" class="w-full h-full object-cover object-center animate-slow-zoom">
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-black/40 to-black/70"></div>
+  </div>
+
+  <div class="md:hidden relative z-0 w-full h-[530px]">
+    <img src="assets/imgs/persona.png" alt="Artesano" class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 bg-gradient-to-t from-secondary/50 via-transparent to-transparent"></div>
+  </div>
+
 </div>

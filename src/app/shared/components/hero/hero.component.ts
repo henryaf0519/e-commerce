@@ -13,6 +13,7 @@ export class HeroComponent {
   @Input() fullHeight: boolean = true; // Controla si ocupa toda la pantalla
 
   scrollToCatalogo(event: Event) {
+    console.log('scrollToCatalogo called');
     event.preventDefault();
     const element = document.getElementById('catalogo');
     if (element) {

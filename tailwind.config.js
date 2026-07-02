@@ -9,6 +9,7 @@ module.exports = {
         
         brand: 'rgb(var(--color-brand) / <alpha-value>)',
         accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
         
        
         page: 'rgb(var(--bg-page) / <alpha-value>)',      
