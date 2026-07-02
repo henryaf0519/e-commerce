@@ -12,6 +12,8 @@ import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 import { SideCartComponent } from './components/side-cart/side-cart.component';
 import { PhilosophyComponent } from './components/philosophy/philosophy.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { HistoryComponent } from './components/history/history.component';
+import { WhyComponent } from './components/why/why.component';
 
 
 
@@ -27,7 +29,9 @@ import { TranslateModule } from '@ngx-translate/core';
     HeroComponent,
     WhatsappComponent,
     SideCartComponent,
-    PhilosophyComponent
+    PhilosophyComponent,
+    HistoryComponent,
+    WhyComponent
   ],
   imports: [
     TranslateModule,
@@ -46,7 +50,9 @@ import { TranslateModule } from '@ngx-translate/core';
     WhatsappComponent,
     SideCartComponent,
     PhilosophyComponent,
-    TranslateModule
+    TranslateModule,
+    HistoryComponent,
+    WhyComponent
   ]
 })
 export class SharedModule { }
