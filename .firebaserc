@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "ecommerce-c81bb"
-  }
+    "default": "ecommerce-c81bb",
+    "e-commerce": "afiliamos-53090"
+  },
+  "targets": {},
+  "etags": {}
 }
