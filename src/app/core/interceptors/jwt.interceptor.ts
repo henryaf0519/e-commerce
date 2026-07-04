@@ -20,7 +20,8 @@ export class JwtInterceptor implements HttpInterceptor {
     '/products/admin/all',
     '/products',
     '/sections',
-    '/users', // Agregado por si acaso
+    '/users',
+    '/promotions'
   ];
 
   // 4. Inyectamos el Router en el constructor

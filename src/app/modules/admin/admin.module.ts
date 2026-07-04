@@ -11,6 +11,7 @@ import { AdminMainComponent } from './components/admin-main/admin-main.component
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { SectionManagerComponent } from './components/section-manager/section-manager.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PromotionManagerComponentComponent } from './components/promotion-manager-component/promotion-manager-component.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TranslateModule } from '@ngx-translate/core';
     AdminSidebarComponent,
     AdminMainComponent,
     AdminOrdersComponent,
-    SectionManagerComponent
+    SectionManagerComponent,
+    PromotionManagerComponentComponent
   ],
   imports: [
     CommonModule,
