@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { AuthService } from 'src/app/services/auth.service'; // <--- IMPORTADO
-import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
+import { selectCartItems, selectDiscountAmount, selectDiscountPercentage, selectSubtotal, selectTotalPrice } from 'src/app/state/cart.selector';
 import { State, City, IState, ICity } from 'country-state-city';
 import { environment } from 'src/environments/environment';
 
@@ -15,9 +15,12 @@ import { environment } from 'src/environments/environment';
 })
 export class CheckoutInfoComponent implements OnInit {
   infoForm: FormGroup;
-  
+
   // Selectores de NgRx (INTACTOS)
   cartItems$ = this.store.select(selectCartItems);
+  subtotal$ = this.store.select(selectSubtotal);
+  discountAmount$ = this.store.select(selectDiscountAmount);
+  discountPercentage$ = this.store.select(selectDiscountPercentage);
   totalPrice$ = this.store.select(selectTotalPrice);
 
   // Variables para listas (INTACTOS)
@@ -39,6 +42,11 @@ export class CheckoutInfoComponent implements OnInit {
     private checkoutService: CheckoutService,
     private authService: AuthService // <--- INYECCIÓN
   ) {
+    this.subtotal$.subscribe(val => console.log('Valor del subtotal:', val));
+    this.discountAmount$.subscribe(val => console.log('Valor del descuento:', val));
+    this.discountPercentage$.subscribe(val => console.log('Valor del porcentaje de descuento:', val));  
+    this.totalPrice$.subscribe(val => console.log('Valor del precio total:', val));
+
     this.infoForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       name: ['', Validators.required],
@@ -62,17 +70,17 @@ export class CheckoutInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.states = State.getStatesOfCountry(this.COUNTRY_CODE);
-    
+
     // Revisar si ya hay datos en el servicio (INTACTO)
     const currentAddress = this.checkoutService.getShippingAddress();
-    
+
     // Si no hay datos en el checkoutService, intentamos ver si el usuario ya está logueado en AuthService
     if (currentAddress) {
       this.fillFormWithData(currentAddress);
     } else if (this.authService.isLoggedIn()) {
-       // Opcional: Si el usuario llega a esta página ya logueado, pre-llenar
-       const user = this.authService['currentUserSubject'].value; // Acceso directo al subject si es público o usar un getter
-       if(user) this.fillFormWithUserData(user);
+      // Opcional: Si el usuario llega a esta página ya logueado, pre-llenar
+      const user = this.authService['currentUserSubject'].value; // Acceso directo al subject si es público o usar un getter
+      if (user) this.fillFormWithUserData(user);
     }
   }
 
@@ -110,13 +118,13 @@ export class CheckoutInfoComponent implements OnInit {
       }
     } else {
       this.infoForm.markAllAsTouched();
-    } 
+    }
   }
 
   // =========================================================
   // LÓGICA DEL MODAL (NUEVO)
   // =========================================================
-  
+
   openLoginModal() {
     this.isLoginModalOpen = true;
     this.loginError = '';
@@ -138,7 +146,7 @@ export class CheckoutInfoComponent implements OnInit {
       next: (response) => {
         this.isLoadingLogin = false;
         this.closeLoginModal();
-        
+
         // AQUÍ OCURRE LA MAGIA: Autocompletar con los datos del usuario
         if (response.user) {
           this.fillFormWithUserData(response.user);

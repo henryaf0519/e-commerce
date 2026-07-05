@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -33,11 +33,15 @@ export class PromotionService {
   }
 
   // Validar si el código es apto para un email específico
-  validatePromotionCode(email: string, code: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrlAdmin}/validate`,
-      { email, code },
-      { headers: this.getHeaders() }
-    );
+  validatePromotionCode(code: string): Observable<any> {
+    // Creamos los parámetros de búsqueda
+    const params = new HttpParams().set('code', code);
+
+    // Enviamos el GET con los parámetros
+    return this.http.get<any>(`${this.apiUrlUser}/validate`, {
+      headers: this.getHeaders(),
+      params: params // Esto convierte la URL en: .../validate?code=TU_CODIGO
+    });
   }
 
 

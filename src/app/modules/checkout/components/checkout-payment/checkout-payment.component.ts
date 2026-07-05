@@ -7,7 +7,7 @@ import {
   CheckoutService,
   ShippingRate,
 } from 'src/app/services/checkout.service';
-import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
+import { selectCartItems, selectDiscountAmount, selectDiscountCode, selectDiscountPercentage, selectSubtotal, selectTotalPrice } from 'src/app/state/cart.selector';
 import { environment } from 'src/environments/environment';
 import { clearCart } from 'src/app/state/cart.actions';
 
@@ -22,6 +22,9 @@ export class CheckoutPaymentComponent implements OnInit {
   useWompi = environment.useWompi;
   cartItems$ = this.store.select(selectCartItems);
   productTotal$ = this.store.select(selectTotalPrice);
+  subtotal$ = this.store.select(selectSubtotal);
+  discountAmount$ = this.store.select(selectDiscountAmount);
+  discountPercentage$ = this.store.select(selectDiscountPercentage);
 
   shippingRate: ShippingRate | null = null;
   address: any = null;
@@ -41,7 +44,7 @@ export class CheckoutPaymentComponent implements OnInit {
     private checkoutService: CheckoutService,
     private store: Store,
     private router: Router,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.shippingRate = this.checkoutService.getSelectedRate();
@@ -64,7 +67,9 @@ export class CheckoutPaymentComponent implements OnInit {
 
   get grandTotal$(): Observable<number> {
     return this.productTotal$.pipe(
-      map((total) => total + (this.shippingRate?.price || 0)),
+      map((total) => {
+        return total + (this.shippingRate?.price || 0);
+      }),
     );
   }
 
@@ -72,9 +77,10 @@ export class CheckoutPaymentComponent implements OnInit {
     this.isProcessing = true;
     this.grandTotal$.pipe(first()).subscribe({
       next: (total) => {
+        console.log('Iniciando flujo de pago con total:', total, 'y email:', this.address?.email);
         this.checkoutService
           .createPaymentIntent(total, this.address?.email)
-          .pipe(finalize(() => {}))
+          .pipe(finalize(() => { }))
           .subscribe({
             next: (response) => {
               this.clientSecret = response.clientSecret;
@@ -156,12 +162,14 @@ export class CheckoutPaymentComponent implements OnInit {
       console.log('Pago Stripe exitoso :', result);
       try {
         const cartItems = await firstValueFrom(this.cartItems$);
+        const appliedDiscountCode = await firstValueFrom(this.store.select(selectDiscountCode));
 
         const orderPayload = {
           businessId: environment.businessId,
           email: this.address.email,
           shippoRateId: this.shippingRate?.id,
           paymentIntentId: result.paymentIntent.id,
+          discountCode: appliedDiscountCode || null,
           items: cartItems.map((item: any) => ({
             productId: item.id,
             title: item.name,
@@ -213,66 +221,68 @@ export class CheckoutPaymentComponent implements OnInit {
   }
 
   openWompiWidget() {
-  this.isProcessing = true;
+    this.isProcessing = true;
 
-  this.grandTotal$.pipe(first()).subscribe((total) => {
-    // 1. Definimos las constantes EXACTAS una sola vez
-    const amountInCents = Math.round(total * 100);
-    const currency = 'COP';
-    // Generamos la referencia una única vez para este intento de pago
-    const reference = `ORDER-${new Date().getTime()}`;
+    this.grandTotal$.pipe(first()).subscribe((total) => {
+      // 1. Definimos las constantes EXACTAS una sola vez
+      const amountInCents = Math.round(total * 100);
+      const currency = 'COP';
+      // Generamos la referencia una única vez para este intento de pago
+      const reference = `ORDER-${new Date().getTime()}`;
 
-    console.log('Solicitando firma para:', { reference, amountInCents, currency });
+      console.log('Solicitando firma para:', { reference, amountInCents, currency });
 
-    this.checkoutService
-      .getWompiSignature(reference, amountInCents, currency)
-      .subscribe({
-        next: (res) => {
-          console.log('Firma recibida del backend:', res.signature);
+      this.checkoutService
+        .getWompiSignature(reference, amountInCents, currency)
+        .subscribe({
+          next: (res) => {
+            console.log('Firma recibida del backend:', res.signature);
 
-          // 2. Usamos exactamente los mismos valores que enviamos al backend
-          const checkout = new WidgetCheckout({
-            currency: currency,
-            amountInCents: amountInCents,
-            reference: reference,
-            publicKey: environment.wompiPublicKey,
-            signature: { integrity: res.signature },
-            redirectUrl: 'https://rootandcane.com/products',
-            customerData: {
-              email: this.address.email,
-              fullName: this.address.name,
-              phoneNumber: this.address.phone,
-              phoneNumberPrefix: '+57',
-            },
-          });
+            // 2. Usamos exactamente los mismos valores que enviamos al backend
+            const checkout = new WidgetCheckout({
+              currency: currency,
+              amountInCents: amountInCents,
+              reference: reference,
+              publicKey: environment.wompiPublicKey,
+              signature: { integrity: res.signature },
+              redirectUrl: 'https://rootandcane.com/products',
+              customerData: {
+                email: this.address.email,
+                fullName: this.address.name,
+                phoneNumber: this.address.phone,
+                phoneNumberPrefix: '+57',
+              },
+            });
 
-          checkout.open((result: any) => {
-            if (result.transaction.status === 'APPROVED') {
-              this.processWompiBackendOrder(result.transaction.id);
-            } else {
-              this.isProcessing = false;
-            }
-          });
-        },
-        error: () => {
-          this.isProcessing = false;
-          this.errorMessage = 'No se pudo generar la firma de seguridad.';
-          this.showErrorModal = true;
-        },
-      });
-  });
-}
+            checkout.open((result: any) => {
+              if (result.transaction.status === 'APPROVED') {
+                this.processWompiBackendOrder(result.transaction.id);
+              } else {
+                this.isProcessing = false;
+              }
+            });
+          },
+          error: () => {
+            this.isProcessing = false;
+            this.errorMessage = 'No se pudo generar la firma de seguridad.';
+            this.showErrorModal = true;
+          },
+        });
+    });
+  }
 
   private async processWompiBackendOrder(transactionId: string) {
     this.isConfirmingOrder = true;
     try {
       const cartItems = await firstValueFrom(this.cartItems$);
+      const appliedDiscountCode = await firstValueFrom(this.store.select(selectDiscountCode));
 
       // Armamos el payload con el formato exacto del CreateWompiOrderDto
       const orderPayload = {
         businessId: environment.businessId,
         email: this.address.email,
-        transactionId: transactionId, // El backend ahora espera esta variable
+        transactionId: transactionId,
+        discountCode: appliedDiscountCode || null,
         items: cartItems.map((item: any) => ({
           productId: item.id,
           title: item.name,
@@ -318,4 +328,6 @@ export class CheckoutPaymentComponent implements OnInit {
       this.showErrorModal = true;
     }
   }
+
+
 }

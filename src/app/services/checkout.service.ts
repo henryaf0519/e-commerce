@@ -52,7 +52,19 @@ export class CheckoutService {
   private selectedRateSubject = new BehaviorSubject<ShippingRate | null>(null);
   selectedRate$ = this.selectedRateSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private discountSubject = new BehaviorSubject<any>(null);
+  discount$ = this.discountSubject.asObservable();
+
+  constructor(private http: HttpClient) { }
+
+
+  setDiscount(discount: any) {
+    this.discountSubject.next(discount);
+  }
+
+  getDiscount() {
+    return this.discountSubject.getValue();
+  }
 
   async getStripe() {
     return await this.stripePromise;
@@ -66,7 +78,7 @@ export class CheckoutService {
     return this.shippingAddressSubject.value;
   }
 
-getShippingRates(
+  getShippingRates(
     addressTo: ShippingAddress,
     items: any[]
   ): Observable<ShippingResponse> {
@@ -119,9 +131,9 @@ getShippingRates(
     return this.http.post<any>(`${this.apiUrl}/orders/wompi`, order);
   }
 
-  getWompiSignature(reference: string, amountInCents: number, currency: string): Observable<{signature: string}> {
-  return this.http.get<{signature: string}>(`${this.apiUrl}/wompi/generate-signature`, {
-    params: { reference, amountInCents, currency }
-  });
-}
+  getWompiSignature(reference: string, amountInCents: number, currency: string): Observable<{ signature: string }> {
+    return this.http.get<{ signature: string }>(`${this.apiUrl}/wompi/generate-signature`, {
+      params: { reference, amountInCents, currency }
+    });
+  }
 }

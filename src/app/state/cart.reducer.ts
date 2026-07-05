@@ -1,23 +1,29 @@
 import { createReducer, on } from '@ngrx/store';
-import { 
-  addToCart, 
-  removeFromCart, 
-  updateQuantity, 
-  loadCartState, 
-  openCartSidebar, 
-  closeCartSidebar, 
-  clearCart 
+import {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  loadCartState,
+  openCartSidebar,
+  closeCartSidebar,
+  clearCart,
+  applyDiscount,
+  removeDiscount
 } from './cart.actions';
 import { CartItem } from '../models/cart-item.model';
 
 export interface CartState {
   items: CartItem[];
   showSidebar: boolean;
+  discountCode: string | null;  // <-- NUEVO
+  discountPercentage: number;
 }
 
 export const initialState: CartState = {
   items: [],
   showSidebar: false,
+  discountCode: null,           // <-- NUEVO
+  discountPercentage: 0,
 };
 
 export const cartReducer = createReducer(
@@ -25,14 +31,14 @@ export const cartReducer = createReducer(
   on(addToCart, (state, { item }) => {
     console.log('🚨 [4. Reducer] ACTION RECEIVED. Payload:', item);
     const existingItemIndex = state.items.findIndex(i => i.id === item.id);
-  
+
     if (existingItemIndex !== -1) {
       console.log('   -> El item YA EXISTE. Actualizando...');
       const updatedItems = [...state.items];
       const existingItem = updatedItems[existingItemIndex];
 
-      updatedItems[existingItemIndex] = { 
-        ...existingItem, 
+      updatedItems[existingItemIndex] = {
+        ...existingItem,
         quantity: existingItem.quantity + item.quantity,
         length: item.length ?? existingItem.length,
         width: item.width ?? existingItem.width,
@@ -41,7 +47,7 @@ export const cartReducer = createReducer(
         size: item.size ?? existingItem.size,
         color: item.color ?? existingItem.color
       };
-      
+
       return {
         ...state,
         items: updatedItems
@@ -54,7 +60,7 @@ export const cartReducer = createReducer(
       };
     }
   }),
-  
+
   on(removeFromCart, (state, { itemId }) => ({
     ...state,
     items: state.items.filter(
@@ -73,21 +79,37 @@ export const cartReducer = createReducer(
 
   on(loadCartState, (state, { items }) => ({
     ...state,
-    items: items  
+    items: items
   })),
 
   on(openCartSidebar, (state) => ({
     ...state,
     showSidebar: true
   })),
-  
+
   on(closeCartSidebar, (state) => ({
     ...state,
     showSidebar: false
   })),
 
+    on(applyDiscount, (state, { code, percentage }) => ({
+    ...state,
+    discountCode: code,
+    discountPercentage: percentage
+  })),
+
+  on(removeDiscount, (state) => ({
+    ...state,
+    discountCode: null,
+    discountPercentage: 0
+  })),
+
   on(clearCart, (state) => ({
     ...state,
-    items: []
-  }))
+    items: [],
+    discountCode: null,
+    discountPercentage: 0
+  })),
+
+
 );

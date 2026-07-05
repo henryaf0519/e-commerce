@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, take } from 'rxjs';
 import { CartService } from 'src/app/services/cart.service';
 import { CartState } from 'src/app/state/cart.reducer';
 import { CartItem } from 'src/app/models/cart-item.model';
+import { PromotionService } from 'src/app/services/promotion.service';
+import { CheckoutService } from 'src/app/services/checkout.service';
+import { selectDiscountAmount, selectDiscountPercentage, selectSubtotal, selectTotalPrice } from 'src/app/state/cart.selector';
+import { Store } from '@ngrx/store';
+import { applyDiscount } from 'src/app/state/cart.actions';
 
 @Component({
   selector: 'app-cart',
@@ -12,22 +17,29 @@ import { CartItem } from 'src/app/models/cart-item.model';
 })
 export class CartComponent {
   cart$: Observable<CartState>;
-  totalPrice$: Observable<number>; // Convertimos la función en un stream reactivo
+  totalPrice$: Observable<number>;
+  subtotal$: Observable<number>;
+  discountAmount$: Observable<number>;
+  discountPercentage$: Observable<number>;
+
+  discountCode: string = '';
+  isApplying: boolean = false;
+  discountError: string | null = null;
 
   constructor(
     private cartService: CartService,
     private router: Router,
+    private promotionService: PromotionService,
+    private checkoutService: CheckoutService,
+    private store: Store
+
   ) {
     this.cart$ = this.cartService.getCartState();
-    
-    // Inicializamos el cálculo del total de forma reactiva
-    // Esto es mucho más eficiente que llamar a una función totalPrice() desde el template
-    this.totalPrice$ = this.cart$.pipe(
-      map(cartState => {
-        const total = cartState.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        return parseFloat(total.toFixed(2));
-      })
-    );
+    this.totalPrice$ = this.store.select(selectTotalPrice);
+    this.subtotal$ = this.store.select(selectSubtotal);
+    this.discountAmount$ = this.store.select(selectDiscountAmount);
+    this.discountPercentage$ = this.store.select(selectDiscountPercentage);
+
   }
 
   // Eliminamos ngOnInit y showCart:
@@ -35,25 +47,25 @@ export class CartComponent {
   // 2. La suscripción manual causaba un memory leak.
 
   removeFromCart(itemId: string): void {
-    this.cartService.removeFromCart(itemId);  
+    this.cartService.removeFromCart(itemId);
   }
 
   getQuantityOptions(item: CartItem): number[] {
     const maxStock = item.stock || 0;
     return Array.from({ length: maxStock }, (_, index) => index + 1);
   }
-  
+
   // --- SOLUCIÓN PUNTO D: Tipado Estricto ---
   // Cambiamos 'any' por 'number | string'. Aunque el select envía strings, 
   // permitimos number por si se bindea directamente.
   updateQuantity(item: CartItem, quantity: number | string): void {
     const newQuantity = Number(quantity); // Conversión explícita y segura
-    
+
     // Validación adicional de seguridad
     if (isNaN(newQuantity) || newQuantity < 1) {
       return;
-    } 
-    
+    }
+
     if (newQuantity > item.stock) {
       alert(`Lo sentimos, solo quedan ${item.stock} unidades disponibles.`);
       return;
@@ -67,7 +79,31 @@ export class CartComponent {
   }
 
   goToCart() {
-  //this.closeCart(); // Cerramos el sidebar
-  this.router.navigate(['/checkout/info']); // Navegamos al inicio del checkout
-}
+    //this.closeCart(); // Cerramos el sidebar
+    this.router.navigate(['/checkout/info']); // Navegamos al inicio del checkout
+  }
+
+  applyDiscount(): void {
+    this.isApplying = true;
+    this.discountError = null;
+
+    this.promotionService.validatePromotionCode(this.discountCode).subscribe({
+      next: (res) => {
+        // 🟢 Solo despachamos la acción a NgRx. 
+        // Automáticamente actualizará todos los cálculos en el carrito y en el checkout.
+        this.store.dispatch(applyDiscount({
+          code: this.discountCode,
+          percentage: res.percentage
+        }));
+
+        this.isApplying = false;
+      },
+      error: (err) => {
+        this.isApplying = false;
+        this.discountError = 'Invalid code';
+      }
+    });
+  }
+
+
 }

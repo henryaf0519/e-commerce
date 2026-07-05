@@ -7,7 +7,7 @@ import {
   ShippingAddress,
   ShippingRate,
 } from 'src/app/services/checkout.service';
-import { selectCartItems, selectTotalPrice } from 'src/app/state/cart.selector';
+import { selectCartItems, selectDiscountAmount, selectDiscountPercentage, selectSubtotal, selectTotalPrice } from 'src/app/state/cart.selector';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,6 +18,9 @@ import { environment } from 'src/environments/environment';
 export class CheckoutShippingComponent {
   cartItems$ = this.store.select(selectCartItems);
   productTotal$ = this.store.select(selectTotalPrice);
+  subtotal$ = this.store.select(selectSubtotal);
+  discountAmount$ = this.store.select(selectDiscountAmount);
+  discountPercentage$ = this.store.select(selectDiscountPercentage);
 
   address: ShippingAddress | null = null;
   loading: boolean = true;
@@ -89,7 +92,7 @@ export class CheckoutShippingComponent {
     this.selectedRate = rate;
   }
 
-  get totalWithShipping$(): Observable<number> {
+ get totalWithShipping$(): Observable<number> {
     return this.productTotal$.pipe(
       map((total) => total + (this.selectedRate?.price || 0)),
     );

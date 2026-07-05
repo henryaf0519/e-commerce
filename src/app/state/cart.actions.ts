@@ -27,5 +27,14 @@ export const clearCart = createAction(
   '[Cart] Clear Cart'
 );
 
+export const applyDiscount = createAction(
+  '[Cart] Apply Discount',
+  props<{ code: string; percentage: number }>()
+);
+
+export const removeDiscount = createAction(
+  '[Cart] Remove Discount'
+);
+
 export const openCartSidebar = createAction('[UI] Open Cart Sidebar');
 export const closeCartSidebar = createAction('[UI] Close Cart Sidebar');

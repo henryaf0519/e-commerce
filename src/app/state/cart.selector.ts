@@ -17,15 +17,41 @@ export const selectShowSidebar = createSelector(
   (state: CartState) => state.showSidebar
 );
 
-// 4. Selector derivado: Calcula el precio total automáticamente
-// Esto es genial porque se recalcula solo si cambia la lista de items
-export const selectTotalPrice = createSelector(
-  selectCartItems,
-  (items) => items.reduce((total, item) => total + (item.price * item.quantity), 0)
-);
-
-// 5. Selector derivado: Cuenta el número total de productos (para el badge del header)
 export const selectTotalItems = createSelector(
   selectCartItems,
   (items) => items.reduce((total, item) => total + item.quantity, 0)
 );
+
+export const selectSubtotal = createSelector(
+  selectCartItems,
+  (items) => items.reduce((total, item) => total + (item.price * item.quantity), 0)
+);
+
+export const selectDiscountPercentage = createSelector(
+  selectCartState,
+  (state: CartState) => state.discountPercentage
+);
+
+
+export const selectDiscountAmount = createSelector(
+  selectSubtotal,
+  selectDiscountPercentage,
+  (subtotal, percentage) => subtotal * (percentage / 100)
+);
+
+// 4. Selector derivado: Calcula el precio total automáticamente
+// Esto es genial porque se recalcula solo si cambia la lista de items
+export const selectTotalPrice = createSelector(
+  selectSubtotal,
+  selectDiscountAmount,
+  (subtotal, discountAmount) => subtotal - discountAmount
+);
+
+export const selectDiscountCode = createSelector(
+  selectCartState,
+  (state: CartState) => state.discountCode
+);
+
+// 5. Selector derivado: Cuenta el número total de productos (para el badge del header)
+
+
