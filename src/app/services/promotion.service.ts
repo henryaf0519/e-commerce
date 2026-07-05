@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class PromotionService {
   // Ajusta la URL base según cómo esté configurado tu backend
-  private apiUrl = `${environment.apiUrl}/promotions`;
+  private apiUrlAdmin = `${environment.apiUrl}/promotions/admin`;
+  private apiUrlUser = `${environment.apiUrl}/promotions/user`;
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +19,7 @@ export class PromotionService {
 
   // Obtener la única promoción activa
   getActivePromotion(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/active`, {
+    return this.http.get<any>(`${this.apiUrlUser}/active`, {
       headers: this.getHeaders(),
     });
   }
@@ -26,14 +27,14 @@ export class PromotionService {
   // Crear o Actualizar (si ya existe, el backend debería manejar la lógica de upsert)
   savePromotion(data: FormData): Observable<any> {
     console.log('Saving promotion with data:', data);
-    return this.http.post<any>(this.apiUrl, data, {
+    return this.http.post<any>(this.apiUrlAdmin, data, {
       headers: this.getHeaders(),
     });
   }
 
   // Validar si el código es apto para un email específico
   validatePromotionCode(email: string, code: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/validate`,
+    return this.http.post<any>(`${this.apiUrlAdmin}/validate`,
       { email, code },
       { headers: this.getHeaders() }
     );
@@ -41,15 +42,29 @@ export class PromotionService {
 
 
   getAllPromotions(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/all`, { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${this.apiUrlAdmin}/all`, { headers: this.getHeaders() });
   }
 
   toggleActive(id: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/activate`, {}, { headers: this.getHeaders() });
+    return this.http.patch(`${this.apiUrlAdmin}/${id}/activate`, {}, { headers: this.getHeaders() });
   }
 
   deactivate(id: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/deactivate`, {}, { headers: this.getHeaders() });
+    return this.http.patch(`${this.apiUrlAdmin}/${id}/deactivate`, {}, { headers: this.getHeaders() });
+  }
+
+
+  sendPromotionToEmail(email: string, code: string, percentage: number): Observable<any> {
+    const url = `${this.apiUrlUser}/send`;
+    const body = {
+      email: email,
+      code: code,
+      percentage: percentage
+    };
+
+    return this.http.post<any>(url, body, {
+      headers: this.getHeaders()
+    });
   }
 
 

@@ -14,6 +14,7 @@ import { PhilosophyComponent } from './components/philosophy/philosophy.componen
 import { TranslateModule } from '@ngx-translate/core';
 import { HistoryComponent } from './components/history/history.component';
 import { WhyComponent } from './components/why/why.component';
+import { PromotionModalComponent } from './components/promotion-modal/promotion-modal.component';
 
 
 
@@ -31,7 +32,8 @@ import { WhyComponent } from './components/why/why.component';
     SideCartComponent,
     PhilosophyComponent,
     HistoryComponent,
-    WhyComponent
+    WhyComponent,
+    PromotionModalComponent
   ],
   imports: [
     TranslateModule,
@@ -52,7 +54,8 @@ import { WhyComponent } from './components/why/why.component';
     PhilosophyComponent,
     TranslateModule,
     HistoryComponent,
-    WhyComponent
+    WhyComponent,
+    PromotionModalComponent
   ]
 })
 export class SharedModule { }

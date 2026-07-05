@@ -119,3 +119,9 @@
     </div>
   </ng-template>
 </div>
+
+<app-promotion-modal 
+  *ngIf="showModal" 
+  [promotionData]="activePromotion" 
+  (close)="showModal = false">
+</app-promotion-modal>

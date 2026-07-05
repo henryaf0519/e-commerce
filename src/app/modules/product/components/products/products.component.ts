@@ -6,6 +6,7 @@ import { InventoryService } from 'src/app/services/inventory-service.service';
 import { SectionsService } from 'src/app/services/sections.service'; // Importamos el servicio de secciones
 import { CartState } from 'src/app/state/cart.reducer';
 import { CartItem, SectionGroup } from 'src/app/models/cart-item.model';
+import { PromotionService } from 'src/app/services/promotion.service';
 
 @Component({
   selector: 'app-products',
@@ -22,13 +23,17 @@ export class ProductsComponent implements OnInit {
   loading: boolean = true;
   latestFeedbacks: any[] = [];
 
+  showModal: boolean = false;
+  activePromotion: any = null;
+
   // ¡SECTION_CONFIG ha sido eliminado!
 
   constructor(
     private cartService: CartService,
     private inventoryService: InventoryService,
     private sectionsService: SectionsService, // Inyectamos el servicio
-    private router: Router
+    private router: Router,
+    private promotionService: PromotionService
   ) {
     this.cart$ = this.cartService.getCartState();
     this.totalPrice$ = this.cart$.pipe(
@@ -43,6 +48,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.loadProducts();
     this.fetchGlobalFeedbacks();
+    this.loadPromotions();
   }
 
   loadProducts() {
@@ -57,7 +63,7 @@ export class ProductsComponent implements OnInit {
 
   // Ahora recibimos también la data de las secciones desde la BD
   private groupProductsBySection(products: CartItem[], sectionsData: any[]): SectionGroup[] {
-    
+
     // 1. Convertimos el array de secciones de la BD en un diccionario (Map) 
     // para buscar más rápido usando el título en minúsculas.
     const sectionConfigMap = sectionsData.reduce((acc, sec) => {
@@ -70,7 +76,7 @@ export class ProductsComponent implements OnInit {
     // 2. Agrupamos los productos por su propiedad 'section'
     const grouped = products.reduce((acc, product) => {
       const rawSection = product.section || 'default';
-      const key = rawSection.trim(); 
+      const key = rawSection.trim();
 
       if (!acc[key]) {
         acc[key] = [];
@@ -81,7 +87,7 @@ export class ProductsComponent implements OnInit {
 
     // 3. Construimos el arreglo final de SectionGroup
     return Object.keys(grouped).map(key => {
-      
+
       // Buscamos la configuración de la sección en nuestro diccionario
       // (Convertimos a minúscula para asegurar la coincidencia exacta)
       const config = sectionConfigMap[key.toLowerCase()];
@@ -113,14 +119,14 @@ export class ProductsComponent implements OnInit {
   addToCartFromCard(productWithQuantity: any) {
     console.log('2A Adding to cart from ProductsComponent:', productWithQuantity);
     const item: CartItem = {
-      ...productWithQuantity, 
+      ...productWithQuantity,
       show: true,
-      length: productWithQuantity.length, 
+      length: productWithQuantity.length,
       width: productWithQuantity.width,
       height: productWithQuantity.height,
       weight: productWithQuantity.weight
     };
-    
+
     console.log('🔍 [2B. ProductsComponent] Enviando al CartService:', {
       id: item.id,
       weight: item.weight,
@@ -132,11 +138,20 @@ export class ProductsComponent implements OnInit {
 
 
   fetchGlobalFeedbacks() {
-  this.inventoryService.getLatestGlobalFeedbacks().subscribe({
-    next: (data) => {
-      this.latestFeedbacks = data;
-    },
-    error: (err) => console.error('Error al cargar testimonios:', err)
-  });
-}
+    this.inventoryService.getLatestGlobalFeedbacks().subscribe({
+      next: (data) => {
+        this.latestFeedbacks = data;
+      },
+      error: (err) => console.error('Error al cargar testimonios:', err)
+    });
+  }
+
+  loadPromotions() {
+    this.promotionService.getActivePromotion().subscribe(promo => {
+      if (promo) {
+        this.activePromotion = promo[0];
+        this.showModal = true;
+      }
+    });
+  }
 }
