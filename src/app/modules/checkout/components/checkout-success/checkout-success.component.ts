@@ -42,6 +42,7 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
     }
   }
 
+
   ngOnInit(): void {
     // 2. Try to get email from order data (Priority 1)
     if (this.orderData?.shipping?.email) {
@@ -130,5 +131,14 @@ export class CheckoutSuccessComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Clean up temporary service data
     this.checkoutService.setShippingAddress(null as any); 
+  }
+
+  getOrderSubtotal(): number {
+    if (!this.orderData?.invoice?.items) return 0;
+    
+    return this.orderData.invoice.items.reduce(
+      (acc: number, item: any) => acc + (item.price * item.quantity), 
+      0
+    );
   }
 }

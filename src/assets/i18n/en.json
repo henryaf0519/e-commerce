@@ -274,6 +274,7 @@
     "TOTAL": "Total",
     "PROCEED_BTN": "Proceed to Checkout",
     "SECURE_PAYMENT": "100% Secure & Encrypted Payment",
+    "COUPON_CODE":"Discount code",
     "EMPTY": {
       "TITLE": "Your cart is empty",
       "SUBTITLE": "It seems you haven't found your favorite sweet yet. Our catalog is full of delights!",

@@ -42,7 +42,8 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
       <div class="bg-surface rounded-2xl p-6 border border-muted/20 shadow-sm flex flex-col justify-between">
         <div>
           <h3 class="font-bold text-main mb-4 flex items-center gap-2">
@@ -55,9 +56,9 @@
             <span class="text-muted">{{ 'SUCCESS.STATUS_LABEL' | translate }}</span>
             <span class="text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded text-xs">{{ orderData?.invoice?.status || 'PAID' }}</span>
           </div>
-          <div class="flex justify-between text-sm mb-2">
+          <div class="flex justify-between text-sm mb-2 items-center">
             <span class="text-muted">{{ 'SUCCESS.TOTAL_PAID' | translate }}</span>
-            <span class="text-main font-bold">{{ (orderData?.invoice?.total || 0) | currency: 'USD' }}</span>
+            <span class="text-xl text-main font-extrabold">${{ (orderData?.invoice?.total || orderData?.total || 0) | number:'1.2-2' }}</span>
           </div>
         </div>
         
@@ -68,7 +69,8 @@
 
       <div class="bg-surface rounded-2xl p-6 border border-muted/20 shadow-sm">
         <h3 class="font-bold text-main mb-4">{{ 'SUCCESS.SUMMARY_TITLE' | translate }}</h3>
-        <ul class="divide-y divide-muted/10 max-h-40 overflow-y-auto custom-scrollbar">
+        
+        <ul class="divide-y divide-muted/10 max-h-40 overflow-y-auto custom-scrollbar mb-4">
           <li *ngFor="let item of orderData?.invoice?.items" class="py-3 flex justify-between items-center text-sm">
             <div class="flex items-center gap-3">
               <div class="bg-gray-100 w-10 h-10 rounded-md flex items-center justify-center text-xs font-bold text-gray-500">
@@ -76,10 +78,28 @@
               </div>
               <span class="text-main font-medium truncate max-w-[120px]">{{ item.title }}</span>
             </div>
-            <span class="text-muted">{{ item.price | currency }}</span>
+            <span class="text-muted">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
           </li>
         </ul>
+
+        <div class="border-t border-muted/10 pt-4 space-y-2">
+          <div class="flex justify-between text-sm text-muted">
+            <span>{{ 'CHECKOUT.SUMMARY.SUBTOTAL' | translate }}</span>
+            <span>${{ getOrderSubtotal() | number:'1.2-2' }}</span>
+          </div>
+          
+          <div *ngIf="orderData?.discountCode || orderData?.invoice?.discountCode" class="flex justify-between text-sm text-green-600">
+            <span>Discount ({{ orderData?.discountCode || orderData?.invoice?.discountCode }})</span>
+            <span>-${{ (orderData?.discountAmount || orderData?.invoice?.discountAmount || 0) | number:'1.2-2' }}</span>
+          </div>
+
+          <div *ngIf="orderData?.shippingAmount || orderData?.invoice?.shippingAmount" class="flex justify-between text-sm text-muted">
+            <span>Envío</span>
+            <span>${{ (orderData?.shippingAmount || orderData?.invoice?.shippingAmount) | number:'1.2-2' }}</span>
+          </div>
+        </div>
       </div>
+
     </div>
 
     <div *ngIf="showRegister && !isRegistered" class="bg-surface p-8 rounded-2xl shadow-lg border-2 border-brand/10 transform transition-all hover:border-brand/30 mt-8">

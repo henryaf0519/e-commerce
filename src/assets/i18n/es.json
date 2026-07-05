@@ -274,6 +274,7 @@
     "TOTAL": "Total",
     "PROCEED_BTN": "Proceder al Pago",
     "SECURE_PAYMENT": "Pago 100% Seguro y Encriptado",
+    "COUPON_CODE":"Código de descuento",
     "EMPTY": {
       "TITLE": "Tu carrito está vacío",
       "SUBTITLE": "Parece que aún no has encontrado tu dulce favorito. ¡Nuestro catálogo está lleno de delicias!",

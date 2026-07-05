@@ -46,9 +46,17 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const hasShownModal = sessionStorage.getItem('hasShownPromotionModal');
     this.loadProducts();
     this.fetchGlobalFeedbacks();
-    this.loadPromotions();
+    if (!hasShownModal) {
+      this.loadPromotions();
+      this.showModal = true;
+
+      sessionStorage.setItem('hasShownPromotionModal', 'true');
+    } else {
+      this.showModal = false;
+    }
   }
 
   loadProducts() {
