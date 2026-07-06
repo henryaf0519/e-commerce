@@ -1,4 +1,4 @@
-export const environment = {
+/*export const environment = {
   production: true,
   apiUrl: 'https://pruebasfaciles.online',
   businessId: 'tienda-test',
@@ -6,4 +6,16 @@ export const environment = {
   defaultLanguage: 'en',
   useWompi: false,
   wompiPublicKey: 'pub_test_PI1lecs8s9BnomqC3FOONcPUKJTTeXAl',
-};
+};*/
+
+export const environment = {
+  production: false,
+  apiUrl: 'https://pruebasfaciles.online',
+  businessId: 'tienda-test',
+  strippeKey:'pk_test_51SkApyFfzAYNFajOAIL0kAt7vyOv85QLOWJcj1B5JLFjbhDqVIvvF7BhaJEhsYFbdQdPAluROwnQcVeUNUC0eKWg00mrd5YjDD',
+  defaultLanguage: 'en',
+  useWompi: false,
+  wompiPublicKey: 'pub_test_PI1lecs8s9BnomqC3FOONcPUKJTTeXAl',
+ 
+
+}
