@@ -51,8 +51,6 @@ export class ProductsComponent implements OnInit {
     this.fetchGlobalFeedbacks();
     if (!hasShownModal) {
       this.loadPromotions();
-      this.showModal = true;
-
       sessionStorage.setItem('hasShownPromotionModal', 'true');
     } else {
       this.showModal = false;
@@ -154,12 +152,28 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  loadPromotions() {
-    this.promotionService.getActivePromotion().subscribe(promo => {
-      if (promo) {
-        this.activePromotion = promo[0];
+loadPromotions() {
+  this.promotionService.getActivePromotion().subscribe(promo => {
+    if (promo && promo.length > 0) {
+      const promotion = promo[0];
+      
+      // Obtenemos la fecha actual en formato YYYY-MM-DD para comparar
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Validamos el rango: 
+      // 1. Que hoy sea mayor o igual a startDate
+      // 2. Que hoy sea menor o igual a endDate
+      const isWithinRange = today >= promotion.startDate && today <= promotion.endDate;
+
+      if (promotion.isActive && isWithinRange) {
+        console.log('Promoción válida y activa:', promotion);
+        this.activePromotion = promotion;
         this.showModal = true;
+      } else {
+        console.log('La promoción no está dentro del rango de fechas o está inactiva.');
+        this.showModal = false;
       }
-    });
-  }
+    }
+  });
+}
 }
