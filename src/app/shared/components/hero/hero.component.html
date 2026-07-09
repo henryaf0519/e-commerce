@@ -33,12 +33,12 @@
       <div class=" p-6 md:p-8 rounded-none md:rounded-lg inline-block mt-8">
         <div class="flex flex-col sm:flex-row gap-4">
 
-          <button (click)="scrollToCatalogo($event)"
+          <button (click)="scrollToCatalogo($event,'catalogo')"
             class="px-8 py-3 bg-[#c68e3d] text-white hover:bg-[#a3742f] transition-all duration-300 uppercase tracking-widest text-sm font-bold">
             EXPLORE COLLECTIONS
           </button>
 
-          <button 
+          <button  (click)="scrollToCatalogo($event,'history')"
             class="px-8 py-3 border border-[#c68e3d] text-[#c68e3d] hover:bg-[#c68e3d] hover:text-white transition-all duration-300 uppercase tracking-widest text-sm font-bold">
             OUR STORY
           </button>

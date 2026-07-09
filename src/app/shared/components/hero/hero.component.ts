@@ -12,12 +12,15 @@ export class HeroComponent {
   @Input() backgroundImage: string = 'assets/imgs/hero.png';
   @Input() fullHeight: boolean = true; // Controla si ocupa toda la pantalla
 
-  scrollToCatalogo(event: Event) {
+  scrollToCatalogo(event: Event, name: string): void {
     console.log('scrollToCatalogo called');
     event.preventDefault();
-    const element = document.getElementById('catalogo');
+    const element = document.getElementById(name);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
+
+
+  
 }
