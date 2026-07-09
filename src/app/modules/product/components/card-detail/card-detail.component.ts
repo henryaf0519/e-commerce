@@ -125,7 +125,7 @@ export class CardDetailComponent implements OnInit {
   // Acción al hacer clic en un producto relacionado
   onProductClicked(relatedProduct: CartItem): void {
     this.router
-      .navigate(['products/detail'], {
+      .navigate(['/detail'], {
         queryParams: { id: relatedProduct.id },
         state: { productData: relatedProduct },
       })

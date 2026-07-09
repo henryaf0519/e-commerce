@@ -6,7 +6,7 @@ import { adminGuard } from './core/guards/admin.guard';
 
 const routes: Routes = [
   {
-    path: 'products',
+    path: '',
     loadChildren: () =>
       import('./modules/product/product.module').then((m) => m.ProductModule),
   },
@@ -44,8 +44,7 @@ const routes: Routes = [
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
     canActivate: [publicGuard],
   },
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: '**', redirectTo: '/products' },
+  { path: '**', redirectTo: '/' },
 ];
 
 @NgModule({

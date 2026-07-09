@@ -116,7 +116,7 @@ export class ProductsComponent implements OnInit {
   }
 
   onProductClicked(product: CartItem) {
-    this.router.navigate(['products/detail'], {
+    this.router.navigate(['/detail'], {
       queryParams: { id: product.id },
       state: { productData: product },
     });
